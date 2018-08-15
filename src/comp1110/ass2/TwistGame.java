@@ -21,7 +21,7 @@ public class TwistGame {
    * @param piecePlacement A string describing a single piece or peg placement
    * @return True if the placement is well-formed
    */
-  static boolean isPlacementWellFormed(String piecePlacement) {
+  public static boolean isPlacementWellFormed(String piecePlacement) {
     // FIXME Task 2: determine whether a piece or peg placement is well-formed
     return false;
   }
@@ -37,7 +37,7 @@ public class TwistGame {
    * @param placement A string describing a placement of one or more pieces and pegs
    * @return True if the placement is well-formed
    */
-  static boolean isPlacementStringWellFormed(String placement) {
+  public static boolean isPlacementStringWellFormed(String placement) {
     // FIXME Task 3: determine whether a placement is well-formed
     return false;
   }
@@ -54,7 +54,7 @@ public class TwistGame {
    * @param placement A placement sequence string
    * @return True if the placement sequence is valid
    */
-  static boolean isPlacementStringValid(String placement) {
+  public static boolean isPlacementStringValid(String placement) {
     // FIXME Task 5: determine whether a placement string is valid
     return false;
   }
@@ -70,7 +70,7 @@ public class TwistGame {
    * @param placement A valid placement string (comprised of peg and piece placements)
    * @return An set of viable piece placements, or null if there are none.
    */
-  static Set<String> getViablePiecePlacements(String placement) {
+  public static Set<String> getViablePiecePlacements(String placement) {
     // FIXME Task 6: determine the set of valid next piece placements
     return null;
   }
@@ -85,7 +85,7 @@ public class TwistGame {
    * @return An array of strings, each describing a unique unordered solution to
    * the game given the starting point provided by placement.
    */
-  static String[] getSolutions(String placement) {
+  public static String[] getSolutions(String placement) {
     // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     return null;
   }
