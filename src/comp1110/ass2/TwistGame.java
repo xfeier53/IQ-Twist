@@ -16,7 +16,7 @@ public class TwistGame {
    * - the first character is in the range a .. l (pieces and pegs)
    * - the second character is in the range 1 .. 8 (columns)
    * - the third character is in the range A .. D (rows)
-   * - the fourth character is in the range 0 .. 8 (if a piece) or is 0 (if a peg)
+   * - the fourth character is in the range 0 .. 7 (if a piece) or is 0 (if a peg)
    *
    * @param piecePlacement A string describing a single piece or peg placement
    * @return True if the placement is well-formed
