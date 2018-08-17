@@ -22,8 +22,31 @@ public class TwistGame {
    * @return True if the placement is well-formed
    */
   public static boolean isPlacementWellFormed(String piecePlacement) {
-    // FIXME Task 2: determine whether a piece or peg placement is well-formed
-    return false;
+      int count = 0;
+      if (count ==0) {
+        if (piecePlacement.charAt(count) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
+          return false;
+        }
+        count = count+1;
+      }
+    if (count ==1) {
+      if (piecePlacement.charAt(count) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+        return false;
+      }
+      count = count+1;
+    }
+    if (count ==2) {
+      if (piecePlacement.charAt(count) != ('A' | 'B' | 'C' | 'D')) {
+        return false;
+      }
+      count = count+1;
+    }
+    if (count ==3) {
+      if (piecePlacement.charAt(count) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+        return false;
+      }
+    }
+      return true;
   }
 
   /**
