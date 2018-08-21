@@ -21,7 +21,7 @@ public class PlacementStringValidTest {
   public Timeout globalTimeout = Timeout.millis(20000);
 
   private void test(String in, String invalid, boolean expected) {
-    boolean out = TwistGame.isPlacementStringWellFormed(in);
+    boolean out = TwistGame.isPlacementStringValid(in);
     assertTrue("Input was '"+in+"', expected "+expected+" but got "+out+(invalid == "" ? "": " (subsequence "+invalid+" is not valid)"), out == expected);
   }
 
