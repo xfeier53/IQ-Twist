@@ -50,9 +50,10 @@ public class PlacementStringValidTest {
     for (int i = 0; i < GOOD_PLACEMENTS.length; i++) {
       int targeta = i % 8;
       int targetb = (i+1) % 8;
+      if (targeta == 7) { targeta = 0; targetb = 7; }
       String good = GOOD_PLACEMENTS[i].substring((targeta * 4), (targeta + 1)*4)+GOOD_PLACEMENTS[i].substring((targetb * 4), (targetb + 1)*4);
       test(good, "", true);
-      test(OVERLAP[targeta], "", false);
+      test(OVERLAP[i % 8], "", false);
     }
   }
 
