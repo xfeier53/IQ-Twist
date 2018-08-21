@@ -34,6 +34,7 @@ public class TestUtility {
   static final String[] OFF_BOARD = {
           "a7D7",
           "b7C0",
+          "c6A0",
           "d1C3",
           "e1D6",
           "f7A6",
