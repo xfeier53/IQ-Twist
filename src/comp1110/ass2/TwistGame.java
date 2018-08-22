@@ -24,38 +24,36 @@ public class TwistGame {
   public static boolean isPlacementWellFormed(String piecePlacement) {
       int count = 0;
       int count2 =0;
-
+      while ((piecePlacement.length() >count2)) {
       while (count ==0) {
-        if (piecePlacement.charAt(count2) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
+        if (piecePlacement.charAt(0) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
           return false;
         }
         count = count+1;
         count2 = count2+1;
       }
     while (count ==1) {
-      if (piecePlacement.charAt(count2) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+      if (piecePlacement.charAt(1) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
         return false;
       }
       count = count+1;
       count2 = count2+1;
     }
     while (count ==2) {
-      if (piecePlacement.charAt(count2) != ('A' | 'B' | 'C' | 'D')) {
+      if (piecePlacement.charAt(2) != ('A' | 'B' | 'C' | 'D')) {
         return false;
       }
       count = count+1;
       count2 = count2+1;
     }
     while (count ==3) {
-        if (piecePlacement.charAt(count2) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+        if (piecePlacement.charAt(3) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
           return false;
         }
         count = count +1;
       count2 = count2 + 1;
     }
-    while (count ==4) {
-    if (piecePlacement.length() >count2) {
-          count = 0;
+    while (count ==4) { count = 0;
     }}
       return true;
   }
