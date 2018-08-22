@@ -24,6 +24,7 @@ public class TwistGame {
   public static boolean isPlacementWellFormed(String piecePlacement) {
       int count = 0;
       int count2 =0;
+
       while (count ==0) {
         if (piecePlacement.charAt(count2) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
           return false;
@@ -52,7 +53,7 @@ public class TwistGame {
         count = count +1;
       count2 = count2 + 1;
     }
-    if (count ==4) {
+    while (count ==4) {
     if (piecePlacement.length() >count2) {
           count = 0;
     }}
