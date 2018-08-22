@@ -1,9 +1,7 @@
 package gittest;
 
 public class A {
-
-    @Override
-    public String toString() {
+    public static void main(String[] args) {
         A a = new A();
     }
 }
