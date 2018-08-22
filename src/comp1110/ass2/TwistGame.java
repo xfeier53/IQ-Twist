@@ -55,6 +55,7 @@ public class TwistGame {
     }
     while (count ==4) { count = 0;
     }}
+    System.out.println("count" +count +"count2"+count2 );
       return true;
   }
 
