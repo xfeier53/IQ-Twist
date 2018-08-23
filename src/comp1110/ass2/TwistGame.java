@@ -22,40 +22,25 @@ public class TwistGame {
    * @return True if the placement is well-formed
    */
   public static boolean isPlacementWellFormed(String piecePlacement) {
-      int count = 0;
-      int count2 =0;
-      while ((piecePlacement.length() >count2)) {
-      while (count ==0) {
-        if (piecePlacement.charAt(0) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
-          return false;
-        }
-        count = count+1;
-        count2 = count2+1;
-      }
-    while (count ==1) {
-      if (piecePlacement.charAt(1) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
-        return false;
-      }
-      count = count+1;
-      count2 = count2+1;
+  int loop =(piecePlacement.length()/4) -1 ;
+  while (loop >=0) {
+    if (piecePlacement.charAt(loop * 4) == ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
+      return false;
     }
-    while (count ==2) {
-      if (piecePlacement.charAt(2) != ('A' | 'B' | 'C' | 'D')) {
-        return false;
-      }
-      count = count+1;
-      count2 = count2+1;
+    if (piecePlacement.charAt(1 + (loop * 4)) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+      return false;
     }
-    while (count ==3) {
-        if (piecePlacement.charAt(3) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
-          return false;
-        }
-        count = count +1;
-      count2 = count2 + 1;
+
+    if (piecePlacement.charAt(2 + (loop * 4)) != ('A' | 'B' | 'C' | 'D')) {
+      return false;
     }
-    while (count ==4) { count = 0;
-    }}
-    System.out.println("count" +count +"count2"+count2 );
+    if (piecePlacement.charAt(3 + (loop * 4)) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+      return false;
+    }
+    loop = loop-1;
+  }
+
+
       return true;
   }
 
