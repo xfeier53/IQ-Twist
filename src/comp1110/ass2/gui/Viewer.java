@@ -11,6 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 /**
@@ -31,7 +34,7 @@ public class Viewer extends Application {
 
     private final Group root = new Group();
     private final Group controls = new Group();
-    private final ImageView pieceView = new ImageView();
+    private final Group pieces = new Group();
     TextField textField;
 
 
@@ -43,29 +46,79 @@ public class Viewer extends Application {
     void makePlacement(String placement) {
 
 
-        char pieceId = 'a';//placement.charAt(0);
+        pieces.getChildren().clear();
 
-        //int orientation = Character.getNumericValue(placement.charAt(3));
+        for(int i = 0; i < placement.length()/4;i++){
 
+            String piecePlacement = placement.substring(i*4,i*4+4);
+            System.out.println(piecePlacement);
+            makePiecePlacement(piecePlacement);
 
-        Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
-
-        pieceView.setScaleX(-1);
-
-
-        pieceView.setImage(pieceImg);
-
-
-
-
-
-        pieceView.setX(100);
-        pieceView.setY(100);
-
-
+        }
 
         // FIXME Task 4: implement the simple placement viewer
     }
+
+    void makePiecePlacement(String piecePlacement){
+
+
+        char pieceId = piecePlacement.charAt(0);
+        Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
+
+
+
+        ImageView pieceView = new ImageView();
+        pieceView.setImage(pieceImg);
+
+        pieceView.setX(0);
+        pieceView.setY(0);
+
+        int column = Character.getNumericValue(piecePlacement.charAt(1));
+        int row = (piecePlacement.charAt(2)) - 'A' + 1;
+
+        //System.out.println("column: " + column + " row: " + row);
+
+        //pieceView.setX(0);
+        //pieceView.setY(0);
+
+        int orientation = Character.getNumericValue(piecePlacement.charAt(3));
+
+        rotateAndFlip(pieceView,orientation);
+
+        //pieceView.setX(0);
+        //pieceView.setY(0);
+
+
+        pieces.getChildren().add(pieceView);
+
+    }
+
+    void rotateAndFlip(ImageView pieceView,int orientation){
+
+        if(orientation > 3){
+            pieceView.setScaleY(-1);
+            orientation = orientation - 4;
+        }
+
+        Rotate pieceRotate = new Rotate();
+
+        pieceRotate.setPivotX(0);
+        pieceRotate.setPivotY(0);
+        pieceRotate.setAngle(90);
+
+        pieceView.getTransforms().add(pieceRotate);
+
+        double h =  pieceView.getFitHeight();
+        double w = pieceView.getFitWidth();
+        double c = (h-w)/2;
+
+        System.out.println(c);
+
+        pieceView.setX(c);
+        pieceView.setY(c);
+
+    }
+
 
 
     /**
@@ -97,8 +150,8 @@ public class Viewer extends Application {
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
         root.getChildren().add(controls);
+        root.getChildren().add(pieces);
 
-        root.getChildren().add(pieceView);
 
         makeControls();
 
