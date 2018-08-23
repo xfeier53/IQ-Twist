@@ -61,33 +61,26 @@ public class Viewer extends Application {
 
     void makePiecePlacement(String piecePlacement){
 
-
         char pieceId = piecePlacement.charAt(0);
         Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
-
-
 
         ImageView pieceView = new ImageView();
         pieceView.setImage(pieceImg);
 
+        System.out.println(pieceImg.getHeight());
+
         pieceView.setX(0);
         pieceView.setY(0);
 
-        int column = Character.getNumericValue(piecePlacement.charAt(1));
-        int row = (piecePlacement.charAt(2)) - 'A' + 1;
+        int column = Character.getNumericValue(piecePlacement.charAt(1)) - 1;
+        int row = (piecePlacement.charAt(2)) - 'A';
 
-        //System.out.println("column: " + column + " row: " + row);
-
-        //pieceView.setX(0);
-        //pieceView.setY(0);
+        pieceView.setX(pieceView.getX() + (100 * column));
+        pieceView.setY(pieceView.getY() + (100 * row));
 
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
 
         rotateAndFlip(pieceView,orientation);
-
-        //pieceView.setX(0);
-        //pieceView.setY(0);
-
 
         pieces.getChildren().add(pieceView);
 
@@ -100,22 +93,17 @@ public class Viewer extends Application {
             orientation = orientation - 4;
         }
 
-        Rotate pieceRotate = new Rotate();
+        pieceView.setRotate(90 * orientation);
 
-        pieceRotate.setPivotX(0);
-        pieceRotate.setPivotY(0);
-        pieceRotate.setAngle(90);
+        if(orientation % 2 != 0){
+            double width = (pieceView.getImage().getWidth());
+            double height = pieceView.getImage().getHeight();
+            double correction = (height - width) / 2;
 
-        pieceView.getTransforms().add(pieceRotate);
+            pieceView.setX(pieceView.getX() + correction);
+            pieceView.setY(pieceView.getY() - correction);
+        }
 
-        double h =  pieceView.getFitHeight();
-        double w = pieceView.getFitWidth();
-        double c = (h-w)/2;
-
-        System.out.println(c);
-
-        pieceView.setX(c);
-        pieceView.setY(c);
 
     }
 
@@ -151,7 +139,6 @@ public class Viewer extends Application {
 
         root.getChildren().add(controls);
         root.getChildren().add(pieces);
-
 
         makeControls();
 
