@@ -22,22 +22,30 @@ public class TwistGame {
    * @return True if the placement is well-formed
    */
   public static boolean isPlacementWellFormed(String piecePlacement) {
-  int loop =(piecePlacement.length()/4) -1 ;
-  while (loop >=0) {
-    if (piecePlacement.charAt(loop * 4) == ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
+  int loop = piecePlacement.length()/4;
+  int timer = 0;
+  int by4 = 1;
+  while (loop !=0) {
+    if (by4==1) { by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
       return false;
-    }
-    if (piecePlacement.charAt(1 + (loop * 4)) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+    }}
+    if (by4==2) { by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
       return false;
-    }
-
-    if (piecePlacement.charAt(2 + (loop * 4)) != ('A' | 'B' | 'C' | 'D')) {
+    }}
+    if (by4==3) { by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('A' | 'B' | 'C' | 'D')) {
       return false;
-    }
-    if (piecePlacement.charAt(3 + (loop * 4)) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+    }}
+    if (by4==4) {by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
       return false;
-    }
+    }}
+    by4=1;
+    timer +=4;
     loop = loop-1;
+
   }
 
 
