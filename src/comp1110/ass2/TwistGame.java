@@ -21,60 +21,60 @@ public class TwistGame {
    * @param piecePlacement A string describing a single piece or peg placement
    * @return True if the placement is well-formed
    */
-  public static boolean isPlacementWellFormed(String piecePlacement) {
-  int loop = piecePlacement.length()/4;
-  int timer = 0;
-  int by4 = 1;
-  while (loop !=0) {
-    if (by4==1) { by4 +=1;
-    if (piecePlacement.charAt(timer+by4) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
-      return false;
-    }}
-    if (by4==2) { by4 +=1;
-    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
-      return false;
-    }}
-    if (by4==3) { by4 +=1;
-    if (piecePlacement.charAt(timer+by4) != ('A' | 'B' | 'C' | 'D')) {
-      return false;
-    }}
-    if (by4==4) {by4 +=1;
-    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
-      return false;
-    }}
-    by4=1;
-    timer +=4;
-    loop = loop-1;
-
-  }
-
-
-      return true;
-  }
-
-
-
-//    public static boolean isPlacementWellFormed(String piecePlacement) {
-//        if (piecePlacement.length() != 4) {
-//            return false;
-//        }
-//        if (piecePlacement.charAt(0) >= 'i' && piecePlacement.charAt(0) <= 'l') {
-//            if (piecePlacement.charAt(3) != '0') {
-//                return false;
-//            }
-//        }
-//        if (piecePlacement.charAt(0) >= 'a' && piecePlacement.charAt(0) <= 'l') {
-//            if (piecePlacement.charAt(1) >= '1' && piecePlacement.charAt(1) <= '8') {
-//                if (piecePlacement.charAt(2) >= 'A' && piecePlacement.charAt(2) <= 'D') {
-//                    if (piecePlacement.charAt(3) >= '0' && piecePlacement.charAt(3) <= '7') {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
+//  public static boolean isPlacementWellFormed(String piecePlacement) {
+//  int loop = piecePlacement.length()/4;
+//  int timer = 0;
+//  int by4 = 1;
+//  while (loop !=0) {
+//    if (by4==1) { by4 +=1;
+//    if (piecePlacement.charAt(timer+by4) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
+//      return false;
+//    }}
+//    if (by4==2) { by4 +=1;
+//    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+//      return false;
+//    }}
+//    if (by4==3) { by4 +=1;
+//    if (piecePlacement.charAt(timer+by4) != ('A' | 'B' | 'C' | 'D')) {
+//      return false;
+//    }}
+//    if (by4==4) {by4 +=1;
+//    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+//      return false;
+//    }}
+//    by4=1;
+//    timer +=4;
+//    loop = loop-1;
 //
-//    }
+//  }
+//
+//
+//      return true;
+//  }
+
+
+
+    public static boolean isPlacementWellFormed(String piecePlacement) {
+        if (piecePlacement.length() != 4) {
+            return false;
+        }
+        if (piecePlacement.charAt(0) >= 'i' && piecePlacement.charAt(0) <= 'l') {
+            if (piecePlacement.charAt(3) != '0') {
+                return false;
+            }
+        }
+        if (piecePlacement.charAt(0) >= 'a' && piecePlacement.charAt(0) <= 'l') {
+            if (piecePlacement.charAt(1) >= '1' && piecePlacement.charAt(1) <= '8') {
+                if (piecePlacement.charAt(2) >= 'A' && piecePlacement.charAt(2) <= 'D') {
+                    if (piecePlacement.charAt(3) >= '0' && piecePlacement.charAt(3) <= '7') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
 
     /**
      * Determine whether a placement string is well-formed:
@@ -146,6 +146,7 @@ public class TwistGame {
         Node[][] nodes = new Node[4][8];
         // Count the number of the placements
 
+        initNodes(nodes);
         if (!isPlacementStringWellFormed(placement)) {
             return false;
         }
@@ -166,22 +167,30 @@ public class TwistGame {
         // FIXME Task 5: determine whether a placement string is valid
     }
 
-    public static boolean decodeString(Node[][] node, int column, int row, int orientation, char pieceType) {
+    public static void initNodes(Node[][] nodes) {
+        for (int i = 0; i < nodes.length; i++) {
+            for (int j = 0; j < nodes[i].length; j++) {
+                nodes[i][j] = new Node(0, null, null);
+            }
+        }
+    }
+
+    public static boolean decodeString(Node[][] nodes, int column, int row, int orientation, char pieceType) {
 
         switch (pieceType) {
-            case 'a': if (node[column][row].setPiece(node, Piece.PIECEa, column, row, orientation)) { return true; }
-            case 'b': if (node[column][row].setPiece(node, Piece.PIECEb, column, row, orientation)) { return true; }
-            case 'c': if (node[column][row].setPiece(node, Piece.PIECEc, column, row, orientation)) { return true; }
-            case 'd': if (node[column][row].setPiece(node, Piece.PIECEd, column, row, orientation)) { return true; }
-            case 'e': if (node[column][row].setPiece(node, Piece.PIECEe, column, row, orientation)) { return true; }
-            case 'f': if (node[column][row].setPiece(node, Piece.PIECEf, column, row, orientation)) { return true; }
-            case 'g': if (node[column][row].setPiece(node, Piece.PIECEg, column, row, orientation)) { return true; }
-            case 'h': if (node[column][row].setPiece(node, Piece.PIECEh, column, row, orientation)) { return true; }
+            case 'a': if (nodes[row][column].setPiece(nodes, Piece.PIECEa, column, row, orientation)) { return true; }
+            case 'b': if (nodes[row][column].setPiece(nodes, Piece.PIECEb, column, row, orientation)) { return true; }
+            case 'c': if (nodes[row][column].setPiece(nodes, Piece.PIECEc, column, row, orientation)) { return true; }
+            case 'd': if (nodes[row][column].setPiece(nodes, Piece.PIECEd, column, row, orientation)) { return true; }
+            case 'e': if (nodes[row][column].setPiece(nodes, Piece.PIECEe, column, row, orientation)) { return true; }
+            case 'f': if (nodes[row][column].setPiece(nodes, Piece.PIECEf, column, row, orientation)) { return true; }
+            case 'g': if (nodes[row][column].setPiece(nodes, Piece.PIECEg, column, row, orientation)) { return true; }
+            case 'h': if (nodes[row][column].setPiece(nodes, Piece.PIECEh, column, row, orientation)) { return true; }
 
-            case 'i': if (node[column][row].setPeg(Peg.PEGi, column, row)) { return true; }
-            case 'j': if (node[column][row].setPeg(Peg.PEGj, column, row)) { return true; }
-            case 'k': if (node[column][row].setPeg(Peg.PEGk, column, row)) { return true; }
-            case 'l': if (node[column][row].setPeg(Peg.PEGl, column, row)) { return true; }
+            case 'i': if (nodes[row][column].setPeg(Peg.PEGi, column, row)) { return true; }
+            case 'j': if (nodes[row][column].setPeg(Peg.PEGj, column, row)) { return true; }
+            case 'k': if (nodes[row][column].setPeg(Peg.PEGk, column, row)) { return true; }
+            case 'l': if (nodes[row][column].setPeg(Peg.PEGl, column, row)) { return true; }
 
             default: return false;
         }
