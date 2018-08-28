@@ -51,17 +51,9 @@ public class TwistGame {
 
       return true;
   }
-    /**
-     * Determine whether a piece or peg placement is well-formed according to the following:
-     * - it consists of exactly four characters
-     * - the first character is in the range a .. l (pieces and pegs)
-     * - the second character is in the range 1 .. 8 (columns)
-     * - the third character is in the range A .. D (rows)
-     * - the fourth character is in the range 0 .. 7 (if a piece) or is 0 (if a peg)
-     *
-     * @param piecePlacement A string describing a single piece or peg placement
-     * @return True if the placement is well-formed
-     */
+
+
+
 //    public static boolean isPlacementWellFormed(String piecePlacement) {
 //        if (piecePlacement.length() != 4) {
 //            return false;
