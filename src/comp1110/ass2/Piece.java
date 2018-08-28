@@ -29,7 +29,6 @@ public enum Piece {
     PIECEg('g', 3, Colour.YELLOW),
     PIECEh('h', 3, Colour.YELLOW);
 
-
     private final char id;
     private final int side; // Side length of the array
     private final Colour colour;
@@ -68,20 +67,16 @@ public enum Piece {
         this.orientation = orientation;
     }
 
-    public boolean isOnBoard() {
-        // Get the corresponding array element by id and orientation
-        int[] traverse = unit[(this.id - 97) * 8 + orientation];
+    public int getSide() {
+        return side;
+    }
 
-        for (int i = 0; i < traverse.length; i++) {
-            // It should jump to the next row
-            if (i % side == 0) {
-                i = i + 8;
-            }
-            if (i <= 0 && i >= 31) {
-                return false;
-            }
-        }
-        return true;
+    public Colour getColour() {
+        return colour;
+    }
+
+    public int[] getUnit() {
+        return unit[(this.id - 97) * 8 + orientation];
     }
 
     /* This array is to get shape using array

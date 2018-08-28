@@ -29,4 +29,8 @@ public enum Peg {
     public void setRow(int row) {
         this.row = row;
     }
+
+    public Colour getColour() {
+        return colour;
+    }
 }

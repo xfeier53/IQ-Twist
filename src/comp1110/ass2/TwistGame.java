@@ -95,7 +95,6 @@ public class TwistGame {
         int[] flag = new int[12];
         int index;
 
-        System.out.println(placement);
         if (placement.length() == 0 || placement.length() % 4 != 0) {
             return false;
         }
@@ -157,7 +156,7 @@ public class TwistGame {
             row = placement.charAt(2) - 65;
             orientation = placement.charAt(3) - 48;
             // Set all the pegs first, so I reverse the placement order
-            if (decodeString(nodes[row][column], column, row, orientation, pieceType)) {
+            if (decodeString(nodes, column, row, orientation, pieceType)) {
                 return true;
             } else {
                 return false;
@@ -167,22 +166,22 @@ public class TwistGame {
         // FIXME Task 5: determine whether a placement string is valid
     }
 
-    public static boolean decodeString(Node node, int column, int row, int orientation, char pieceType) {
+    public static boolean decodeString(Node[][] node, int column, int row, int orientation, char pieceType) {
 
         switch (pieceType) {
-            case 'a': if (node.setPiece(Piece.PIECEa, column, row, orientation)) { return true; }
-            case 'b': if (node.setPiece(Piece.PIECEb, column, row, orientation)) { return true; }
-            case 'c': if (node.setPiece(Piece.PIECEc, column, row, orientation)) { return true; }
-            case 'd': if (node.setPiece(Piece.PIECEd, column, row, orientation)) { return true; }
-            case 'e': if (node.setPiece(Piece.PIECEe, column, row, orientation)) { return true; }
-            case 'f': if (node.setPiece(Piece.PIECEf, column, row, orientation)) { return true; }
-            case 'g': if (node.setPiece(Piece.PIECEg, column, row, orientation)) { return true; }
-            case 'h': if (node.setPiece(Piece.PIECEh, column, row, orientation)) { return true; }
+            case 'a': if (node[column][row].setPiece(node, Piece.PIECEa, column, row, orientation)) { return true; }
+            case 'b': if (node[column][row].setPiece(node, Piece.PIECEb, column, row, orientation)) { return true; }
+            case 'c': if (node[column][row].setPiece(node, Piece.PIECEc, column, row, orientation)) { return true; }
+            case 'd': if (node[column][row].setPiece(node, Piece.PIECEd, column, row, orientation)) { return true; }
+            case 'e': if (node[column][row].setPiece(node, Piece.PIECEe, column, row, orientation)) { return true; }
+            case 'f': if (node[column][row].setPiece(node, Piece.PIECEf, column, row, orientation)) { return true; }
+            case 'g': if (node[column][row].setPiece(node, Piece.PIECEg, column, row, orientation)) { return true; }
+            case 'h': if (node[column][row].setPiece(node, Piece.PIECEh, column, row, orientation)) { return true; }
 
-            case 'i': if (node.setPeg(Peg.PEGi, column, row)) { return true; }
-            case 'j': if (node.setPeg(Peg.PEGj, column, row)) { return true; }
-            case 'k': if (node.setPeg(Peg.PEGk, column, row)) { return true; }
-            case 'l': if (node.setPeg(Peg.PEGl, column, row)) { return true; }
+            case 'i': if (node[column][row].setPeg(Peg.PEGi, column, row)) { return true; }
+            case 'j': if (node[column][row].setPeg(Peg.PEGj, column, row)) { return true; }
+            case 'k': if (node[column][row].setPeg(Peg.PEGk, column, row)) { return true; }
+            case 'l': if (node[column][row].setPeg(Peg.PEGl, column, row)) { return true; }
 
             default: return false;
         }
