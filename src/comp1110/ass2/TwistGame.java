@@ -10,6 +10,47 @@ import java.util.Set;
  */
 public class TwistGame {
 
+  /**
+   * Determine whether a piece or peg placement is well-formed according to the following:
+   * - it consists of exactly four characters
+   * - the first character is in the range a .. l (pieces and pegs)
+   * - the second character is in the range 1 .. 8 (columns)
+   * - the third character is in the range A .. D (rows)
+   * - the fourth character is in the range 0 .. 7 (if a piece) or is 0 (if a peg)
+   *
+   * @param piecePlacement A string describing a single piece or peg placement
+   * @return True if the placement is well-formed
+   */
+  public static boolean isPlacementWellFormed(String piecePlacement) {
+  int loop = piecePlacement.length()/4;
+  int timer = 0;
+  int by4 = 1;
+  while (loop !=0) {
+    if (by4==1) { by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h')) {
+      return false;
+    }}
+    if (by4==2) { by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+      return false;
+    }}
+    if (by4==3) { by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('A' | 'B' | 'C' | 'D')) {
+      return false;
+    }}
+    if (by4==4) {by4 +=1;
+    if (piecePlacement.charAt(timer+by4) != ('1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')) {
+      return false;
+    }}
+    by4=1;
+    timer +=4;
+    loop = loop-1;
+
+  }
+
+
+      return true;
+  }
     /**
      * Determine whether a piece or peg placement is well-formed according to the following:
      * - it consists of exactly four characters
