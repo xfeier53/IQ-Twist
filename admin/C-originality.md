@@ -4,6 +4,4 @@ We declare that the work we have submitted for Stage C of this assignment and al
 
 * The code in class <...> is based on a solution we found when researching the problem (URL provided in source code comments)
 
-*  ....
-
 Signed: Mary Jones (u2345678), Bob Smith (u3456789), and Sue Black (u0123456)

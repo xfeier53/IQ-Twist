@@ -9,11 +9,8 @@ Everyone: create application skeleton - meeting 14:00 17 Aug
 
 ## Week 5
 
-Lachlan McVicar task 2;
+Lachlan McVicar task 2+3;
 
-Zhang San: Task 3 isPiecePlacementWellFormed - 21 Aug
-
-Jane Bloggs: Task 4 getNeighbours - 23 Aug
 
 ## Week 6
 
