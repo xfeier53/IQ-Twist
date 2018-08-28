@@ -10,43 +10,54 @@ package comp1110.ass2;
    It means the board is complete and win the game without a solution. --feier
  */
 public class Node {
+    // Identifier
     int isOccupied;
     //peg node contains, if no peg then contains null or empty object
-    //final Peg peg; I think we don't need it final -- feier
     Peg peg;
     //Contains piece that sits on top of a node
     Piece piece;
-    //board coordinates of node
-    //final int column; We can use the array to define node
-    //final char row;
 
     // From the placement String, modify the identifier --feier
-    void setPiece(String placement) {
-        /* isOnboard()
-           isOccupied()
-           isPegFit()
-           isPegColourFit() --feier
-        */
+    boolean setPiece(Piece piece, int column, int row, int orientation) {
+        piece.setColumn(column);
+        piece.setRow(row);
+        piece.setOrientation(orientation);
+        if (isOnBoard(piece)) {
+            if (isOccupied(piece)) {
+                if (isPegFit(piece)) {
+                    if (isPegColourFit(piece)) {
+                        this.piece = piece;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    boolean setPeg(Peg peg, int column, int row) {
+        this.peg = peg;
+        return false;
     }
 
     /* I am not sure whether we need to identify isOnBoard()
-       because we still have no idea about how the UI works --feier
+       because we still have no idea about how the UI works
      */
-    Boolean isOnBoard() {
+    Boolean isOnBoard(Piece piece) {
+
         return true;
     }
 
-    Boolean isOccupied() {
+    Boolean isOccupied(Piece piece) {
         return isOccupied == 1;
     }
 
-    // Is peg fit in the hole of the piece --feier
-    Boolean isPegFit() {
+    // Is peg fit in the hole of the piece
+    Boolean isPegFit(Piece piece) {
         return true;
     }
 
-    // Is the peg's colour the same as the piece --feier
-    Boolean isPegColourFit() {
+    // Is the peg's colour the same as the piece
+    Boolean isPegColourFit(Piece piece) {
         return true;
     }
 
