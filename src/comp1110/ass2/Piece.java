@@ -20,56 +20,144 @@ package comp1110.ass2;
 */
 
 public enum Piece {
-    PIECEa("a", 9, Colour.RED),
-    PIECEb("b", 9, Colour.RED),
-    PIECEc("c", 16, Colour.BLUE),
-    PIECEd("d", 9, Colour.BLUE),
-    PIECEe("e", 4, Colour.GREEN),
-    PIECEf("f", 9, Colour.GREEN),
-    PIECEg("g", 9, Colour.YELLOW),
-    PIECEh("h", 9, Colour.YELLOW);
+    PIECEa('a', 3, Colour.RED),
+    PIECEb('b', 3, Colour.RED),
+    PIECEc('c', 4, Colour.BLUE),
+    PIECEd('d', 3, Colour.BLUE),
+    PIECEe('e', 2, Colour.GREEN),
+    PIECEf('f', 3, Colour.GREEN),
+    PIECEg('g', 3, Colour.YELLOW),
+    PIECEh('h', 3, Colour.YELLOW);
 
-
-    private final String id;
-    private final int size; // Size for array
+    private final char id;
+    private final int side; // Side length of the array
     private final Colour colour;
 
-    String row;
     int column;
-    int[] unit;
+    int row;
     int orientation;
 
-    Piece(String id, int size, Colour colour) {
+    Piece(char id, int side, Colour colour) {
         this.id = id;
-        this.size = size;
+        this.side = side;
         this.colour = colour;
-    }
-
-    // Decode the string and set the attribute for row column -- feier
-    void decodeStringPlacement(String placement) {
-
-    }
-
-    // From the orientation and the type, we could set the unit array
-    int[] setUnit(int orientation) {
-        return new int[1];
-    }
-
-
-    // Getter for attribute --feier
-    public String getRow() {
-        return row;
     }
 
     public int getColumn() {
         return column;
     }
 
-    public int[] getUnit() {
-        return unit;
+    public void setColumn(int column) {
+        this.column = column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
     }
 
     public int getOrientation() {
         return orientation;
     }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
+    }
+
+    public int getSide() {
+        return side;
+    }
+
+    public Colour getColour() {
+        return colour;
+    }
+
+    public int[] getUnit() {
+        return unit[(this.id - 97) * 8 + orientation];
+    }
+
+    /* This array is to get shape using array
+       We need to traverse it to process every unit of the piece
+       0 - not part of the piece
+       1 - part of the piece
+       2 - hole of the piece  --feier
+     */
+
+    static int[][] unit =
+            {
+                    {2, 1, 2, 0, 0, 1, 0, 0, 0},
+                    {0, 2, 0, 0, 1, 0, 1, 2, 0},
+                    {1, 0, 0, 2, 1, 2, 0, 0, 0},
+                    {2, 1, 0, 1, 0, 0, 2, 0, 0},
+                    {0, 0, 1, 2, 1, 2, 0, 0, 0},
+                    {2, 0, 0, 1, 0, 0, 2, 1, 0},
+                    {2, 1, 2, 1, 0, 0, 0, 0, 0},
+                    {1, 2, 0, 0, 1, 0, 0, 2, 0},
+
+                    {1, 1, 0, 0, 2, 1, 0, 0, 0},
+                    {0, 1, 0, 2, 1, 0, 1, 0, 0},
+                    {1, 2, 0, 0, 1, 1, 0, 0, 0},
+                    {0, 1, 0, 1, 2, 0, 1, 0, 0},
+                    {0, 2, 1, 1, 1, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 2, 0, 0, 1, 0},
+                    {0, 1, 1, 1, 2, 0, 0, 0, 0},
+                    {1, 0, 0, 2, 1, 0, 0, 1, 0},
+
+                    {1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
+                    {1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0},
+                    {1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0},
+                    {1, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0},
+
+                    {1, 1, 1, 0, 2, 2, 0, 0, 0},
+                    {0, 1, 0, 2, 1, 0, 2, 1, 0},
+                    {2, 2, 0, 1, 1, 1, 0, 0, 0},
+                    {1, 2, 0, 1, 2, 0, 1, 0, 0},
+                    {0, 2, 2, 1, 1, 1, 0, 0, 0},
+                    {1, 0, 0, 1, 2, 0, 1, 2, 0},
+                    {1, 1, 1, 2, 2, 0, 0, 0, 0},
+                    {2, 1, 1, 2, 1, 0, 0, 1, 0},
+
+                    {1, 2, 0, 2},
+                    {0, 1, 2, 2},
+                    {2, 0, 2, 1},
+                    {2, 2, 1, 0},
+                    {0, 2, 1, 2},
+                    {1, 0, 2, 2},
+                    {2, 1, 2, 0},
+                    {2, 2, 0, 1},
+
+                    {1, 1, 2, 0, 2, 0, 0, 0, 0},
+                    {0, 1, 0, 2, 1, 0, 0, 2, 0},
+                    {0, 2, 0, 2, 1, 1, 0, 0, 0},
+                    {0, 2, 0, 0, 1, 2, 0, 1, 0},
+                    {0, 2, 0, 1, 1, 2, 0, 0, 0},
+                    {1, 0, 0, 1, 2, 0, 2, 0, 0},
+                    {2, 1, 1, 0, 2, 0, 0, 0, 0},
+                    {0, 2, 0, 2, 1, 0, 0, 1, 0},
+
+                    {2, 0, 0, 2, 1, 1, 0, 2, 0},
+                    {0, 2, 2, 2, 1, 0, 0, 1, 0},
+                    {0, 2, 0, 1, 1, 2, 0, 0, 2},
+                    {0, 1, 0, 0, 1, 2, 2, 2, 0},
+                    {0, 2, 0, 2, 1, 1, 2, 0, 0},
+                    {2, 2, 0, 0, 1, 2, 0, 1, 0},
+                    {0, 0, 2, 1, 1, 2, 0, 2, 0},
+                    {0, 1, 0, 2, 1, 0, 0, 2, 2},
+
+                    {2, 1, 1, 0, 0, 0, 0, 0, 0},
+                    {2, 0, 0, 1, 0, 0, 1, 0, 0},
+                    {1, 1, 2, 0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 0, 2, 0, 0},
+                    {2, 1, 1, 0, 0, 0, 0, 0, 0},
+                    {2, 0, 0, 1, 0, 0, 1, 0, 0},
+                    {1, 1, 2, 0, 0, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 0, 2, 0, 0}
+            };
 }

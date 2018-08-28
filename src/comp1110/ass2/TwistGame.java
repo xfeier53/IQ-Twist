@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -14,7 +13,7 @@ public class TwistGame {
   /**
    * Determine whether a piece or peg placement is well-formed according to the following:
    * - it consists of exactly four characters
-   * - the first character is in the range a .. l(pieces and pegs)
+   * - the first character is in the range a .. l (pieces and pegs)
    * - the second character is in the range 1 .. 8 (columns)
    * - the third character is in the range A .. D (rows)
    * - the fourth character is in the range 0 .. 7 (if a piece) or is 0 (if a peg)
@@ -46,7 +45,6 @@ while (loop > 0) {
 }
 return true;
 
-  }
   /**
    * Determine whether a placement string is well-formed:
    * - it consists of exactly N four-character piece placements (where N = 1 .. 15);
