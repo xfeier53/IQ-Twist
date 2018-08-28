@@ -24,52 +24,27 @@ public class TwistGame {
   public static boolean isPlacementWellFormed(String piecePlacement) {
       int loop = piecePlacement.length();
       int count = 0;
-      int count2 = 0;
       String at1 = "abcdefghijkl";
       String at2 = "12345678";
       String at3 = "ABCD";
       String at4 = "01234567";
       String atSpecial = "ijkl";
-      String atZero = "0";
-      if (loop %4 != 0) {return false;}
-while (loop > 0) {
-    if (at1.indexOf(piecePlacement.charAt(count  ))== -1) {return false;}
-    if (at2.indexOf(piecePlacement.charAt(count+1))== -1) {return false;}
-    if (at3.indexOf(piecePlacement.charAt(count+2))== -1) {return false;}
-    if (at4.indexOf(piecePlacement.charAt(count+3))== -1) {return false;}
-    if (atSpecial.indexOf(piecePlacement.charAt(count)) !=-1 && piecePlacement.charAt(count+3)!='0') {return false;}
-    count= count+4;
-    loop = loop -4;
-
-
-}
-return true;
-
+      if (loop % 4 != 0) {
+          return false;
       }
+      while (loop > 0) {
+          if (at1.indexOf(piecePlacement.charAt(count)) == -1) { return false; }
+          if (at2.indexOf(piecePlacement.charAt(count + 1)) == -1) { return false; }
+          if (at3.indexOf(piecePlacement.charAt(count + 2)) == -1) { return false; }
+          if (at4.indexOf(piecePlacement.charAt(count + 3)) == -1) { return false; }
+          if (atSpecial.indexOf(piecePlacement.charAt(count)) !=-1 && piecePlacement.charAt(count + 3) != '0') { return false; }
+          count= count + 4;
+          loop = loop - 4;
+      }
+      return true;
 
+  }
 
-
-//    public static boolean isPlacementWellFormed(String piecePlacement) {
-//        if (piecePlacement.length() != 4) {
-//            return false;
-//        }
-//        if (piecePlacement.charAt(0) >= 'i' && piecePlacement.charAt(0) <= 'l') {
-//            if (piecePlacement.charAt(3) != '0') {
-//                return false;
-//            }
-//        }
-//        if (piecePlacement.charAt(0) >= 'a' && piecePlacement.charAt(0) <= 'l') {
-//            if (piecePlacement.charAt(1) >= '1' && piecePlacement.charAt(1) <= '8') {
-//                if (piecePlacement.charAt(2) >= 'A' && piecePlacement.charAt(2) <= 'D') {
-//                    if (piecePlacement.charAt(3) >= '0' && piecePlacement.charAt(3) <= '7') {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//
-//    }
 
     /**
      * Determine whether a placement string is well-formed:
