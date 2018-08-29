@@ -34,6 +34,7 @@ public class Viewer extends Application {
 
     private final Group root = new Group();
     private final Group controls = new Group();
+    //new group to contain imageViews for pieces
     private final Group pieces = new Group();
     TextField textField;
 
@@ -45,13 +46,15 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
 
-
+        //clears pieces currently on the screen
         pieces.getChildren().clear();
 
+        //loop through every four characters in placement
         for(int i = 0; i < placement.length()/4;i++){
 
+            //get the 4 character substring at i
             String piecePlacement = placement.substring(i*4,i*4+4);
-            System.out.println(piecePlacement);
+            //place the piece
             makePiecePlacement(piecePlacement);
 
         }
@@ -61,33 +64,35 @@ public class Viewer extends Application {
 
     void makePiecePlacement(String piecePlacement){
 
+        //get the id of the piece ie 'a' and get the png image
         char pieceId = piecePlacement.charAt(0);
         Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
 
+        //set the the image to an imageView
         ImageView pieceView = new ImageView();
         pieceView.setImage(pieceImg);
-
-        System.out.println(pieceImg.getHeight());
-
+        //Set the x y coord
         pieceView.setX(0);
         pieceView.setY(0);
-
+        //get numeric values for column and row from string
         int column = Character.getNumericValue(piecePlacement.charAt(1)) - 1;
         int row = (piecePlacement.charAt(2)) - 'A';
 
+        //place the piece
         pieceView.setX(pieceView.getX() + (100 * column));
         pieceView.setY(pieceView.getY() + (100 * row));
-
+        //parses the orientation into an int
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
 
         rotateAndFlip(pieceView,orientation);
-
+        //add the imageView
         pieces.getChildren().add(pieceView);
 
     }
 
     void rotateAndFlip(ImageView pieceView,int orientation){
 
+        //flip the piece over if needed
         if(orientation > 3){
             pieceView.setScaleY(-1);
             orientation = orientation - 4;
@@ -95,6 +100,7 @@ public class Viewer extends Application {
 
         pieceView.setRotate(90 * orientation);
 
+        //correct x y positioning due to orientation change, this assumes that all pieces fit in a rectangle
         if(orientation % 2 != 0){
             double width = (pieceView.getImage().getWidth());
             double height = pieceView.getImage().getHeight();

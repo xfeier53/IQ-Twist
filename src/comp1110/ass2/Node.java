@@ -11,11 +11,17 @@ package comp1110.ass2;
  */
 public class Node {
     // Identifier
-    int isOccupied = 0;
+    int isOccupied;
     //peg node contains, if no peg then contains null or empty object
     Peg peg;
     //Contains piece that sits on top of a node
     Piece piece;
+
+    public Node(int isOccupied, Peg peg, Piece piece) {
+        this.isOccupied = isOccupied;
+        this.peg = peg;
+        this.piece = piece;
+    }
 
     // From the placement String, modify the identifier --feier
     public boolean setPiece(Node[][] node, Piece piece, int column, int row, int orientation) {
@@ -44,7 +50,7 @@ public class Node {
             traverseCol = piece.column;
             traverseRow = piece.row;
 
-            if (i == 1) {
+            if (traverse[i] == 1) {
                 traverseCol = traverseCol + (i % piece.getSide());
                 if (!isOnBoard(traverseCol, traverseRow)) {
                     return false;
@@ -57,7 +63,7 @@ public class Node {
                 }
                 node[traverseRow][traverseCol].isOccupied = 1;
                 node[traverseRow][traverseCol].piece = piece;
-            } else if (i == 2) {
+            } else if (traverse[i] == 2) {
                 traverseCol = traverseCol + (i % piece.getSide());
                 if (node[traverseRow][traverseCol].peg != null) {
                     if (node[traverseRow][traverseCol].piece.getColour() != node[traverseRow][traverseCol].peg.getColour()) {
@@ -69,7 +75,7 @@ public class Node {
             }
 
             // Jump to the next row
-            if (i % piece.getSide() == 0) {
+            if (i != 0 && i % piece.getSide() == 0) {
                 traverseRow++;
             }
         }
