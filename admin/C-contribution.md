@@ -4,4 +4,4 @@ We declare that the work toward our submission of Stage C was distributed among 
 * u6609337 40
 * u6406312 30
 
-Signed: Mary Jones (u2345678), Feier Xiao (u6609337), and Sue Black (u0234567)
+Signed: James Frampton Reid (u6079329), Feier Xiao (u6609337), and Sue Black (u0234567)
