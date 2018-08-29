@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,17 +29,30 @@ public class TwistGame {
       String at3 = "ABCD";
       String at4 = "01234567";
       String atSpecial = "ijkl";
+      String atZero = "0";
       if (loop % 4 != 0) {
           return false;
       }
       while (loop > 0) {
-          if (at1.indexOf(piecePlacement.charAt(count)) == -1) { return false; }
-          if (at2.indexOf(piecePlacement.charAt(count + 1)) == -1) { return false; }
-          if (at3.indexOf(piecePlacement.charAt(count + 2)) == -1) { return false; }
-          if (at4.indexOf(piecePlacement.charAt(count + 3)) == -1) { return false; }
-          if (atSpecial.indexOf(piecePlacement.charAt(count)) !=-1 && piecePlacement.charAt(count + 3) != '0') { return false; }
-          count= count + 4;
+          if (at1.indexOf(piecePlacement.charAt(count)) == -1) {
+              return false;
+          }
+          if (at2.indexOf(piecePlacement.charAt(count + 1)) == -1) {
+              return false;
+          }
+          if (at3.indexOf(piecePlacement.charAt(count + 2)) == -1) {
+              return false;
+          }
+          if (at4.indexOf(piecePlacement.charAt(count + 3)) == -1) {
+              return false;
+          }
+          if (atSpecial.indexOf(piecePlacement.charAt(count)) != -1 && piecePlacement.charAt(count + 3) != '0') {
+              return false;
+          }
+          count = count + 4;
           loop = loop - 4;
+
+
       }
       return true;
   }
