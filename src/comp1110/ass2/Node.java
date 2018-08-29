@@ -17,6 +17,7 @@ public class Node {
     //Contains piece that sits on top of a node
     Piece piece;
 
+
     public Node(int isOccupied, Peg peg, Piece piece) {
         this.isOccupied = isOccupied;
         this.peg = peg;
@@ -24,64 +25,68 @@ public class Node {
     }
 
     // From the placement String, modify the identifier --feier
-    public boolean setPiece(Node[][] node, Piece piece, int column, int row, int orientation) {
+    public boolean setPiece(Node[][] node, Piece piece, int row, int column, int orientation) {
+        piece.setRow(row);
+        piece.setColumn(column);
+        piece.setOrientation(orientation);
+
         int[] traverse = piece.getUnit();
 
-        piece.setColumn(column);
-        piece.setRow(row);
-        piece.setOrientation(orientation);
         if (validateAndSet(node, piece, traverse)) {
             return true;
         }
         return false;
     }
 
-    boolean setPeg(Peg peg, int column, int row) {
+    boolean setPeg(Node[][] nodes, Peg peg, int row, int column) {
+        if (nodes[row][column].peg != null) {
+            return false;
+        }
         this.peg = peg;
-        this.peg.setColumn(column);
         this.peg.setRow(row);
-        return false;
+        this.peg.setColumn(column);
+        return true;
     }
 
     boolean validateAndSet(Node[][] node, Piece piece, int[] traverse) {
-        int traverseCol, traverseRow;
+        int traverseRow = piece.row, traverseCol;
 
         for (int i = 0; i < traverse.length; i++) {
             traverseCol = piece.column;
-            traverseRow = piece.row;
 
-            if (traverse[i] == 1) {
+            // Jump to the next row
+            if (i != 0 && i % piece.getSide() == 0) {
+                traverseRow++;
+            }
+
+            if (traverse[i] != 0) {
                 traverseCol = traverseCol + (i % piece.getSide());
+                // First check whether it is onBoard nad isOccupied
                 if (!isOnBoard(traverseCol, traverseRow)) {
                     return false;
                 }
                 if (node[traverseRow][traverseCol].isOccupied == 1) {
                     return false;
                 }
-                if (node[traverseRow][traverseCol].peg != null) {
-                    return false;
-                }
-                node[traverseRow][traverseCol].isOccupied = 1;
-                node[traverseRow][traverseCol].piece = piece;
-            } else if (traverse[i] == 2) {
-                traverseCol = traverseCol + (i % piece.getSide());
-                if (node[traverseRow][traverseCol].peg != null) {
-                    if (node[traverseRow][traverseCol].piece.getColour() != node[traverseRow][traverseCol].peg.getColour()) {
+                // Then check if the peg fit the hole
+                if (traverse[i] == 1) {
+                    if (node[traverseRow][traverseCol].peg != null) {
                         return false;
+                    }
+                    // Then check if the colours fit
+                } else if (traverse[i] == 2) {
+                    if (node[traverseRow][traverseCol].peg != null) {
+                        if (piece.getColour() != node[traverseRow][traverseCol].peg.getColour()) {
+                            return false;
+                        }
                     }
                 }
                 node[traverseRow][traverseCol].isOccupied = 1;
                 node[traverseRow][traverseCol].piece = piece;
             }
-
-            // Jump to the next row
-            if (i != 0 && i % piece.getSide() == 0) {
-                traverseRow++;
-            }
         }
         return true;
     }
-
 
     public boolean isOnBoard(int column, int row) {
         if (column > 7 || column < 0) {
