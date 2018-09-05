@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
@@ -97,6 +98,21 @@ public class Viewer extends Application {
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
 
         rotateAndFlip(pieceView,orientation);
+
+        pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println(pieceId);
+            }
+        });
+
+        pieceView.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("release");
+            }
+        });
+
         //add the imageView
         pieces.getChildren().add(pieceView);
 
