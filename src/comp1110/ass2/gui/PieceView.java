@@ -4,6 +4,7 @@ import comp1110.ass2.Piece;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
 import comp1110.ass2.gui.Board;
 
@@ -36,22 +37,22 @@ public class PieceView extends ImageView{
 
         PieceView pieceView = this;
 
-        //Find relative where one the piece the mouse pressed relative to top left corner
+        //Find point of mouse click relative to the top left of pieceView
         pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println(row);
-                System.out.println(column);
                 relativeMouseClick[0] = event.getSceneX() - pieceView.getX();
                 relativeMouseClick[1] = event.getSceneY() - pieceView.getY();
             }
         });
-        //Upon release find where it will snap to and determine whether that is a good location or not
+        //Upon release find where it will snap to and determine whether that is a valid location or not
         pieceView.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                //get snap coordinates
                 double[] testCoordinates =  pieceView.findSnapTo();
 
+                //test coordinates reset the piece is valid or set piece if it is
                 if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000){
                     pieceView.resetPiece();
                 }
@@ -62,43 +63,49 @@ public class PieceView extends ImageView{
 
             }
         });
-        //Move piece on drag
+        //Move piece on drag, keeping mouse in same space relative to the piece
         pieceView.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-
-                //System.out.println("Piece: " + pieceView.getX());
-                //System.out.println(pieceView.getY());
-
+                toFront();
                 pieceView.setX(event.getSceneX()-relativeMouseClick[0]);
                 pieceView.setY(event.getSceneY()-relativeMouseClick[1]);
 
             }
         });
+        pieceView.setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
+                System.out.println("test");
+                pieceView.rotateAndFlip(orientation + 1);
+            }
+        });
     }
 
+    //Finds point where the piece snaps to after being released from the drag
     double[] findSnapTo(){
 
         PieceView pieceView = this;
 
+        //set placeholders that are off the screen
         double xSnap = -1000;
         double ySnap = -1000;
-
+        //correction amount no correction needed if the piece is in an even orientation
         double correction = 0;
-
+        //new correction if in odd orientation
         if (orientation % 2 != 0){
             double width = (pieceView.getImage().getWidth());// * adjust;
             double height = pieceView.getImage().getHeight();// * adjust;
 
             correction = Math.abs(height - width) / 2;
         }
-
+        //get the check length ie how close it has to be to a line to snap to it
         double checkLength = Board.SQUARE_SIZE / 2;
-
+        //loop through columns and find snap target
         for(int i = 0; i <= 7 ; i++){
-
+            //distance to line
             double xLine = (i * Board.SQUARE_SIZE - pieceView.getX() - correction);
-
+            //If distance is less than the checkLength snap to that line
             if(xLine <= checkLength && xLine >= -checkLength){
                 xSnap = i * Board.SQUARE_SIZE -correction;
                 pieceView.column = i + 1;
@@ -106,7 +113,7 @@ public class PieceView extends ImageView{
             }
 
         }
-
+        //Same as above but for rows not columns
         for(int i = 0; i <= 3 ; i++){
 
             double yLine = (i * Board.SQUARE_SIZE - pieceView.getY() + correction);
@@ -116,15 +123,12 @@ public class PieceView extends ImageView{
                 pieceView.row = i + 1;
                 break;
             }
-
-
         }
-
+        //Return snapCoordinates as array
         double[] snapCoordinates = {xSnap,ySnap};
-
         return snapCoordinates;
     }
-
+    //reset the piece to where it's starting location and orientation(orientation is always 0 currently)
     void resetPiece(){
 
         this.setX(startX);
@@ -133,7 +137,7 @@ public class PieceView extends ImageView{
         this.column = -1;
         this.rotateAndFlip(0);
     }
-
+    //rotate and or flip the PieceView
     void rotateAndFlip(int orientation){
 
         PieceView pieceView = this;
@@ -182,8 +186,8 @@ public class PieceView extends ImageView{
     int getColumn(){
         return column;
     }
-
-    String getPiencePlacementString(){
+    //Gets the piecePlacementString using coding from elsewhere in TwistGame
+    String getPiecePlacementString(){
 
         String output = String.valueOf(id);
         output = output + column;

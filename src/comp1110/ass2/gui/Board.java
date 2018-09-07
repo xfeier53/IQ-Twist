@@ -23,11 +23,14 @@ import javafx.scene.shape.Line;
 public class Board extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
-    public static final int SQUARE_SIZE = 100;
+    public static final int SQUARE_SIZE = 90;
 
     private final Group root = new Group();
+    //Contains all the PieceViews
     private final Group pieces = new Group();
+    //Group for the lines that mark the board
     private final Group lines = new Group();
+
     private double[] relativeMouseClick = new double[2];
 
     // FIXME Task 7: Implement a basic playable Twist Game in JavaFX that only allows pieces to be placed in valid places
@@ -210,6 +213,29 @@ public class Board extends Application {
         }
     }
 
+    private void  makePieces(){
+
+        char[] pieceIds = {'a','b','c','d','e','f','g','h'};
+        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5}};
+        int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3}};
+
+        for(int i = 0;i < intialStarts.length;i++){
+
+            char pieceId = pieceIds[i];
+            double startX = intialStarts[i][0] * SQUARE_SIZE;
+            double startY = intialStarts[i][1] * SQUARE_SIZE;
+            double height = intialDimensions[i][0] * SQUARE_SIZE;
+            double width = intialDimensions[i][1] * SQUARE_SIZE;
+
+            Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false);
+
+            PieceView pieceView = new PieceView(pieceImg,pieceId,startX,startY,height,width);
+
+            pieces.getChildren().add(pieceView);
+
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -220,16 +246,7 @@ public class Board extends Application {
         root.getChildren().add(lines);
 
         makeLines();
-
-        char  pieceId = 'f';
-
-        Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
-
-        PieceView pieceView = new PieceView(pieceImg,'a',0,400,200,300);
-
-        pieceView.rotateAndFlip(7);
-
-        pieces.getChildren().add(pieceView);
+        makePieces();
 
         primaryStage.setScene(scene);
         primaryStage.show();
