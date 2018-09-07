@@ -83,9 +83,9 @@ public class TestUtility {
           "c1B2d4C4",
           "a1B5d7B7f1A6",
           "b6A6c2D0f2A2",
-          "e5B4f1B3g3A3",
-          "d3A6f3C4g1B3",
-          "e5C2g6B7"
+          "b7A1f1B3g3A3",
+          "c5C0d3A6g1B3",
+          "c3A0f1C4g6B7"
   };
 
 
