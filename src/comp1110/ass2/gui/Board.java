@@ -23,7 +23,7 @@ import javafx.scene.shape.Line;
 public class Board extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
-    private static final int SQUARE_SIZE = 100;
+    public static final int SQUARE_SIZE = 100;
 
     private final Group root = new Group();
     private final Group pieces = new Group();
@@ -221,9 +221,18 @@ public class Board extends Application {
 
         makeLines();
 
+        char  pieceId = 'f';
+
+        Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
+
+        PieceView pieceView = new PieceView(pieceImg,'a',0,400,200,300);
+
+        pieceView.rotateAndFlip(7);
+
+        pieces.getChildren().add(pieceView);
+
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        makePlacement("a1A0b5C0");
     }
 }
