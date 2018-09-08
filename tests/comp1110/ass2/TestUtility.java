@@ -78,8 +78,8 @@ public class TestUtility {
   static final String[] CONSTRAINED = {
           "b6A7c1A3f3C2",
           "b6C0c5A2g2B3",
-          "b4A2c3A3e1C4",
-          "d7B1e1C6g4A5",
+          "b4A2c3A3h5D0",
+          "b2C4d7B1g4A5",
           "c1B2d4C4",
           "a1B5d7B7f1A6",
           "b6A6c2D0f2A2",
