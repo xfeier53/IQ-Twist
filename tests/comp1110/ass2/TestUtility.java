@@ -65,7 +65,7 @@ public class TestUtility {
   };
 
   static final String[] NO_VIABLE = {
-          "a7A7c1A3d2A6e2C3f3C4g4A7h6D0i6A0j2B0j1C0k3C0l4B0l5C0",
+          "a7A7c1A3d2A6e2C3f3C2g4A7h6D0i6A0j2B0j1C0k3C0l4B0l5C0",
           "b6C0c5A2d1B3e4A5f4C2g2B3h1A2i7D0j7B0k5B0k5C0l3A0l3D0",
           "a6A0b4A2d1A3e1C4f3B5g6B2h5D0i5A0j2B0k2C0k2D0l8C0l8D0",
           "a4C4b2C6c1B2e1C6f6A6g4A5h1A0j3B0j8B0k1C0k1D0l6B0l1A0",
@@ -91,7 +91,7 @@ public class TestUtility {
 
   static final String[][] SINGLE= {
           {
-                  "c1A3d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
+                  "c1A3d2A6e2C3f3C2g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
                   "c5A2d1B3e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0",      //  2
                   "c3A3d1A3e1C4f4B5g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
                   "c1B2d7B1e1C6f6A6g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
@@ -103,7 +103,7 @@ public class TestUtility {
                   "c3A0d1A3e5C2f1C4g6B7h4B2k3D0k5D0l6C0"                   // 98
           },
           {
-                  "d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
+                  "d2A6e2C3f3C2g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
                   "d1B3e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0",      //  2
                   "d1A3e1C4f4B5g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
                   "d7B1e1C6f6A6g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
@@ -115,7 +115,7 @@ public class TestUtility {
                   "d1A3e5C2f1C4g6B7h4B2k3D0k5D0l6C0"                   // 98
           },
           {
-                  "e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
+                  "e2C3f3C2g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0",      //  1
                   "e4A5f4C2g2B3h1A2i7D0j7A0k5B0k5C0l3A0l3D0",      //  2
                   "e1C4f4B5g6B2h5D0i5A0j2B0j3C0k2C0k2D0l8C0l8D0",  // 25
                   "e1C6f6A6g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0",      // 26
@@ -129,7 +129,7 @@ public class TestUtility {
   };
 
   static final String[][] MULTI = {
-          { "c1A3d2A6e2C3f3C4g4A7h6D0j2B0j1C0k3C0l4B0l5C0", "a7A7b6A5c1A3d2A6e2C3f3C4g4A7h6D0", "a6A0b6B0c1A3d2A6e2C3f3C4g4A7h6D0"},
+          { "c1A3d2A6e2C3f3C2g4A7h6D0j2B0j1C0k3C0l4B0l5C0", "a7A7b6A5c1A3d2A6e2C3f3C2g4A7h6D0", "a6A0b6B0c1A3d2A6e2C3f3C2g4A7h6D0"},
           { "a6B0b6C0c5A2e4A5f4C2h1A2i7D0j7A0k5B0k5C0l3A0", "a6B0b6C0c5A2d1B3e4A5f4C2g2B3h1A2", "a6B0b6C0c5A2d1B5e4A5f4C2g2B5h1A2"},
   };
 }
