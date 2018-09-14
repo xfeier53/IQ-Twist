@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -191,8 +192,78 @@ public class TwistGame {
      * @return An set of viable piece placements, or null if there are none.
      */
     public static Set<String> getViablePiecePlacements(String placement) {
+        char ch;
+        int[] placedPieces = new int[8];
+        Set<String> viable = new HashSet<>();
+
+        // Record every placed pieces
+        for (int i = 0; i < placement.length() / 4; i++) {
+            ch = placement.charAt(4 * i);
+            if (isPiece(ch)) {
+                placedPieces[ch - 97] = 1;
+            } else {
+                break;
+            }
+        }
+
+        // Process every unplaced pieces
+        for (int i = 0; i < 8; i++) {
+            ch = (char)(97 + i);
+            if (placedPieces[i] == 0) {
+                viable = testNewPieces(ch, placement);
+            }
+        }
+
+        if (viable.isEmpty()) {
+            return null;
+        } else {
+            return viable;
+        }
         // FIXME Task 6: determine the set of valid next piece placements
-        return null;
+    }
+
+    // Return True if it is one of the pieces
+    public static boolean isPiece(char ch) {
+        if (ch >= 'a' & ch <= 'h') {
+            return true;
+        }
+        return false;
+    }
+
+    // Try every possibility for the pieces
+    public static Set<String> testNewPieces(char ch, String placement) {
+        Set<String> viable = new HashSet<>();
+        String firstString = "", secondString, thirdString = "", newPlacement;
+
+        for (int i = 0; i < 7; i++){
+            char currentPiece = placement.charAt(4 * i);
+            if (currentPiece < 'a' || currentPiece > 'h') {
+                break;
+            }
+            if (ch < currentPiece) {
+                if (i == 0) {
+                    firstString = "";
+                    thirdString = placement;
+                } else {
+                    firstString = placement.substring(0, 4 * i);
+                    thirdString = placement.substring(4 * i);
+                }
+                break;
+            }
+        }
+
+        for (int j = 1; j < 9; j++) {
+            for (int k = 0; k < 4; k++) {
+                for (int l = 0; l < 8; l++) {
+                    secondString = ch + Integer.toString(j) + (char)('A' + k) + Integer.toString(l);
+                    newPlacement = firstString + secondString + thirdString;
+                    if (isPlacementStringValid(newPlacement)) {
+                        viable.add(secondString);
+                    }
+                }
+            }
+        }
+        return viable;
     }
 
     /**
