@@ -1,5 +1,7 @@
 package comp1110.ass2;
 
+import java.sql.SQLOutput;
+
 /* The idea for check completion
    Node should be a array whose size is 32 = 8 * 4
    Node has a identifier all set to 0, which means not occupied
@@ -25,14 +27,12 @@ public class Node {
     }
 
     // From the placement String, modify the identifier --feier
-    public boolean setPiece(Node[][] node, Piece piece, int row, int column, int orientation) {
+    public boolean setPiece(Node[][] nodes, Piece piece, int row, int column, int orientation) {
         piece.setRow(row);
         piece.setColumn(column);
         piece.setOrientation(orientation);
 
-        int[] traverse = piece.getUnit();
-
-        if (validateAndSet(node, piece, traverse)) {
+        if (validateAndSet(nodes, piece)) {
             return true;
         }
         return false;
@@ -48,53 +48,44 @@ public class Node {
         return true;
     }
 
-    boolean validateAndSet(Node[][] node, Piece piece, int[] traverse) {
-        int traverseRow = piece.row, traverseCol;
+    private boolean validateAndSet(Node[][] nodes, Piece piece) {
 
-        for (int i = 0; i < traverse.length; i++) {
-            traverseCol = piece.column;
+        if (piece.height + piece.row > 4 || piece.width + piece.column > 8){return false;}
 
-            // Jump to the next row
-            if (i != 0 && i % piece.getSide() == 0) {
-                traverseRow++;
+        //get the relative coordinates of the piece
+        int[][] xy = piece.getRelativeXY();
+
+        //loop through coordinates of the piece
+        for(int i = 0;i < xy.length;i++){
+
+            //Get the ith set of absolute coordinates
+            int x = xy[i][0] + piece.column;
+            int y = xy[i][1] + piece.row;
+
+            Node ithNode = nodes[y][x];
+
+            //failure conditions that if not met cause the piece not to be set
+
+            //Is there a piece already occupying the node
+            Boolean isTherePiece = ithNode.piece != null;
+
+            //Is there a peg of the wrong colour under the piece
+            Boolean isTherePegOfWrongColour = !((ithNode.peg == null) || (ithNode.peg.getColour() == piece.getColour()));
+
+            //Is there a peg under the piece not in a hole
+            Boolean isTherePegNotInHole = !(ithNode.peg == null || xy[i][2] == 2);
+
+            //return false if any of the fail conditions are not met
+            if (isTherePiece || isTherePegOfWrongColour || isTherePegNotInHole){
+                return false;
             }
 
-            if (traverse[i] != 0) {
-                traverseCol = traverseCol + (i % piece.getSide());
-                // First check whether it is onBoard nad isOccupied
-                if (!isOnBoard(traverseCol, traverseRow)) {
-                    return false;
-                }
-                if (node[traverseRow][traverseCol].isOccupied == 1) {
-                    return false;
-                }
-                // Then check if the peg fit the hole
-                if (traverse[i] == 1) {
-                    if (node[traverseRow][traverseCol].peg != null) {
-                        return false;
-                    }
-                    // Then check if the colours fit
-                } else if (traverse[i] == 2) {
-                    if (node[traverseRow][traverseCol].peg != null) {
-                        if (piece.getColour() != node[traverseRow][traverseCol].peg.getColour()) {
-                            return false;
-                        }
-                    }
-                }
-                node[traverseRow][traverseCol].isOccupied = 1;
-                node[traverseRow][traverseCol].piece = piece;
-            }
+            //add the piece to the ith node
+            nodes[y][x].piece = piece;
+
         }
         return true;
     }
 
-    public boolean isOnBoard(int column, int row) {
-        if (column > 7 || column < 0) {
-            return false;
-        } else if (row > 3 || row < 0) {
-            return false;
-        }
-        return true;
-    }
 
 }

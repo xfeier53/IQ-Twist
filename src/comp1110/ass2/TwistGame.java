@@ -11,6 +11,15 @@ import java.util.Set;
  */
 public class TwistGame {
 
+    public static void main(String[] args) {
+
+
+        System.out.println(isPlacementStringValid("a7A7b7A7"));
+
+        //isPlacementStringValid("a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0");
+    }
+
+
   /**
    * Determine whether a piece or peg placement is well-formed according to the following:
    * - it consists of exactly four characters
@@ -124,6 +133,7 @@ public class TwistGame {
      * @return True if the placement sequence is valid
      */
     public static boolean isPlacementStringValid(String placement) {
+
         char pieceType;
         int column, row, orientation, count;
         Node[][] nodes = new Node[4][8];
@@ -139,6 +149,7 @@ public class TwistGame {
             pieceType = placement.charAt(4 * i);
             column = placement.charAt(4 * i + 1) - 49;
             row = placement.charAt(4 * i + 2) - 65;
+
             orientation = placement.charAt(4 * i + 3) - 48;
             if (!decodeString(nodes, row, column, orientation, pieceType)) {
                 return false;
