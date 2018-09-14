@@ -39,7 +39,6 @@ public class TwistGame {
       String at3 = "ABCD";
       String at4 = "01234567";
       String atSpecial = "ijkl";
-      String atZero = "0";
       if (loop % 4 != 0) {
           return false;
       }
@@ -221,7 +220,7 @@ public class TwistGame {
         for (int i = 0; i < 8; i++) {
             ch = (char)(97 + i);
             if (placedPieces[i] == 0) {
-                viable = testNewPieces(ch, placement);
+                viable.addAll(testNewPieces(ch, placement));
             }
         }
 
