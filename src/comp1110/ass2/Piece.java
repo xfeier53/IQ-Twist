@@ -19,19 +19,16 @@ package comp1110.ass2;
    In this way, we can get the shape and the hole of pieces -- feier
 */
 
-import java.util.Set;
-import java.util.HashSet;
-
 public enum Piece {
 
-    PIECEa('a', 3, Colour.RED,2,3),
-    PIECEb('b', 3, Colour.RED,2,3),
-    PIECEc('c', 4, Colour.BLUE,1,4),
-    PIECEd('d', 3, Colour.BLUE,2,3),
-    PIECEe('e', 2, Colour.GREEN,2,2),
-    PIECEf('f', 3, Colour.GREEN,2,3),
-    PIECEg('g', 3, Colour.YELLOW,3,3),
-    PIECEh('h', 3, Colour.YELLOW,1,3);
+    PIECEa('a', 3, Colour.RED, 2, 3),
+    PIECEb('b', 3, Colour.RED, 2, 3),
+    PIECEc('c', 4, Colour.BLUE, 1, 4),
+    PIECEd('d', 3, Colour.BLUE, 2, 3),
+    PIECEe('e', 2, Colour.GREEN, 2, 2),
+    PIECEf('f', 3, Colour.GREEN, 2, 3),
+    PIECEg('g', 3, Colour.YELLOW, 3, 3),
+    PIECEh('h', 3, Colour.YELLOW, 1, 3);
 
     private final char id;
     private final int side; // Side length of the array
@@ -52,7 +49,7 @@ public enum Piece {
     private int[][] relativeXY;
 
     //Set the Piece orientation and relative coordinates are intially all assuming Orientation == 0
-    Piece(char id, int side, Colour colour, int intialHeight,int intialWidth) {
+    Piece(char id, int side, Colour colour, int intialHeight, int intialWidth) {
         this.id = id;
 
         this.side = side;
@@ -82,11 +79,11 @@ public enum Piece {
         this.row = row;
     }
 
-    public int getHeight(){
+    public int getHeight() {
         return height;
     }
 
-    public int getWidth(){
+    public int getWidth() {
         return width;
     }
 
@@ -97,17 +94,17 @@ public enum Piece {
     //This function sets the orientation, it also flips and rotates the coordinates of the piece
     public void setOrientation(int newOrientation) {
         //Check if piece needs to be flipped and then flip it over either the horzontal or vertical axis
-        if(newOrientation / 4 != orientation / 4){
+        if (newOrientation / 4 != orientation / 4) {
             flipPiece(orientation % 2 != 0);
         }
         //Get number of times the piece needs to be rotated
         int numberOfRotations = (newOrientation % 4) - (orientation % 4);
 
-        if (numberOfRotations<0){
+        if (numberOfRotations < 0) {
             numberOfRotations = 4 + numberOfRotations;
         }
         //Loop through the rotations that need to be performed
-        for(int i = 0; i < numberOfRotations; i++){
+        for (int i = 0; i < numberOfRotations; i++) {
             this.relativeXY = rotateOnce(this.relativeXY);
 
             //switch height and width due to rotation
@@ -122,14 +119,14 @@ public enum Piece {
 
     //Functions that flips a pieces coordinates
     //vertical: the piece will be flipped over the vertical axis otherwise flipped horizontally
-    private void flipPiece(boolean vertical){
+    private void flipPiece(boolean vertical) {
         //Set coordinates to be flipped and the adjusment value to set the top left corner to be (0,0)
         int flip = 1;
         int other = 0;
         int adjust = height;
 
         //change values for vertical flip
-        if (vertical){
+        if (vertical) {
             flip = 0;
             other = 1;
             adjust = width;
@@ -137,7 +134,7 @@ public enum Piece {
         //newXY array
         int[][] newXY = new int[relativeXY.length][3];
         //loop through points and transform them
-        for(int i = 0;i < relativeXY.length;i++){
+        for (int i = 0; i < relativeXY.length; i++) {
 
             newXY[i][flip] = ((relativeXY[i][flip] * -1) + adjust - 1);
             newXY[i][other] = relativeXY[i][other];
@@ -147,12 +144,12 @@ public enum Piece {
     }
 
     //Take xy coordinates and rotate them 90 degrees clockwise
-    private int[][] rotateOnce(int[][] coordinates){
+    private int[][] rotateOnce(int[][] coordinates) {
         //new coordinate array
         int[][] newCoordinates = new int[coordinates.length][3];
 
         //loop through coordinates and transform them
-        for (int i = 0; i < coordinates.length;i++){
+        for (int i = 0; i < coordinates.length; i++) {
 
             int oldX = coordinates[i][0];
             int oldY = coordinates[i][1];
@@ -165,7 +162,7 @@ public enum Piece {
         return newCoordinates;
     }
 
-    public int[][] getRelativeXY(){
+    public int[][] getRelativeXY() {
         return relativeXY;
     }
 
@@ -182,38 +179,43 @@ public enum Piece {
     }
 
     //Contains intial relative xy coordinates of the pieces
-     private   int[][][] intialXY =
-             {
-                    {{0,0,2},{1,0,1},{2,0,2},{2,1,1}},
-                    {{0,0,1},{1,0,1},{1,1,2},{2,1,1}},
-                    {{0,0,1},{1,0,2},{2,0,1},{3,0,1}},
-                    {{0,0,1},{1,0,1},{2,0,1},{1,1,2},{2,1,2}},
-                    {{0,0,1},{1,0,2},{1,1,2}},
-                    {{0,0,1},{1,0,1},{2,0,2},{1,1,2}},
-                    {{0,0,2},{0,1,2},{1,1,1},{2,1,1},{1,2,2}},
-                    {{0,0,2},{1,0,1},{2,0,1}}
-
+    private int[][][] intialXY =
+            {
+                    {{0, 0, 2}, {1, 0, 1}, {2, 0, 2}, {2, 1, 1}},
+                    {{0, 0, 1}, {1, 0, 1}, {1, 1, 2}, {2, 1, 1}},
+                    {{0, 0, 1}, {1, 0, 2}, {2, 0, 1}, {3, 0, 1}},
+                    {{0, 0, 1}, {1, 0, 1}, {2, 0, 1}, {1, 1, 2}, {2, 1, 2}},
+                    {{0, 0, 1}, {1, 0, 2}, {1, 1, 2}},
+                    {{0, 0, 1}, {1, 0, 1}, {2, 0, 2}, {1, 1, 2}},
+                    {{0, 0, 2}, {0, 1, 2}, {1, 1, 1}, {2, 1, 1}, {1, 2, 2}},
+                    {{0, 0, 2}, {1, 0, 1}, {2, 0, 1}}
             };
 
     @Override
     public String toString() {
 
-        String output = "{x,y,seg}\n";
+        String output = "{x, y, seg}\n";
 
-        for (int i = 0 ; i < this.relativeXY.length ; i ++){
+        for (int i = 0; i < this.relativeXY.length; i++) {
 
             output = output + "{";
 
-            for (int j = 0 ;j < this.relativeXY[i].length; j++){
+            for (int j = 0; j < this.relativeXY[i].length; j++) {
 
                 int val = this.relativeXY[i][j];
 
-                if (j == this.relativeXY[i].length - 1){ output = output + val; }
-                else { output = output + val + ", "; }
+                if (j == this.relativeXY[i].length - 1) {
+                    output = output + val;
+                } else {
+                    output = output + val + ", ";
+                }
             }
 
-            if(i== this.relativeXY.length - 1){output = output + "}";}
-            else {output = output + "}, ";}
+            if (i == this.relativeXY.length - 1) {
+                output = output + "}";
+            } else {
+                output = output + "}, ";
+            }
         }
 
         output = output + "\n height: " + height + " width: " + width + " orientation: " + orientation;

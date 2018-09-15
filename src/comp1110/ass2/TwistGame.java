@@ -276,6 +276,22 @@ public class TwistGame {
         return viable;
     }
 
+    // Ignore strict symmetry
+    public static Set<String> reduceSS(Set<String> viable) {
+        if (viable.contains("c")) {
+
+        }
+        return viable;
+    }
+
+    // Ignore weak symmetry
+    public static Set<String> reduceWS(Set<String> viable) {
+        if (viable.contains("c")) {
+
+        }
+        return viable;
+    }
+
     /**
      * Return an array of all unique solutions for a given starting placement.
      * <p>
