@@ -9,12 +9,13 @@ Everyone: create application skeleton - meeting 14:00 17 Aug
 
 ## Week 5
 
-Lachlan McVicar task 2+3;
-
+Lachlan McVicar task 2;
+Feier Xiao task 3;
 
 ## Week 6
 
-...
+James Frampton Reid task 4;
+Feier Xiao task 5;
 
 ## Mid-Semester Break
 
