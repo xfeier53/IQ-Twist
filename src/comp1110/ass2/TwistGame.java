@@ -2,8 +2,6 @@ package comp1110.ass2;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class provides the text interface for the Twist Game
@@ -248,7 +246,7 @@ public class TwistGame {
         String firstString = "", secondString, thirdString = "", newPlacement;
 
 
-        // Atmost 8 times, till we find the right place to insert the piece
+        // Utmost 8 times, till we find the right place to insert the piece
         for (int i = 0; i < 8; i++){
             char currentPiece = placement.charAt(4 * i);
             // The last piece
@@ -344,7 +342,64 @@ public class TwistGame {
      * unordered solution to the game given the starting point provided by placement.
      */
     public static String[] getSolutions(String placement) {
+        int resultLength = placement.length();
+        Set<String> solutions = new HashSet<>();
+
+        // Get the length of the peg
+        for (int i = 0; i < placement.length() / 4; i++) {
+            if (isPiece(placement.charAt(4 * i))) {
+                resultLength = resultLength - 4;
+            }
+        }
+        // Get the result length by adding 32
+        resultLength = resultLength + 32;
+        setNextPlacement(solutions, placement, resultLength);
+        String[] result = solutions.toArray(new String[0]);
+
+        return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
-        return null;
+    }
+
+    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength) {
+        Set<String> viable;
+        String firstString = "", secondString = "", newPlacement;
+
+        // If the length of the List is 32, that is the full solutions
+        if (placement.length() == resultLength) {
+            solutions.add(placement.substring(0, 32));
+            return;
+        }
+        viable = getViablePiecePlacements(placement);
+        // There is no further viable piece to put
+        if (viable == null) {
+            return;
+        }
+        for (String newPiece : viable) {
+
+            // Utmost 8 times, till we find the right place to insert the piece
+            for (int i = 0; i < 8; i++) {
+                char currentPiece = placement.charAt(4 * i);
+                // The last piece
+                if (currentPiece > 'h') {
+                    firstString = placement.substring(0, 4 * i);
+                    secondString = placement.substring(4 * i);
+                    break;
+                }
+                if (newPiece.charAt(0) < currentPiece) {
+                    // The first piece
+                    if (i == 0) {
+                        firstString = "";
+                        secondString = placement;
+                    } else {
+                        firstString = placement.substring(0, 4 * i);
+                        secondString = placement.substring(4 * i);
+                    }
+                    break;
+                }
+            }
+
+            newPlacement = firstString + newPiece + secondString;
+            setNextPlacement(solutions, newPlacement, resultLength);
+        }
     }
 }
