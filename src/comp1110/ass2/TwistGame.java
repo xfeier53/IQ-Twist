@@ -2,6 +2,8 @@ package comp1110.ass2;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class provides the text interface for the Twist Game
@@ -245,12 +247,18 @@ public class TwistGame {
         Set<String> viable = new HashSet<>();
         String firstString = "", secondString, thirdString = "", newPlacement;
 
-        for (int i = 0; i < 7; i++){
+
+        // Atmost 8 times, till we find the right place to insert the piece
+        for (int i = 0; i < 8; i++){
             char currentPiece = placement.charAt(4 * i);
-            if (currentPiece < 'a' || currentPiece > 'h') {
+            // The last piece
+            if (currentPiece > 'h') {
+                firstString = placement.substring(0, 4 * i);
+                thirdString = placement.substring(4 * i);
                 break;
             }
             if (ch < currentPiece) {
+                // The first piece
                 if (i == 0) {
                     firstString = "";
                     thirdString = placement;
@@ -262,6 +270,7 @@ public class TwistGame {
             }
         }
 
+        // For every possibility
         for (int j = 1; j < 9; j++) {
             for (int k = 0; k < 4; k++) {
                 for (int l = 0; l < 8; l++) {
@@ -273,24 +282,49 @@ public class TwistGame {
                 }
             }
         }
-        return viable;
-    }
-
-    // Ignore strict symmetry
-    public static Set<String> reduceSS(Set<String> viable) {
-        if (viable.contains("c")) {
-
+        if (!viable.isEmpty()) {
+            viable = reduceSymmetry(viable);
         }
         return viable;
     }
 
-    // Ignore weak symmetry
-    public static Set<String> reduceWS(Set<String> viable) {
-        if (viable.contains("c")) {
+    public static Set<String> reduceSymmetry(Set<String> viable) {
+        String orginalPiece;
+        Set<String> redundantPiece = new HashSet<>();
 
+        for (String symmestryPiece : viable) {
+            // Reduce strict symmetry, remove all c and h pieces with rotation greater than 4
+            if ((symmestryPiece.charAt(0) == 'c' || symmestryPiece.charAt(0) == 'h') && symmestryPiece.charAt(3) >= '4') {
+                redundantPiece.add(symmestryPiece);
+            }
+        }
+
+        for (String symmestryPiece : viable) {
+            // Reduce weak symmetry
+            // For b, c and h pieces, minus 2
+            if ((symmestryPiece.charAt(0) == 'b' || symmestryPiece.charAt(0) == 'c' || symmestryPiece.charAt(0) == 'h') && (symmestryPiece.charAt(3) == '2'| symmestryPiece.charAt(3) == '3' | symmestryPiece.charAt(3) == '6' | symmestryPiece.charAt(3) == '7')){
+                orginalPiece = symmestryPiece.substring(0, 3) + (char)(symmestryPiece.charAt(3) - 2);
+            } else if (symmestryPiece.charAt(0) == 'e') {
+                orginalPiece = symmestryPiece.substring(0, 3) + ((symmestryPiece.charAt(3) - '0' + 1) % 4);
+            } else if (symmestryPiece.charAt(0) == 'f') {
+                orginalPiece = symmestryPiece.substring(0, 3) + ((symmestryPiece.charAt(3) - '0' + 2) % 4);
+            } else {
+                orginalPiece = null;
+            }
+
+            if (orginalPiece != null) {
+                if (viable.contains(orginalPiece)){
+                    redundantPiece.add(symmestryPiece);
+                }
+            }
+        }
+
+        for (String piece : redundantPiece) {
+            viable.remove(piece);
         }
         return viable;
     }
+
 
     /**
      * Return an array of all unique solutions for a given starting placement.
