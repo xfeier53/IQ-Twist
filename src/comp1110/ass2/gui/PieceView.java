@@ -4,6 +4,7 @@ import comp1110.ass2.Piece;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
 import comp1110.ass2.gui.Board;
@@ -19,6 +20,7 @@ public class PieceView extends ImageView{
     int orientation;
     int row;
     int column;
+    boolean isPressed = false;
     double[] relativeMouseClick = new double[2];
 
     PieceView(Image image, char id, double startX, double startY, double originalHeight, double originalWidth){
@@ -41,6 +43,7 @@ public class PieceView extends ImageView{
         pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                isPressed = true;
                 relativeMouseClick[0] = event.getSceneX() - pieceView.getX();
                 relativeMouseClick[1] = event.getSceneY() - pieceView.getY();
             }
@@ -51,6 +54,7 @@ public class PieceView extends ImageView{
             public void handle(MouseEvent event) {
                 //get snap coordinates
                 double[] testCoordinates =  pieceView.findSnapTo();
+                isPressed = false;
 
                 //test coordinates reset the piece is valid or set piece if it is
                 if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000){
@@ -73,11 +77,14 @@ public class PieceView extends ImageView{
 
             }
         });
+
         pieceView.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
-                System.out.println("test");
-                pieceView.rotateAndFlip(orientation + 1);
+
+                if (isPressed){
+                    pieceView.rotateAndFlip(orientation + 1);
+                }
             }
         });
     }
@@ -153,9 +160,15 @@ public class PieceView extends ImageView{
             pieceView.setScaleX(1);
         }
 
+        //double deltaX = ;
+        //double deltaY;
+
+
         pieceView.setRotate(90 * orientation);
 
 
+
+        /*
         //correct x y positioning due to orientation change, this assumes that all pieces fit in a rectangle
         if(orientation % 2 != 0){
 
@@ -165,9 +178,10 @@ public class PieceView extends ImageView{
             double height = pieceView.getImage().getHeight();// * adjust;
             double correction = (height - width) / 2;
 
-            pieceView.setX(pieceView.getX() + correction);
+            pieceView.setX(pieceView.getX() + correction+width);
             pieceView.setY(pieceView.getY() - correction);
         }
+        */
 
     }
 
@@ -186,6 +200,30 @@ public class PieceView extends ImageView{
     int getColumn(){
         return column;
     }
+
+    double getHeight(){
+
+        if (orientation % 2 == 0){
+            return this.getImage().getHeight();
+        }
+        else {
+            return this.getImage().getWidth();
+        }
+
+    }
+
+    double getWidth(){
+
+        if (orientation % 2 == 0){
+            return this.getImage().getWidth();
+        }
+        else {
+            return this.getImage().getHeight();
+        }
+
+    }
+
+
     //Gets the piecePlacementString using coding from elsewhere in TwistGame
     String getPiecePlacementString(){
 
