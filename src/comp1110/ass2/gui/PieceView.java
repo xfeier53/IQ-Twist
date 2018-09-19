@@ -78,19 +78,6 @@ public class PieceView extends ImageView{
             }
         });
 
-        pieceView.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-
-                System.out.println("help");
-                if (isPressed){
-                    System.out.println("test");
-                    pieceView.rotateAndFlip(orientation + 1);
-                }
-
-            }
-        });
-
         pieceView.setOnScroll(new EventHandler<ScrollEvent>() {
             @Override
             public void handle(ScrollEvent event) {
