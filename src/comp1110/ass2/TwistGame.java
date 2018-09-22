@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -95,7 +97,7 @@ public class TwistGame {
             }
 
             // Get the index by ASCII value of each placement
-            index = placement.charAt(4 * i) - 97;
+            index = placement.charAt(4 * i) - 'a';
             // Check whether the latter alphabet has been came
             for (int j = index + 1; j < 12; j++) {
                 if (flag[j] == 1) {
@@ -146,10 +148,10 @@ public class TwistGame {
         count = placement.length() / 4;
         for (int i = count - 1; i >= 0; i--) {
             pieceType = placement.charAt(4 * i);
-            column = placement.charAt(4 * i + 1) - 49;
-            row = placement.charAt(4 * i + 2) - 65;
+            column = placement.charAt(4 * i + 1) - '1';
+            row = placement.charAt(4 * i + 2) - 'A';
 
-            orientation = placement.charAt(4 * i + 3) - 48;
+            orientation = placement.charAt(4 * i + 3) - '0';
             if (!decodeString(nodes, row, column, orientation, pieceType)) {
                 return false;
             }
@@ -210,7 +212,7 @@ public class TwistGame {
         for (int i = 0; i < placement.length() / 4; i++) {
             ch = placement.charAt(4 * i);
             if (isPiece(ch)) {
-                placedPieces[ch - 97] = 1;
+                placedPieces[ch - 'a'] = 1;
             } else {
                 break;
             }
@@ -218,7 +220,7 @@ public class TwistGame {
 
         // Process every unplaced pieces
         for (int i = 0; i < 8; i++) {
-            ch = (char)(97 + i);
+            ch = (char)('a' + i);
             if (placedPieces[i] == 0) {
                 viable.addAll(testNewPieces(ch, placement));
             }
@@ -401,5 +403,67 @@ public class TwistGame {
             newPlacement = firstString + newPiece + secondString;
             setNextPlacement(solutions, newPlacement, resultLength);
         }
+    }
+
+    // Get hint, return null means no solution, String[] is hint for different solutions
+    public static String[] getHint(String placement) {
+        String[] solutions = getSolutions(placement);
+        int[] placedPieces = new int[8];
+        List<String> hint = new ArrayList<>();
+
+        // Means there is no any solutions from this placement
+        if (solutions == null) {
+            return null;
+        } else {
+            // Record the placed pieces
+            for (int i = 0 ; i < placement.length() / 4; i++) {
+                placedPieces[placement.charAt(4 * i) - 'a'] = 1;
+            }
+            // Return back hint for every different solutions
+            for (String s : solutions) {
+                for (int i = 0; i < s.length() / 4; i++) {
+                    if (placedPieces[i] == 1) {
+                        continue;
+                    } else {
+                        hint.add(s.substring(4 * i, 4));
+                    }
+                }
+            }
+        }
+
+        return hint.toArray(new String[0]);
+    }
+
+//    // If there is only one solution
+//    // Get hint, return null means no solution, String is hint for different solutions
+//    public static String getHint(String placement) {
+//        String[] solutions = getSolutions(placement);
+//        int[] placedPieces = new int[8];
+//        List<String> hint = new ArrayList<>();
+//
+//        // Means there is no any solutions from this placement
+//        if (solutions == null) {
+//            return null;
+//        } else {
+//            // Record the placed pieces
+//            for (int i = 0 ; i < placement.length() / 4; i++) {
+//                placedPieces[placement.charAt(4 * i) - 'a'] = 1;
+//            }
+//            // Return hint
+//            for (int i = 0; i < solutions[0].length() / 4; i++) {
+//                if (placedPieces[i] == 1) {
+//                    continue;
+//                } else {
+//                    return solutions[0].substring(4 * i, 4);
+//                }
+//            }
+//            // All pieces are placed, return null;
+//            return null;
+//        }
+//    }
+
+    // Get dictionary
+    public static String[] getDictionary(String placement) {
+        return new String[0];
     }
 }
