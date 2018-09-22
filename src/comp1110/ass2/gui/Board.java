@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Piece;
 import comp1110.ass2.TwistGame;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.transform.Rotate;
@@ -23,7 +25,9 @@ import javafx.scene.shape.Line;
 public class Board extends Application {
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
-    public static final int SQUARE_SIZE = 90;
+    public static final int SQUARE_SIZE = 70;
+
+    public static String boardState = "k3C0l4B0l5C0";
 
     private final Group root = new Group();
     //Contains all the PieceViews
@@ -31,7 +35,13 @@ public class Board extends Application {
     //Group for the lines that mark the board
     private final Group lines = new Group();
 
+
+    double xy[] = {75,25};
+
+
     private double[] relativeMouseClick = new double[2];
+
+
 
     // FIXME Task 7: Implement a basic playable Twist Game in JavaFX that only allows pieces to be placed in valid places
 
@@ -45,7 +55,7 @@ public class Board extends Application {
     void makePlacement(String placement) {
 
         //clears pieces currently on the screen
-        pieces.getChildren().clear();
+        //pieces.getChildren().clear();
 
         //loop through every four characters in placement
         for(int i = 0; i < placement.length()/4;i++){
@@ -215,9 +225,9 @@ public class Board extends Application {
 
     private void  makePieces(){
 
-        char[] pieceIds = {'a','b','c','d','e','f','g','h'};
-        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5}};
-        int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3}};
+        char[] pieceIds = {'a','b','c','d','e','f','g','h','g'};
+        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5},{9,0}};
+        int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3}};
 
         for(int i = 0;i < intialStarts.length;i++){
 
@@ -242,11 +252,30 @@ public class Board extends Application {
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
+
         root.getChildren().add(pieces);
         root.getChildren().add(lines);
 
         makeLines();
         makePieces();
+
+        makePlacement(boardState);
+
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+
+            }
+
+        });
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+
+            public void handle(KeyEvent event) {
+                //System.out.println("release");
+            }
+        });
 
         primaryStage.setScene(scene);
         primaryStage.show();

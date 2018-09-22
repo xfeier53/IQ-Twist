@@ -8,6 +8,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
 import comp1110.ass2.gui.Board;
+import comp1110.ass2.TwistGame;
+
 
 public class PieceView extends ImageView{
 
@@ -56,11 +58,15 @@ public class PieceView extends ImageView{
                 double[] testCoordinates =  pieceView.findSnapTo();
                 isPressed = false;
 
+                String newBoard = getNewBoardState(Board.boardState);
+
                 //test coordinates reset the piece is valid or set piece if it is
-                if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000){
+                if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000 || !TwistGame.isPlacementStringValid(newBoard)){
                     pieceView.resetPiece();
                 }
                 else{
+                    Board.boardState = newBoard;
+
                     pieceView.setX(testCoordinates[0]);
                     pieceView.setY(testCoordinates[1]);
                 }
@@ -83,11 +89,37 @@ public class PieceView extends ImageView{
             public void handle(ScrollEvent event) {
 
                 if (isPressed){
-                    pieceView.rotateAndFlip(orientation + 1);
+                    relativeMouseClick =  rotateAndFlip((orientation + 1) % 8, relativeMouseClick);
                 }
             }
         });
     }
+
+    String getNewBoardState(String boardState){
+
+        for(int i = 0; i < boardState.length(); i = i + 4){
+
+            if(boardState.charAt(i) == id){
+
+                String newBoard = boardState.substring(0,i) + getPiecePlacementString() + boardState.substring(i+4);
+
+                System.out.println(newBoard);
+                return (newBoard);
+
+            }
+            else if(boardState.charAt(i) > id){
+
+                String newBoard = boardState.substring(0,i) + getPiecePlacementString() + boardState.substring(i);
+                System.out.println(newBoard);
+                return (newBoard);
+
+
+            }
+        }
+
+        return null;
+    }
+
 
     //Finds point where the piece snaps to after being released from the drag
     double[] findSnapTo(){
@@ -144,45 +176,106 @@ public class PieceView extends ImageView{
         this.column = -1;
         this.rotateAndFlip(0);
     }
+
+
+    double[] rotateAndFlip(int orientation, double[] xy){
+
+
+        double width = getWidth();
+        double height = getHeight();
+
+        if(this.orientation % 2 == 1){
+            xy[0] = xy[0] + (width - height)/2;
+            xy[1] = xy[1] - (width - height) / 2;
+        }
+
+
+        double deltaX = xy[0] - width/2;
+        double deltaY = xy[1] - height/2;
+
+        boolean needFlip = orientation/4 != this.orientation/4;
+
+        boolean flipOverVertical = (this.orientation % 2) == 1 && needFlip;
+        boolean flipOverHorizontal = needFlip && !flipOverVertical;
+
+
+
+        if (flipOverHorizontal){
+
+            setY(getY() + (2 * deltaY));
+            xy[1] = height - xy[1];
+        }
+        else if(flipOverVertical){
+
+            setX(getX() + (2 * deltaX));
+            xy[0] = width - xy[0];
+        }
+
+
+
+        int numberOfRotations;
+        int newOrientation = orientation % 4;
+        int oldOrientation = this.orientation % 4;
+
+        if(newOrientation >= oldOrientation){
+            numberOfRotations = newOrientation - oldOrientation;
+        }
+        else{
+            numberOfRotations = (4 - oldOrientation) + newOrientation;
+        }
+
+        for (int i = 1; i<=numberOfRotations;i++){
+
+
+            deltaX = xy[0] - width/2;
+            deltaY = xy[1] - height/2;
+
+            setY(getY() + deltaY);
+            setX(getX() + deltaY);
+
+            setY(getY() - deltaX);
+            setX(getX() + deltaX);
+
+            double tmp = xy[0];
+            xy[0] = -xy[1] + height;
+            xy[1] = tmp;
+            tmp = height;
+            height = width;
+            width = tmp;
+
+        }
+
+        rotateAndFlip(orientation);
+
+        if(orientation % 2 == 1){
+            xy[0] = xy[0] - (width - height)/2;
+            xy[1] = xy[1] + (width - height) / 2;
+        }
+
+
+        return xy;
+    }
+
     //rotate and or flip the PieceView
     void rotateAndFlip(int orientation){
-
+        //Fixme
         PieceView pieceView = this;
 
-        pieceView.orientation = orientation;
+        int numberOfRotations = orientation;
 
-        //flip the piece over if needed
+
+        numberOfRotations = orientation % 4;
+
+        pieceView.setRotate(90 * numberOfRotations);
+
+
         if(orientation > 3){
-            pieceView.setScaleY(-1);
-            orientation = orientation - 4;
+            setScaleY(-1);
+
         }
-        else {
-            pieceView.setScaleX(1);
-        }
+        else{setScaleY(1);}
 
-        //double deltaX = ;
-        //double deltaY;
-
-
-        pieceView.setRotate(90 * orientation);
-
-
-
-        /*
-        //correct x y positioning due to orientation change, this assumes that all pieces fit in a rectangle
-        if(orientation % 2 != 0){
-
-            //float adjust = (float)SQUARE_SIZE / 100;
-
-            double width = (pieceView.getImage().getWidth());// * adjust;
-            double height = pieceView.getImage().getHeight();// * adjust;
-            double correction = (height - width) / 2;
-
-            pieceView.setX(pieceView.getX() + correction+width);
-            pieceView.setY(pieceView.getY() - correction);
-        }
-        */
-
+        pieceView.orientation = orientation;
     }
 
     char getID(){
@@ -229,7 +322,8 @@ public class PieceView extends ImageView{
 
         String output = String.valueOf(id);
         output = output + column;
-        output = output + ((char)row + 'A');
+        System.out.println(row);
+        output = output + (char) ((char)row + 'A' - 1);
         output = output + orientation;
 
         return output;
