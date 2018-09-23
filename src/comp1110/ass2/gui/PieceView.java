@@ -19,11 +19,11 @@ public class PieceView extends ImageView{
     final double originalWidth;
     final char id;
 
-    int orientation;
-    int row;
-    int column;
-    boolean isPressed = false;
-    double[] relativeMouseClick = new double[2];
+    private int orientation;
+    private int row;
+    private int column;
+    private boolean isPressed = false;
+    private double[] relativeMouseClick = new double[2];
 
     PieceView(Image image, char id, double startX, double startY, double originalHeight, double originalWidth){
 
@@ -184,7 +184,7 @@ public class PieceView extends ImageView{
         this.rotateAndFlip(0);
     }
 
-
+    //rotate and flip PieceView around a point and return where that point ends up relative to the origin
     double[] rotateAndFlip(int orientation, double[] xy){
 
 
