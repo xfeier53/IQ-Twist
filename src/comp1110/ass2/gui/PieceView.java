@@ -62,6 +62,9 @@ public class PieceView extends ImageView{
 
                 //test coordinates reset the piece is valid or set piece if it is
                 if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000 || !TwistGame.isPlacementStringValid(newBoard)){
+
+
+
                     pieceView.resetPiece();
                 }
                 else{
@@ -103,14 +106,12 @@ public class PieceView extends ImageView{
 
                 String newBoard = boardState.substring(0,i) + getPiecePlacementString() + boardState.substring(i+4);
 
-                System.out.println(newBoard);
                 return (newBoard);
 
             }
             else if(boardState.charAt(i) > id){
 
                 String newBoard = boardState.substring(0,i) + getPiecePlacementString() + boardState.substring(i);
-                System.out.println(newBoard);
                 return (newBoard);
 
 
@@ -169,6 +170,12 @@ public class PieceView extends ImageView{
     }
     //reset the piece to where it's starting location and orientation(orientation is always 0 currently)
     void resetPiece(){
+
+        for(int i = 0; i < Board.boardState.length(); i=i + 4){
+            if (Board.boardState.charAt(i) == id){
+                Board.boardState = Board.boardState.substring(0,i)+Board.boardState.substring(i+4);
+            }
+        }
 
         this.setX(startX);
         this.setY(startY);
@@ -258,7 +265,7 @@ public class PieceView extends ImageView{
 
     //rotate and or flip the PieceView
     void rotateAndFlip(int orientation){
-        //Fixme
+
         PieceView pieceView = this;
 
         int numberOfRotations = orientation;
@@ -322,7 +329,6 @@ public class PieceView extends ImageView{
 
         String output = String.valueOf(id);
         output = output + column;
-        System.out.println(row);
         output = output + (char) ((char)row + 'A' - 1);
         output = output + orientation;
 
