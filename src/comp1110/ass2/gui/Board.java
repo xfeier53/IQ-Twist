@@ -225,9 +225,9 @@ public class Board extends Application {
 
     private void  makePieces(){
 
-        char[] pieceIds = {'a','b','c','d','e','f','g','h','g'};
-        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5},{9,0}};
-        int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3}};
+        char[] pieceIds = {'a','b','c','d','e','f','g','h'};
+        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5},{9,0},{9,3}};
+        int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3},{1,3}};
 
         for(int i = 0;i < intialStarts.length;i++){
 
