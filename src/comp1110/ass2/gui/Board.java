@@ -89,7 +89,7 @@ public class Board extends Application {
 
     // FIXME Task 11: Generate interesting starting placements
 
-    //Places Pegs at beginning of the game
+    //Places Pegs at beginning of the game James
     void makePegPlacement(String placement){
 
         //Intialise the gameState, should only be done at beginning of the game
@@ -276,7 +276,7 @@ public class Board extends Application {
 
 
 
-    //Adds Lines to board to mark where pieces are played
+    //Adds Lines to board to mark where pieces are played James
     private void makeLines(){
 
         //loop through all columns and add a new line
@@ -302,7 +302,7 @@ public class Board extends Application {
         }
     }
 
-    //Puts pieces in starting positions at beginning of the game
+    //Puts pieces in starting positions at beginning of the game James
     private void  makePieces(){
 
         //Presets for the pieces, id, intial starts and intial dimensions
@@ -329,7 +329,7 @@ public class Board extends Application {
         }
     }
 
-    //
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -344,7 +344,6 @@ public class Board extends Application {
         makePieces();
 
         makePegPlacement(boardState);
-
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
