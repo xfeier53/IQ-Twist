@@ -307,7 +307,7 @@ public class Board extends Application {
 
         //Presets for the pieces, id, intial starts and intial dimensions
         char[] pieceIds = {'a','b','c','d','e','f','g','h'};
-        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5},{9,0},{9,3}};
+        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5},{9,5},{9,8}};
         int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3},{1,3}};
 
         //loop through pieces and place them in the locations using the PieceView class
