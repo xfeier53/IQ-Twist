@@ -14,12 +14,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Line;
+
+import javax.xml.soap.Text;
 
 /**
  * A very simple viewer for piece placements in the twist game.
@@ -275,5 +282,26 @@ public class Viewer extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+        //UIelements--box1
+        Rectangle tutorialBox=new Rectangle(490,10,250,300);
+        tutorialBox.setFill(Color.ANTIQUEWHITE);
+        root.getChildren().add(tutorialBox);
+//UIelements--text1
+        javafx.scene.text.Text tut= new javafx.scene.text.Text("TutorialBox");
+        tut.setFont(Font.font("Tahoma",FontWeight.NORMAL,30));
+        tut.setFill(Color.BLACK);
+        tut.setX(520);
+        tut.setY(50);
+        root.getChildren().add(tut);
+//UIelements--forwardarrow
+        Polygon fwd=new Polygon(670,120,670,150,700,135);
+        fwd.setFill(Color.RED);
+        root.getChildren().add(fwd);
+//UIelements--select
+
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
+
 }

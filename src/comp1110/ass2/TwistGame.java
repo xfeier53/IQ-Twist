@@ -1,9 +1,6 @@
 package comp1110.ass2;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class provides the text interface for the Twist Game
@@ -466,4 +463,49 @@ public class TwistGame {
     public static String[] getDictionary(String placement) {
         return new String[0];
     }
-}
+    //SomethingforUI--select
+    public static String intToLetter(int number){
+        if(number%7==0){return"a";}
+        if(number%7==1){return"b";}
+        if(number%7==2){return"c";}
+        if(number%7==3){return"d";}
+        if(number%7==4){return"e";}
+        if(number%7==5){return"f";}
+        if(number%7==6){return"g";}
+        if(number%7==7){return"h";}
+        else return "a";
+    }
+
+    public static String Difficulty(String Difficulty, int insertRandom) {
+        String output;
+        if (Difficulty == "Easy") {
+            if (insertRandom == 0) {
+            }
+            if (insertRandom == 1) {
+            }
+            if (insertRandom == 2) {
+            }
+        }
+        if (Difficulty == "Medium") {
+            if (insertRandom == 0) {
+            }
+            if (insertRandom == 1) {
+            }
+            if (insertRandom == 2) {
+            }
+        }
+        if (Difficulty == "Hard") {
+            if (insertRandom == 0) {
+            }
+            if (insertRandom == 1) {
+            }
+            if (insertRandom == 2) {
+            }
+        }
+        return "";
+    }
+//classforanumber
+
+    }
+
+
