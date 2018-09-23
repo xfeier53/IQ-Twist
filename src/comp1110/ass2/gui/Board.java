@@ -15,12 +15,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Line;
+
+import java.util.Random;
 
 public class Board extends Application {
     private static final int BOARD_WIDTH = 933;
@@ -40,6 +47,36 @@ public class Board extends Application {
 
 
     private double[] relativeMouseClick = new double[2];
+
+    // this this is difficulty tests - u6406312
+    public static String difficulty(String Difficulty, int insertRandom) {
+        String output;
+        if (Difficulty == "Easy") {
+            if (insertRandom == 0) { return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            }
+            if (insertRandom == 1) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            }
+            if (insertRandom == 2) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            }
+        }
+        if (Difficulty == "Medium") {
+            if (insertRandom == 0) {
+            }
+            if (insertRandom == 1) {
+            }
+            if (insertRandom == 2) {
+            }
+        }
+        if (Difficulty == "Hard") {
+            if (insertRandom == 0) {
+            }
+            if (insertRandom == 1) {
+            }
+            if (insertRandom == 2) {
+            }
+        }
+        return "";
+    }
 
 
 
@@ -277,8 +314,50 @@ public class Board extends Application {
             }
         });
 
+        //UIelements--box1
+        Rectangle tutorialBox=new Rectangle(580,10,250,300);
+        tutorialBox.setFill(Color.ANTIQUEWHITE);
+        root.getChildren().add(tutorialBox);
+//UIelements--text1
+        javafx.scene.text.Text tut= new javafx.scene.text.Text("TutorialBox");
+        tut.setFont(Font.font("Tahoma",FontWeight.NORMAL,30));
+        tut.setFill(Color.BLACK);
+        tut.setX(670);
+        tut.setY(50);
+        root.getChildren().add(tut);
+        //UIelements--text2
+        javafx.scene.text.Text diff= new javafx.scene.text.Text("Easy    Medium    Hard");
+        diff.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        diff.setFill(Color.BLACK);
+        diff.setX(600);
+        diff.setY(300);
+        root.getChildren().add(diff);
+//UIelements--forwardarrow
+        Polygon fwd=new Polygon(750,120,750,150,800,135);
+        fwd.setFill(Color.RED);
+        root.getChildren().add(fwd);
+//UIelements--select
+
+
+// UI - Difficulty Selecter
+        Random rng = new Random();
+        Rectangle easy = new Rectangle(590,310,35,20);
+        easy.setFill(Color.GREEN);
+        Rectangle medium = new Rectangle(670,310,35,20);
+        medium.setFill(Color.ORANGE);
+        Rectangle hard = new Rectangle(750,310,35,20);
+        hard.setFill(Color.RED);
+
+        easy.setOnMouseClicked(event   ->makePlacement( difficulty("Easy",rng.nextInt(2))));
+        medium.setOnMouseClicked(event->makePlacement( difficulty("Medium",rng.nextInt(2))));
+        hard.setOnMouseClicked(event   ->makePlacement( difficulty("Hard",rng.nextInt(2))));
+        root.getChildren().add(easy);
+        root.getChildren().add(medium);
+        root.getChildren().add(hard);
+
         primaryStage.setScene(scene);
         primaryStage.show();
 
     }
+
 }
