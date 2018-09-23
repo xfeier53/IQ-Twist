@@ -42,6 +42,7 @@ public class Board extends Application {
     //Group for the lines that mark the board
     private final Group lines = new Group();
 
+    private final Group pegs = new Group();
 
     double xy[] = {75,25};
 
@@ -88,7 +89,42 @@ public class Board extends Application {
 
     // FIXME Task 11: Generate interesting starting placements
 
-    //makes placement of new placement String
+    //Places Pegs at beginning of the game
+    void makePegPlacement(String placement){
+
+        //Intialise the gameState, should only be done at beginning of the game
+        boardState = placement;
+
+        //loop through pegs and place them
+        for(int i = 0; i < placement.length();i = i + 4){
+
+            //get the 4 character substring at i
+            String pegPlacement = placement.substring(i,i + 4);
+
+            //get peg id from placement string and get corresponding image and set to imageView in pegs group
+            char pegId = pegPlacement.charAt(0);
+            //Adjest peg to SQUARD_SIZE
+            Image pegImage = new Image("comp1110/ass2/gui/assets/"+pegId+".png",(double) SQUARE_SIZE,(double) SQUARE_SIZE,false,false);
+            ImageView pegView = new ImageView(pegImage);
+            pegs.getChildren().add(pegView);
+
+            //get the row and column and set peg to that row and column
+            int column = Character.getNumericValue(pegPlacement.charAt(1)) - 1;
+            int row = (pegPlacement.charAt(2)) - 'A';
+
+            pegView.setX(SQUARE_SIZE * column);
+            pegView.setY(SQUARE_SIZE * row);
+
+        }
+
+
+    }
+
+
+
+
+    //makes placement of new placement String, Please do not use this functions
+    @Deprecated
     void makePlacement(String placement) {
 
         //clears pieces currently on the screen
@@ -106,6 +142,7 @@ public class Board extends Application {
     }
 
     //Place a single piece in placement
+    @Deprecated
     void makePiecePlacement(String piecePlacement){
 
         //get the id of the piece ie 'a' and get the png image
@@ -167,6 +204,7 @@ public class Board extends Application {
 
     }
 
+    @Deprecated
     void translatePiece(MouseEvent event,ImageView pieceView, double[] relativePoint){
 
         //Move piece to mouse considering where the mouse was clicked inside the piece
@@ -175,6 +213,7 @@ public class Board extends Application {
 
     }
 
+    @Deprecated
     void findSnapTo(ImageView pieceView){
 
         int xSnap = -1000;
@@ -211,6 +250,7 @@ public class Board extends Application {
     }
 
     //Take image and rotate it depending on orientation
+    @Deprecated
     void rotateAndFlip(ImageView pieceView,int orientation){
 
         //flip the piece over if needed
@@ -233,6 +273,8 @@ public class Board extends Application {
             pieceView.setY(pieceView.getY() - correction);
         }
     }
+
+
 
     //Adds Lines to board to mark where pieces are played
     private void makeLines(){
@@ -260,15 +302,19 @@ public class Board extends Application {
         }
     }
 
+    //Puts pieces in starting positions at beginning of the game
     private void  makePieces(){
 
+        //Presets for the pieces, id, intial starts and intial dimensions
         char[] pieceIds = {'a','b','c','d','e','f','g','h'};
         double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5},{9,0},{9,3}};
         int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3},{1,3}};
 
+        //loop through pieces and place them in the locations using the PieceView class
         for(int i = 0;i < intialStarts.length;i++){
 
             char pieceId = pieceIds[i];
+            //Use square size to adjust size of pieces
             double startX = intialStarts[i][0] * SQUARE_SIZE;
             double startY = intialStarts[i][1] * SQUARE_SIZE;
             double height = intialDimensions[i][0] * SQUARE_SIZE;
@@ -283,20 +329,21 @@ public class Board extends Application {
         }
     }
 
+    //
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
-
-        root.getChildren().add(pieces);
         root.getChildren().add(lines);
+        root.getChildren().add(pegs);
+        root.getChildren().add(pieces);
 
         makeLines();
         makePieces();
 
-        makePlacement(boardState);
+        makePegPlacement(boardState);
 
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -318,7 +365,7 @@ public class Board extends Application {
         Rectangle tutorialBox=new Rectangle(580,10,250,300);
         tutorialBox.setFill(Color.ANTIQUEWHITE);
         root.getChildren().add(tutorialBox);
-//UIelements--text1
+        //UIelements--text1
         javafx.scene.text.Text tut= new javafx.scene.text.Text("TutorialBox");
         tut.setFont(Font.font("Tahoma",FontWeight.NORMAL,30));
         tut.setFill(Color.BLACK);
