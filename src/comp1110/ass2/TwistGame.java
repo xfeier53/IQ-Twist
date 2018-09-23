@@ -476,34 +476,7 @@ public class TwistGame {
         else return "a";
     }
 
-    public static String Difficulty(String Difficulty, int insertRandom) {
-        String output;
-        if (Difficulty == "Easy") {
-            if (insertRandom == 0) {
-            }
-            if (insertRandom == 1) {
-            }
-            if (insertRandom == 2) {
-            }
-        }
-        if (Difficulty == "Medium") {
-            if (insertRandom == 0) {
-            }
-            if (insertRandom == 1) {
-            }
-            if (insertRandom == 2) {
-            }
-        }
-        if (Difficulty == "Hard") {
-            if (insertRandom == 0) {
-            }
-            if (insertRandom == 1) {
-            }
-            if (insertRandom == 2) {
-            }
-        }
-        return "";
-    }
+
 //classforanumber
 
     }
