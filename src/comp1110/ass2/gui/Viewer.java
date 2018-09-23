@@ -345,7 +345,9 @@ medium.setFill(Color.ORANGE);
 Rectangle hard = new Rectangle(680,310,35,20);
 hard.setFill(Color.RED);
 
-easy.setOnMouseClicked(event ->makePlacement( difficulty("Easy",rng.nextInt(2))));
+easy.setOnMouseClicked(event   ->makePlacement( difficulty("Easy",rng.nextInt(2))));
+medium.setOnMouseClicked(event->makePlacement( difficulty("Medium",rng.nextInt(2))));
+hard.setOnMouseClicked(event   ->makePlacement( difficulty("Hard",rng.nextInt(2))));
 root.getChildren().add(easy);
 root.getChildren().add(medium);
 root.getChildren().add(hard);
