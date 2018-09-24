@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Piece;
 import comp1110.ass2.TwistGame;
+import comp1110.ass2.Waldo;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -57,10 +58,8 @@ public class Board extends Application {
         Image retur = new Image("comp1110/ass2/gui/assets/"+pieceID+".png",width,height,false,false);
         return retur;
     }
-    public String unTertris(Image image){
-        String z =image.impl_getUrl(); // cant find alternate method
-        return ""+z.charAt(27);
-    }
+
+
         //("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false)
     private double[] relativeMouseClick = new double[2];
 
@@ -383,7 +382,7 @@ public class Board extends Application {
         javafx.scene.text.Text tut= new javafx.scene.text.Text("TutorialBox");
         tut.setFont(Font.font("Tahoma",FontWeight.NORMAL,30));
         tut.setFill(Color.BLACK);
-        tut.setX(670);
+        tut.setX(650);
         tut.setY(50);
         root.getChildren().add(tut);
         //UIelements--text2
@@ -397,9 +396,14 @@ public class Board extends Application {
         Polygon fwd=new Polygon(750,120,750,150,800,135);
         fwd.setFill(Color.RED);
         root.getChildren().add(fwd);
-//UIelements--select
-
-
+        //UIelements--select
+        ImageView sillyString = new ImageView();
+        sillyString.setImage(Waldo.waldo(0));
+        sillyString.setX(650);
+        sillyString.setY(150);
+        fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())+1)));
+        // I am deeply ashamed of this code .. never look into what [Waldo class] actually does.
+        root.getChildren().add(sillyString);
 // UI - Difficulty Selecter
         Random rng = new Random();
         Rectangle easy = new Rectangle(590,310,35,20);
@@ -409,7 +413,7 @@ public class Board extends Application {
         Rectangle hard = new Rectangle(750,310,35,20);
         hard.setFill(Color.RED);
 
-        easy.setOnMouseClicked(event ->root.getChildren().remove(pegs));
+        easy.setOnMouseClicked(event ->root.getChildren().removeAll(pegs));
         easy.setOnMouseClicked(event   ->makePegPlacement( difficulty("Easy",rng.nextInt(2))));
         medium.setOnMouseClicked(event->makePegPlacement( difficulty("Medium",rng.nextInt(2))));
         hard.setOnMouseClicked(event   ->makePegPlacement( difficulty("Hard",rng.nextInt(2))));

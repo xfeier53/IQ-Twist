@@ -464,17 +464,7 @@ public class TwistGame {
         return new String[0];
     }
     //SomethingforUI--select
-    public static String intToLetter(int number){
-        if(number%7==0){return"a";}
-        if(number%7==1){return"b";}
-        if(number%7==2){return"c";}
-        if(number%7==3){return"d";}
-        if(number%7==4){return"e";}
-        if(number%7==5){return"f";}
-        if(number%7==6){return"g";}
-        if(number%7==7){return"h";}
-        else return "a";
-    }
+
 
 
 //classforanumber
