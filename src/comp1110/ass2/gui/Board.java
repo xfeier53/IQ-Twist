@@ -58,7 +58,7 @@ public class Board extends Application {
         return retur;
     }
     public String unTertris(Image image){
-        String z =image.impl_getUrl();
+        String z =image.impl_getUrl(); // cant find alternate method
         return ""+z.charAt(27);
     }
         //("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false)
@@ -409,7 +409,7 @@ public class Board extends Application {
         Rectangle hard = new Rectangle(750,310,35,20);
         hard.setFill(Color.RED);
 
-        easy.setOnMouseClicked(event ->root.getChildren().removeAll(pegs));
+        easy.setOnMouseClicked(event ->root.getChildren().remove(pegs));
         easy.setOnMouseClicked(event   ->makePegPlacement( difficulty("Easy",rng.nextInt(2))));
         medium.setOnMouseClicked(event->makePegPlacement( difficulty("Medium",rng.nextInt(2))));
         hard.setOnMouseClicked(event   ->makePegPlacement( difficulty("Hard",rng.nextInt(2))));
