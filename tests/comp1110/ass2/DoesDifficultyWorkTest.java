@@ -1,5 +1,5 @@
 package comp1110.ass2;
-
+// Written by Lachlan McVicar u6406312
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
