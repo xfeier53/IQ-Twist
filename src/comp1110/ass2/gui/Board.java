@@ -396,13 +396,20 @@ public class Board extends Application {
         Polygon fwd=new Polygon(750,120,750,150,800,135);
         fwd.setFill(Color.RED);
         root.getChildren().add(fwd);
+        //UIelements--forwardarrow
+        Polygon back=new Polygon(630,120,630,150,580,135);
+        back.setFill(Color.RED);
+        root.getChildren().add(back);
         //UIelements--select
         ImageView sillyString = new ImageView();
         sillyString.setImage(Waldo.waldo(0));
         sillyString.setX(650);
         sillyString.setY(150);
+        // I am deeply ashamed of this following code .. never look into what [Waldo class] actually does.
+        // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
         fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())+1)));
-        // I am deeply ashamed of this code .. never look into what [Waldo class] actually does.
+        back.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())-1)));
+        // end shame
         root.getChildren().add(sillyString);
 // UI - Difficulty Selecter
         Random rng = new Random();
