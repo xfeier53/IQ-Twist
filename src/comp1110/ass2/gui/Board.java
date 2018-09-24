@@ -46,7 +46,22 @@ public class Board extends Application {
 
     double xy[] = {75,25};
 
+    public class Tetris{
+        String pieceID;
+        int width;
+        int height;
+    }
 
+    public Image tetris(String pieceID, int width, int height) {
+        String zed=pieceID;
+        Image retur = new Image("comp1110/ass2/gui/assets/"+pieceID+".png",width,height,false,false);
+        return retur;
+    }
+    public String unTertris(Image image){
+        String z =image.impl_getUrl();
+        return ""+z.charAt(27);
+    }
+        //("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false)
     private double[] relativeMouseClick = new double[2];
 
     // this this is difficulty tests - u6406312
