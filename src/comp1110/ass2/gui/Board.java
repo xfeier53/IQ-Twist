@@ -68,27 +68,27 @@ public class Board extends Application {
     public static String difficulty(String Difficulty, int insertRandom) {
         String output;
         if (Difficulty == "Easy") {
-            if (insertRandom == 0) { return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 0) { return "i1A0"+"k4A0"+"l8A0"+"k5C0"+"l2D0"+"j7D0"+"j8D0"; // this is problem 22 from the manual
             }
-            if (insertRandom == 1) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 1) {return "k1B0"+"k2B0"+"i3B0"+"j6B0"+"j2C0"+"l6C0"+"l1D0"; // this is problem 23 from the manual
             }
-            if (insertRandom == 2) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 2) {return "l1A0"+"i2A0"+"k6A0"+"k6B0"+"j6D0"+"j7C0"+"l6C0"; // this is problem 24 from the manual
             }
         }
         if (Difficulty == "Medium") {
-            if (insertRandom == 0) {
+            if (insertRandom == 0) { return "j3B0"+"j5C0"; // this is problem 49 from the manual
             }
-            if (insertRandom == 1) {
+            if (insertRandom == 1) { return "l3A0"+"l5A0"+"k3D0"+"k5D0"; // this is problem 79 from the manual
             }
-            if (insertRandom == 2) {
+            if (insertRandom == 2) { return "i4C0"+"j5B0"+"j7B0"; // this is problem 82 from the manual
             }
         }
         if (Difficulty == "Hard") {
-            if (insertRandom == 0) {
+            if (insertRandom == 0) { return "i7C0"+"j5B0"+"k5D0"+"l3C0"; // this is problem 112 from the manual
             }
-            if (insertRandom == 1) {
+            if (insertRandom == 1) { return "k5b0"+"j5C0"+"k5d0"; // this is problem 119 from the manual
             }
-            if (insertRandom == 2) {
+            if (insertRandom == 2) { return "k4C0"+"k6A0"+"j5B0"; // this is problem 105 from the manual
             }
         }
         return "";
@@ -409,6 +409,7 @@ public class Board extends Application {
         Rectangle hard = new Rectangle(750,310,35,20);
         hard.setFill(Color.RED);
 
+        easy.setOnMouseClicked(event ->root.getChildren().removeAll(pegs));
         easy.setOnMouseClicked(event   ->makePlacement( difficulty("Easy",rng.nextInt(2))));
         medium.setOnMouseClicked(event->makePlacement( difficulty("Medium",rng.nextInt(2))));
         hard.setOnMouseClicked(event   ->makePlacement( difficulty("Hard",rng.nextInt(2))));
