@@ -45,7 +45,7 @@ public enum Piece {
 
     private int orientation;
 
-    //Array to contain relative [x,y] locations of all the nodes that a piece occupies it is not ordered -James
+    //Array to contain relative [x,y] locations of all the nodes that a piece occupies it not be ordered -James
     private int[][] relativeXY;
 
     //Set the Piece orientation and relative coordinates are intially all assuming Orientation == 0
@@ -91,11 +91,13 @@ public enum Piece {
         return orientation;
     }
 
-    //This function sets the orientation, it also flips and rotates the coordinates of the piece
+    //Function to set the orientation of a piece
+    //Will also update the relativeXY, height, and width fields to match the new orientation
+    //Importantly the order relativeXY array will not change after this function is called though the points in it will
     public void setOrientation(int newOrientation) {
         //Check if piece needs to be flipped and then flip it over either the horzontal or vertical axis
         if (newOrientation / 4 != orientation / 4) {
-            flipPiece(orientation % 2 != 0);
+            this.relativeXY = flipPiece(orientation % 2 != 0);
         }
         //Get number of times the piece needs to be rotated
         int numberOfRotations = (newOrientation % 4) - (orientation % 4);
@@ -105,7 +107,7 @@ public enum Piece {
         }
         //Loop through the rotations that need to be performed
         for (int i = 0; i < numberOfRotations; i++) {
-            this.relativeXY = rotateOnce(this.relativeXY);
+            this.relativeXY = rotateOnce();
 
             //switch height and width due to rotation
             int temp = height;
@@ -117,9 +119,9 @@ public enum Piece {
         this.orientation = newOrientation;
     }
 
-    //Functions that flips a pieces coordinates
-    //vertical: the piece will be flipped over the vertical axis otherwise flipped horizontally
-    private void flipPiece(boolean vertical) {
+    //Function that returns the relative coordinates of a piece if flipped over a particular axis
+    //vertical: if true the piece will be fliped over the vertical axis, fliped horizontally otherwise
+    private int[][] flipPiece(boolean vertical) {
         //Set coordinates to be flipped and the adjusment value to set the top left corner to be (0,0)
         int flip = 1;
         int other = 0;
@@ -140,11 +142,14 @@ public enum Piece {
             newXY[i][other] = relativeXY[i][other];
             newXY[i][2] = relativeXY[i][2];
         }
-        relativeXY = newXY;
+        return newXY;
     }
 
-    //Take xy coordinates and rotate them 90 degrees clockwise
-    private int[][] rotateOnce(int[][] coordinates) {
+    //Function that returns the relative coordinates of a piece if rotated clockwise 90 degrees
+    private int[][] rotateOnce() {
+
+        int[][] coordinates = this.relativeXY;
+
         //new coordinate array
         int[][] newCoordinates = new int[coordinates.length][3];
 
@@ -161,6 +166,9 @@ public enum Piece {
         }
         return newCoordinates;
     }
+
+
+
 
     public int[][] getRelativeXY() {
         return relativeXY;

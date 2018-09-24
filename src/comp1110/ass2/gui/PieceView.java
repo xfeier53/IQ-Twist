@@ -121,7 +121,6 @@ public class PieceView extends ImageView{
         return null;
     }
 
-
     //Finds point where the piece snaps to after being released from the drag
     double[] findSnapTo(){
 
