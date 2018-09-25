@@ -10,6 +10,10 @@ import static org.junit.Assert.fail;
 
 public class PieceSetOrientationTest {
 
+    //Function that tests if the piece has the same values
+    //piece.relativeXY has same values as testCoord, and of same length
+    //piece.getOrientation equals orientation etc
+    //testCount and testName are used to determine which test failed
     public void test(Piece piece,int[][] testCoord,int orientation ,int height, int width, int testCount,String testName){
 
         String prefix = "\nFailed test: " + testName + " at test number: " + testCount;
@@ -31,6 +35,7 @@ public class PieceSetOrientationTest {
 
     }
 
+    //Roate the piece without flipping it ie no orientations 4 or above
     @Test
     public void rotatePieceWithoutFlipTest(){
         Piece pieceB = Piece.PIECEb;
@@ -85,6 +90,7 @@ public class PieceSetOrientationTest {
         testCount = testCount + 1;
     }
 
+    //Flip the piece without rotating it ie only orientations of 4
     @Test
     public void flipPieceWithoutRotateTest(){
 
@@ -129,6 +135,7 @@ public class PieceSetOrientationTest {
 
     }
 
+    //General test to any value from an orientation of 0
     @Test
     public void rotateAndFlipTest(){
         Piece pieceE = Piece.PIECEe;
@@ -169,6 +176,7 @@ public class PieceSetOrientationTest {
         testCount = testCount + 1;
     }
 
+    //Change orientation from 0 and then change it again
     @Test
     public void rotateAndFlipFromAnyOrientationTest(){
         Piece pieceD = Piece.PIECEd;
@@ -215,5 +223,22 @@ public class PieceSetOrientationTest {
         test(pieceF,testVals,orientation,height,width,testCount,testName);
         testCount = testCount + 1;
 
+    }
+
+    //Test weather Assertion error is thrown on values outside range (0,1,..,7)
+    @Test(expected = AssertionError.class)
+    public void badPositiveOrientationTest(){
+
+        Piece pieceA = Piece.PIECEa;
+
+        pieceA.setOrientation(8);
+    }
+
+    @Test(expected = AssertionError.class)
+    public void negativeOrientationTest(){
+
+        Piece pieceD = Piece.PIECEd;
+
+        pieceD.setOrientation(-1);
     }
 }
