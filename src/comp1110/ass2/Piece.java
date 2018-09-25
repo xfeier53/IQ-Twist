@@ -19,6 +19,8 @@ package comp1110.ass2;
    In this way, we can get the shape and the hole of pieces -- feier
 */
 
+import sun.jvm.hotspot.utilities.Assert;
+
 public enum Piece {
 
     PIECEa('a', 3, Colour.RED, 2, 3),
@@ -95,6 +97,9 @@ public enum Piece {
     //Will also update the relativeXY, height, and width fields to match the new orientation
     //Importantly the order relativeXY array will not change after this function is called though the points in it will
     public void setOrientation(int newOrientation) {
+
+        assert(newOrientation <=7 && newOrientation >= 0);
+
         //Check if piece needs to be flipped and then flip it over either the horzontal or vertical axis
         if (newOrientation / 4 != orientation / 4) {
             this.relativeXY = flipPiece(orientation % 2 != 0);
