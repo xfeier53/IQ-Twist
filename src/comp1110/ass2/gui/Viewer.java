@@ -3,6 +3,7 @@ package comp1110.ass2.gui;
 import comp1110.ass2.Peg;
 import comp1110.ass2.Piece;
 import comp1110.ass2.TwistGame;
+import comp1110.ass2.Waldo;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -333,8 +334,6 @@ public class Viewer extends Application {
         Polygon fwd=new Polygon(670,120,670,150,700,135);
         fwd.setFill(Color.RED);
         root.getChildren().add(fwd);
-//UIelements--select
-
 
 // UI - Difficulty Selecter
         Random rng = new Random();
@@ -351,6 +350,7 @@ hard.setOnMouseClicked(event   ->makePlacement( difficulty("Hard",rng.nextInt(2)
 root.getChildren().add(easy);
 root.getChildren().add(medium);
 root.getChildren().add(hard);
+
 
 
 

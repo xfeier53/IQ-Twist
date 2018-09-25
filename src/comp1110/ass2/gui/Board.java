@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Piece;
 import comp1110.ass2.TwistGame;
+import comp1110.ass2.Waldo;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -46,34 +47,47 @@ public class Board extends Application {
 
     double xy[] = {75,25};
 
+    public class Tetris{
+        String pieceID;
+        int width;
+        int height;
+    }
 
+    public Image tetris(String pieceID, int width, int height) {
+        String zed=pieceID;
+        Image retur = new Image("comp1110/ass2/gui/assets/"+pieceID+".png",width,height,false,false);
+        return retur;
+    }
+
+
+        //("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false)
     private double[] relativeMouseClick = new double[2];
 
     // this this is difficulty tests - u6406312
     public static String difficulty(String Difficulty, int insertRandom) {
         String output;
         if (Difficulty == "Easy") {
-            if (insertRandom == 0) { return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 0) { return "i1A0"+"k4A0"+"l8A0"+"k5C0"+"l2D0"+"j7D0"+"j8D0"; // this is problem 22 from the manual
             }
-            if (insertRandom == 1) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 1) {return "k1B0"+"k2B0"+"i3B0"+"j6B0"+"j2C0"+"l6C0"+"l1D0"; // this is problem 23 from the manual
             }
-            if (insertRandom == 2) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 2) {return "l1A0"+"i2A0"+"k6A0"+"k6B0"+"j6D0"+"j7C0"+"l6C0"; // this is problem 24 from the manual
             }
         }
         if (Difficulty == "Medium") {
-            if (insertRandom == 0) {
+            if (insertRandom == 0) { return "j3B0"+"j5C0"; // this is problem 49 from the manual
             }
-            if (insertRandom == 1) {
+            if (insertRandom == 1) { return "l3A0"+"l5A0"+"k3D0"+"k5D0"; // this is problem 79 from the manual
             }
-            if (insertRandom == 2) {
+            if (insertRandom == 2) { return "i4C0"+"j5B0"+"j7B0"; // this is problem 82 from the manual
             }
         }
         if (Difficulty == "Hard") {
-            if (insertRandom == 0) {
+            if (insertRandom == 0) { return "i7C0"+"j5B0"+"k5D0"+"l3C0"; // this is problem 112 from the manual
             }
-            if (insertRandom == 1) {
+            if (insertRandom == 1) { return "k5b0"+"j5C0"+"k5d0"; // this is problem 119 from the manual
             }
-            if (insertRandom == 2) {
+            if (insertRandom == 2) { return "k4C0"+"k6A0"+"j5B0"; // this is problem 105 from the manual
             }
         }
         return "";
@@ -368,7 +382,7 @@ public class Board extends Application {
         javafx.scene.text.Text tut= new javafx.scene.text.Text("TutorialBox");
         tut.setFont(Font.font("Tahoma",FontWeight.NORMAL,30));
         tut.setFill(Color.BLACK);
-        tut.setX(670);
+        tut.setX(650);
         tut.setY(50);
         root.getChildren().add(tut);
         //UIelements--text2
@@ -382,9 +396,21 @@ public class Board extends Application {
         Polygon fwd=new Polygon(750,120,750,150,800,135);
         fwd.setFill(Color.RED);
         root.getChildren().add(fwd);
-//UIelements--select
-
-
+        //UIelements--forwardarrow
+        Polygon back=new Polygon(630,120,630,150,580,135);
+        back.setFill(Color.RED);
+        root.getChildren().add(back);
+        //UIelements--select
+        ImageView sillyString = new ImageView();
+        sillyString.setImage(Waldo.waldo(0));
+        sillyString.setX(650);
+        sillyString.setY(150);
+        // I am deeply ashamed of this following code .. never look into what [Waldo class] actually does.
+        // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
+        fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())+1)));
+        back.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())-1)));
+        // end shame
+        root.getChildren().add(sillyString);
 // UI - Difficulty Selecter
         Random rng = new Random();
         Rectangle easy = new Rectangle(590,310,35,20);
@@ -394,9 +420,10 @@ public class Board extends Application {
         Rectangle hard = new Rectangle(750,310,35,20);
         hard.setFill(Color.RED);
 
-        easy.setOnMouseClicked(event   ->makePlacement( difficulty("Easy",rng.nextInt(2))));
-        medium.setOnMouseClicked(event->makePlacement( difficulty("Medium",rng.nextInt(2))));
-        hard.setOnMouseClicked(event   ->makePlacement( difficulty("Hard",rng.nextInt(2))));
+        easy.setOnMouseClicked(event ->root.getChildren().removeAll(pegs));
+        easy.setOnMouseClicked(event   ->makePegPlacement( difficulty("Easy",rng.nextInt(2))));
+        medium.setOnMouseClicked(event->makePegPlacement( difficulty("Medium",rng.nextInt(2))));
+        hard.setOnMouseClicked(event   ->makePegPlacement( difficulty("Hard",rng.nextInt(2))));
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
