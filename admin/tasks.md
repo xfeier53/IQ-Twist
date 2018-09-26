@@ -19,6 +19,10 @@ Feier Xiao task 5;
 
 ## Mid-Semester Break
 
+Feier Xiao task 6, 9;
+James Frampton Reid task 7;
+Lachlan McVicar task 8;
+
 ## Week 7
 
 ## Week 8

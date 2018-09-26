@@ -402,27 +402,29 @@ public class TwistGame {
         }
     }
 
-    // Get hint, return null means no solution, String[] is hint for different solutions
+    // Get hint, return null means no solution, String[] are hints for different solutions
     public static String[] getHint(String placement) {
         String[] solutions = getSolutions(placement);
         int[] placedPieces = new int[8];
         List<String> hint = new ArrayList<>();
 
         // Means there is no any solutions from this placement
-        if (solutions == null) {
+        if (solutions.length == 0) {
             return null;
         } else {
             // Record the placed pieces
             for (int i = 0 ; i < placement.length() / 4; i++) {
                 placedPieces[placement.charAt(4 * i) - 'a'] = 1;
+                if (placement.charAt(4 * i) >= 'h') {
+                    break;
+                }
             }
             // Return back hint for every different solutions
             for (String s : solutions) {
                 for (int i = 0; i < s.length() / 4; i++) {
-                    if (placedPieces[i] == 1) {
-                        continue;
-                    } else {
-                        hint.add(s.substring(4 * i, 4));
+                    if (placedPieces[i] != 1) {
+                        hint.add(s.substring(4 * i, 4 * i + 4));
+                        break;
                     }
                 }
             }

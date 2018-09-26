@@ -19,8 +19,6 @@ package comp1110.ass2;
    In this way, we can get the shape and the hole of pieces -- feier
 */
 
-import sun.jvm.hotspot.utilities.Assert;
-
 public enum Piece {
 
     PIECEa('a', 3, Colour.RED, 2, 3),
