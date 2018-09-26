@@ -402,11 +402,14 @@ public class TwistGame {
         }
     }
 
+    //c1A3d2A6e2C3g4A7i6B0j2B0j1C0k3C0l4B0l5C0
+
     // Get hint, return null means no solution, String[] are hints for different solutions
     public static String[] getHint(String placement) {
         String[] solutions = getSolutions(placement);
         int[] placedPieces = new int[8];
         List<String> hint = new ArrayList<>();
+
 
         // Means there is no any solutions from this placement
         if (solutions.length == 0) {
