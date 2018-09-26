@@ -421,10 +421,10 @@ public class Board extends Application {
         hard.setFill(Color.RED);
 
         easy.setOnMousePressed(event -> pegs.getChildren().clear() );
-        easy.setOnMouseReleased(event   ->makePegPlacement( difficulty("Easy",rng.nextInt(2))));
-        medium.setOnMouseReleased(event->makePegPlacement( difficulty("Medium",rng.nextInt(2))));
+        easy.setOnMouseReleased(event   ->makePegPlacement( difficulty("Easy",rng.nextInt(3))));
+        medium.setOnMouseReleased(event->makePegPlacement( difficulty("Medium",rng.nextInt(3))));
         medium.setOnMousePressed(event -> pegs.getChildren().clear() );
-        hard.setOnMouseReleased(event   ->makePegPlacement( difficulty("Hard",rng.nextInt(2))));
+        hard.setOnMouseReleased(event   ->makePegPlacement( difficulty("Hard",rng.nextInt(3))));
         hard.setOnMousePressed(event -> pegs.getChildren().clear() );
         root.getChildren().add(easy);
         root.getChildren().add(medium);
