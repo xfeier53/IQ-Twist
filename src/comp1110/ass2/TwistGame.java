@@ -417,10 +417,10 @@ public class TwistGame {
         } else {
             // Record the placed pieces
             for (int i = 0 ; i < placement.length() / 4; i++) {
-                placedPieces[placement.charAt(4 * i) - 'a'] = 1;
                 if (placement.charAt(4 * i) >= 'h') {
                     break;
                 }
+                placedPieces[placement.charAt(4 * i) - 'a'] = 1;
             }
             // Return back hint for every different solutions
             for (String s : solutions) {
