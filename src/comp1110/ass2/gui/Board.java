@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -35,7 +36,7 @@ public class Board extends Application {
     private static final int BOARD_HEIGHT = 700;
     public static final int SQUARE_SIZE = 70;
 
-    public static String boardState = "k3C0l4B0l5C0";
+    public static String boardState = "i6B0j2B0j1C0k3C0l4B0l5C0";
 
     private final Group root = new Group();
     //Contains all the PieceViews
@@ -44,6 +45,9 @@ public class Board extends Application {
     private final Group lines = new Group();
 
     private final Group pegs = new Group();
+
+    public static PieceView selectedPiece;
+
 
     double xy[] = {75,25};
 
@@ -343,7 +347,6 @@ public class Board extends Application {
         }
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -363,9 +366,39 @@ public class Board extends Application {
             @Override
             public void handle(KeyEvent event) {
 
+
+                if (selectedPiece != null){
+
+
+                    int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
+
+                    int newOrientation = selectedPiece.getOrientation() % 4;
+
+                    switch (event.getCode()){
+                        case UP:
+                            isFlipped = (isFlipped == 0) ? 4 : 0;
+                            break;
+                        case DOWN:
+                            isFlipped = (isFlipped == 0) ? 4 : 0;
+                            break;
+                        case RIGHT:
+                            newOrientation = (newOrientation + 1) % 4;
+                            break;
+                        case LEFT:
+                            newOrientation = Math.floorMod(newOrientation - 1,4);
+                            break;
+
+                    }
+
+
+                    selectedPiece.setOrientation(newOrientation + isFlipped);
+
+                }
+
             }
 
         });
+
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
 

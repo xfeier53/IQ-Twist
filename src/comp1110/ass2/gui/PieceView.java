@@ -44,16 +44,24 @@ public class PieceView extends ImageView{
         //Find point of mouse click relative to the top left of pieceView
         pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
+
             public void handle(MouseEvent event) {
                 isPressed = true;
+
+                Board.selectedPiece = pieceView;
+
                 relativeMouseClick[0] = event.getSceneX() - pieceView.getX();
                 relativeMouseClick[1] = event.getSceneY() - pieceView.getY();
             }
         });
+
         //Upon release find where it will snap to and determine whether that is a valid location or not
         pieceView.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+
+                Board.selectedPiece = null;
+
                 //get snap coordinates
                 double[] testCoordinates =  pieceView.findSnapTo();
                 isPressed = false;
@@ -91,8 +99,18 @@ public class PieceView extends ImageView{
             @Override
             public void handle(ScrollEvent event) {
 
-                if (isPressed){
-                    relativeMouseClick =  rotateAndFlip((orientation + 1) % 8, relativeMouseClick);
+                if (isPressed && event.getDeltaY() > 0){
+
+                    int isFlipped = (pieceView.getOrientation() < 4) ? 0 : 4;
+                    int newOrientation = (orientation + 1) % 4 + isFlipped;
+
+                    setOrientation(newOrientation);
+                }
+                else if(isPressed && event.getDeltaY() < 0){
+                    int isFlipped = (pieceView.getOrientation() < 4) ? 0 : 4;
+                    int newOrientation = Math.floorMod(orientation - 1,4) + isFlipped;
+
+                    setOrientation(newOrientation);
                 }
             }
         });
@@ -183,8 +201,16 @@ public class PieceView extends ImageView{
         this.rotateAndFlip(0);
     }
 
+
+    public void setOrientation(int orientation) {
+
+        relativeMouseClick =  rotateAndFlip((orientation), relativeMouseClick);
+
+        this.orientation = orientation;
+    }
+
     //rotate and flip PieceView around a point and return where that point ends up relative to the origin
-    double[] rotateAndFlip(int orientation, double[] xy){
+    public double[] rotateAndFlip(int orientation, double[] xy){
 
 
         double width = getWidth();
@@ -300,6 +326,8 @@ public class PieceView extends ImageView{
         return column;
     }
 
+
+
     double getHeight(){
 
         if (orientation % 2 == 0){
@@ -321,7 +349,6 @@ public class PieceView extends ImageView{
         }
 
     }
-
 
     //Gets the piecePlacementString using coding from elsewhere in TwistGame
     String getPiecePlacementString(){

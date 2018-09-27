@@ -408,7 +408,6 @@ public class TwistGame {
         int[] placedPieces = new int[8];
         List<String> hint = new ArrayList<>();
 
-
         // Means there is no any solutions from this placement
         if (solutions.length == 0) {
             return null;
