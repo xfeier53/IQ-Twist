@@ -19,52 +19,74 @@ public class TwistGame {
     }
 
 
-  /**
-   * Determine whether a piece or peg placement is well-formed according to the following:
-   * - it consists of exactly four characters
-   * - the first character is in the range a .. l (pieces and pegs)
-   * - the second character is in the range 1 .. 8 (columns)
-   * - the third character is in the range A .. D (rows)
-   * - the fourth character is in the range 0 .. 7 (if a piece) or is 0 (if a peg)
-   *
-   * @param piecePlacement A string describing a single piece or peg placement
-   * @return True if the placement is well-formed
-   */
-  public static boolean isPlacementWellFormed(String piecePlacement) {
-      int loop = piecePlacement.length();
-      int count = 0;
-      String at1 = "abcdefghijkl";
-      String at2 = "12345678";
-      String at3 = "ABCD";
-      String at4 = "01234567";
-      String atSpecial = "ijkl";
-      if (loop % 4 != 0) {
-          return false;
-      }
-      while (loop > 0) {
-          if (at1.indexOf(piecePlacement.charAt(count)) == -1) {
-              return false;
-          }
-          if (at2.indexOf(piecePlacement.charAt(count + 1)) == -1) {
-              return false;
-          }
-          if (at3.indexOf(piecePlacement.charAt(count + 2)) == -1) {
-              return false;
-          }
-          if (at4.indexOf(piecePlacement.charAt(count + 3)) == -1) {
-              return false;
-          }
-          if (atSpecial.indexOf(piecePlacement.charAt(count)) != -1 && piecePlacement.charAt(count + 3) != '0') {
-              return false;
-          }
-          count = count + 4;
-          loop = loop - 4;
+    /**
+     * Determine whether a piece or peg placement is well-formed according to the following:
+     * - it consists of exactly four characters
+     * - the first character is in the range a .. l (pieces and pegs)
+     * - the second character is in the range 1 .. 8 (columns)
+     * - the third character is in the range A .. D (rows)
+     * - the fourth character is in the range 0 .. 7 (if a piece) or is 0 (if a peg)
+     *
+     * @param piecePlacement A string describing a single piece or peg placement
+     * @return True if the placement is well-formed
+     */
+//  public static boolean isPlacementWellFormed(String piecePlacement) {
+//      int loop = piecePlacement.length();
+//      int count = 0;
+//      String at1 = "abcdefghijkl";
+//      String at2 = "12345678";
+//      String at3 = "ABCD";
+//      String at4 = "01234567";
+//      String atSpecial = "ijkl";
+//      if (loop % 4 != 0) {
+//          return false;
+//      }
+//      while (loop > 0) {
+//          if (at1.indexOf(piecePlacement.charAt(count)) == -1) {
+//              return false;
+//          }
+//          if (at2.indexOf(piecePlacement.charAt(count + 1)) == -1) {
+//              return false;
+//          }
+//          if (at3.indexOf(piecePlacement.charAt(count + 2)) == -1) {
+//              return false;
+//          }
+//          if (at4.indexOf(piecePlacement.charAt(count + 3)) == -1) {
+//              return false;
+//          }
+//          if (atSpecial.indexOf(piecePlacement.charAt(count)) != -1 && piecePlacement.charAt(count + 3) != '0') {
+//              return false;
+//          }
+//          count = count + 4;
+//          loop = loop - 4;
+//
+//
+//      }
+//      return true;
+//  }
 
+    // I rewrite your code to see if it can be optimised
+    public static boolean isPlacementWellFormed(String piecePlacement) {
+        if (piecePlacement.length() != 4) {
+            return false;
+        }
+        if (piecePlacement.charAt(0) >= 'i' && piecePlacement.charAt(0) <= 'l') {
+            if (piecePlacement.charAt(3) != '0') {
+                return false;
+            }
+        }
+        if (piecePlacement.charAt(0) >= 'a' && piecePlacement.charAt(0) <= 'l') {
+            if (piecePlacement.charAt(1) >= '1' && piecePlacement.charAt(1) <= '8') {
+                if (piecePlacement.charAt(2) >= 'A' && piecePlacement.charAt(2) <= 'D') {
+                    if (piecePlacement.charAt(3) >= '0' && piecePlacement.charAt(3) <= '7') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
 
-      }
-      return true;
-  }
-
+    }
 
     /**
      * Determine whether a placement string is well-formed:
@@ -81,7 +103,7 @@ public class TwistGame {
         // The array for the pieces and pegs
         // Every time I got a piece from the placement, minus 1
         // At the end, check whether anyone is smaller than 0
-        int[] count = new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2};
+        int[] count = new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2};
         char lastPiece = 'a';
         int index;
 
@@ -89,7 +111,7 @@ public class TwistGame {
             return false;
         }
         for (int i = 0; i < placement.length() / 4; i++) {
-            if(!isPlacementWellFormed(placement.substring(4 * i, 4 + 4 * i))) {
+            if (!isPlacementWellFormed(placement.substring(4 * i, 4 + 4 * i))) {
                 return false;
             }
 
@@ -145,9 +167,8 @@ public class TwistGame {
             pieceType = placement.charAt(4 * i);
             column = placement.charAt(4 * i + 1) - '1';
             row = placement.charAt(4 * i + 2) - 'A';
-
             orientation = placement.charAt(4 * i + 3) - '0';
-            if (!decodeString(nodes, row, column, orientation, pieceType)) {
+            if (!setPieces(nodes, row, column, orientation, pieceType)) {
                 return false;
             }
         }
@@ -163,8 +184,7 @@ public class TwistGame {
         }
     }
 
-    public static boolean decodeString(Node[][] nodes, int row, int column, int orientation, char pieceType) {
-
+    public static boolean setPieces(Node[][] nodes, int row, int column, int orientation, char pieceType) {
         switch (pieceType) {
             case 'a': if (nodes[row][column].setPiece(nodes, Piece.PIECEa, row, column,  orientation)) { return true; } break;
             case 'b': if (nodes[row][column].setPiece(nodes, Piece.PIECEb, row, column,  orientation)) { return true; } break;
@@ -215,7 +235,7 @@ public class TwistGame {
 
         // Process every unplaced pieces
         for (int i = 0; i < 8; i++) {
-            ch = (char)('a' + i);
+            ch = (char) ('a' + i);
             if (placedPieces[i] == 0) {
                 viable.addAll(testNewPieces(placement, ch));
             }
@@ -240,24 +260,50 @@ public class TwistGame {
     // Try every possibility for the pieces
     public static Set<String> testNewPieces(String placement, char ch) {
         Set<String> viable = new HashSet<>();
-        String newPiece, newPlacement;
+        String newPiece, orginalPiece, newPlacement;
         String[] splitedString = findInsertPosition(placement, ch);
 
         // For every possibility
         for (int j = 1; j < 9; j++) {
             for (int k = 0; k < 4; k++) {
                 for (int l = 0; l < 8; l++) {
-                    newPiece = ch + Integer.toString(j) + (char)('A' + k) + Integer.toString(l);
+                    newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
                     newPlacement = splitedString[0] + newPiece + splitedString[1];
+
+                    // Reduce strict symmetry, remove all c and h pieces with rotation greater than 4
+                    if ((newPiece.charAt(0) == 'c' || newPiece.charAt(0) == 'h') && newPiece.charAt(3) >= '4') {
+                        continue;
+                    }
+
+                    // Reduce weak symmetry
+                    // For b, c and h pieces, minus 2
+                    if ((newPiece.charAt(0) == 'b' || newPiece.charAt(0) == 'c' || newPiece.charAt(0) == 'h') && (newPiece.charAt(3) == '2' | newPiece.charAt(3) == '3' | newPiece.charAt(3) == '6' | newPiece.charAt(3) == '7')) {
+                        orginalPiece = newPiece.substring(0, 3) + (char) (newPiece.charAt(3) - 2);
+                    } else if (newPiece.charAt(0) == 'e') {
+                        orginalPiece = newPiece.substring(0, 3) + ((newPiece.charAt(3) - '0' + 1) % 4);
+                    } else if (newPiece.charAt(0) == 'f') {
+                        orginalPiece = newPiece.substring(0, 3) + ((newPiece.charAt(3) - '0' + 2) % 4);
+                    } else {
+                        orginalPiece = null;
+                    }
+
+                    // If the original piece is in the viable
+                    // We don't need the the symmetry piece no matter it is viable or not,
+                    if (orginalPiece != null) {
+                        if (viable.contains(orginalPiece)) {
+                            continue;
+                        }
+                    }
+
                     if (isPlacementStringValid(newPlacement)) {
                         viable.add(newPiece);
                     }
                 }
             }
         }
-        if (!viable.isEmpty()) {
-            viable = reduceSymmetry(viable);
-        }
+//        if (!viable.isEmpty()) {
+//            viable = reduceSymmetry(viable);
+//        }
         return viable;
     }
 
@@ -265,7 +311,7 @@ public class TwistGame {
         String[] splitedString = new String[2];
 
         // Utmost 8 times, till we find the right place to insert the piece
-        for (int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             int charPosition = 4 * i;
             char currentPiece = placement.charAt(charPosition);
             // The last piece
@@ -303,8 +349,8 @@ public class TwistGame {
         for (String symmestryPiece : viable) {
             // Reduce weak symmetry
             // For b, c and h pieces, minus 2
-            if ((symmestryPiece.charAt(0) == 'b' || symmestryPiece.charAt(0) == 'c' || symmestryPiece.charAt(0) == 'h') && (symmestryPiece.charAt(3) == '2'| symmestryPiece.charAt(3) == '3' | symmestryPiece.charAt(3) == '6' | symmestryPiece.charAt(3) == '7')){
-                orginalPiece = symmestryPiece.substring(0, 3) + (char)(symmestryPiece.charAt(3) - 2);
+            if ((symmestryPiece.charAt(0) == 'b' || symmestryPiece.charAt(0) == 'c' || symmestryPiece.charAt(0) == 'h') && (symmestryPiece.charAt(3) == '2' | symmestryPiece.charAt(3) == '3' | symmestryPiece.charAt(3) == '6' | symmestryPiece.charAt(3) == '7')) {
+                orginalPiece = symmestryPiece.substring(0, 3) + (char) (symmestryPiece.charAt(3) - 2);
             } else if (symmestryPiece.charAt(0) == 'e') {
                 orginalPiece = symmestryPiece.substring(0, 3) + ((symmestryPiece.charAt(3) - '0' + 1) % 4);
             } else if (symmestryPiece.charAt(0) == 'f') {
@@ -314,7 +360,7 @@ public class TwistGame {
             }
 
             if (orginalPiece != null) {
-                if (viable.contains(orginalPiece)){
+                if (viable.contains(orginalPiece)) {
                     redundantPiece.add(symmestryPiece);
                 }
             }
@@ -396,7 +442,7 @@ public class TwistGame {
             return null;
         } else {
             // Record the placed pieces
-            for (int i = 0 ; i < placement.length() / 4; i++) {
+            for (int i = 0; i < placement.length() / 4; i++) {
                 if (placement.charAt(4 * i) >= 'h') {
                     break;
                 }
@@ -503,7 +549,7 @@ public class TwistGame {
         for (int i = 0; i < 4; i++) {
             // For every column
             for (int j = 0; j < 8; j++) {
-                placement = placement + (char)(i + '1') + (char)(j + 'A') + "0";
+                placement = placement + (char) (i + '1') + (char) (j + 'A') + "0";
             }
         }
         return placement;
@@ -513,9 +559,8 @@ public class TwistGame {
     //SomethingforUI--select
 
 
-
 //classforanumber
 
-    }
+}
 
 
