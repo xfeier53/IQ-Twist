@@ -325,44 +325,6 @@ public class TwistGame {
         return splitedString;
     }
 
-    public static Set<String> reduceSymmetry(Set<String> viable) {
-        String orginalPiece;
-        Set<String> redundantPiece = new HashSet<>();
-
-        for (String symmestryPiece : viable) {
-            // Reduce strict symmetry, remove all c and h pieces with rotation greater than 4
-            if ((symmestryPiece.charAt(0) == 'c' || symmestryPiece.charAt(0) == 'h') && symmestryPiece.charAt(3) >= '4') {
-                redundantPiece.add(symmestryPiece);
-            }
-        }
-
-        for (String symmestryPiece : viable) {
-            // Reduce weak symmetry
-            // For b, c and h pieces, minus 2
-            if ((symmestryPiece.charAt(0) == 'b' || symmestryPiece.charAt(0) == 'c' || symmestryPiece.charAt(0) == 'h') && (symmestryPiece.charAt(3) == '2' | symmestryPiece.charAt(3) == '3' | symmestryPiece.charAt(3) == '6' | symmestryPiece.charAt(3) == '7')) {
-                orginalPiece = symmestryPiece.substring(0, 3) + (char) (symmestryPiece.charAt(3) - 2);
-            } else if (symmestryPiece.charAt(0) == 'e') {
-                orginalPiece = symmestryPiece.substring(0, 3) + ((symmestryPiece.charAt(3) - '0' + 1) % 4);
-            } else if (symmestryPiece.charAt(0) == 'f') {
-                orginalPiece = symmestryPiece.substring(0, 3) + ((symmestryPiece.charAt(3) - '0' + 2) % 4);
-            } else {
-                orginalPiece = null;
-            }
-
-            if (orginalPiece != null) {
-                if (viable.contains(orginalPiece)) {
-                    redundantPiece.add(symmestryPiece);
-                }
-            }
-        }
-
-        for (String piece : redundantPiece) {
-            viable.remove(piece);
-        }
-        return viable;
-    }
-
-
     /**
      * Return an array of all unique solutions for a given starting placement.
      * <p>
