@@ -371,7 +371,6 @@ public class Board extends Application {
 
 
                     int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
-                    System.out.println(isFlipped);
 
                     int newOrientation = selectedPiece.getOrientation() % 4;
 
@@ -390,7 +389,7 @@ public class Board extends Application {
                             break;
 
                     }
-                    System.out.println(newOrientation + isFlipped);
+
 
                     selectedPiece.setOrientation(newOrientation + isFlipped);
 
