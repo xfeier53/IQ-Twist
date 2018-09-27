@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 public class getHintTest {
     @Rule
-    public Timeout globalTimeout = Timeout.millis(20000);
+    public Timeout globalTimeout = Timeout.millis(2000000);
 
     private void test(String start, String[] expected) {
         String[] out = TwistGame.getHint(start);
@@ -39,6 +39,11 @@ public class getHintTest {
     public void testMutipleSolutions(){
         test("c1A3d2A6e2C3f3C2g4A7h6D0j2B0j1C0k3C0l4B0l5C0", new String[]{"a6A0", "a7A7"});
         test("a6B0b6C0c5A2e4A5f4C2h1A2i7D0j7A0k5B0k5C0l3A0", new String[]{"d1B3", "d1B5"});
+    }
+
+    @Test
+    public void testNew(){
+        test("c1A3d2A6e2C3g4A7i6B0j2B0j1C0k3C0l4B0l5C0", new String[]{"a7A7"});
     }
 
     boolean compareStringArray(String[] firstArray, String[] secondArray) {
