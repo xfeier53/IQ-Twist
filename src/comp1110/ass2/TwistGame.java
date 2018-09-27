@@ -82,7 +82,7 @@ public class TwistGame {
         // Every time I got a piece from the placement, minus 1
         // At the end, check whether anyone is smaller than 0
         int[] count = new int[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2};
-        int[] flag = new int[12];
+        char lastPiece = 'a';
         int index;
 
         if (placement.length() == 0 || placement.length() % 4 != 0) {
@@ -95,17 +95,15 @@ public class TwistGame {
 
             // Get the index by ASCII value of each placement
             index = placement.charAt(4 * i) - 'a';
-            // Check whether the latter alphabet has been came
-            for (int j = index + 1; j < 12; j++) {
-                if (flag[j] == 1) {
-                    return false;
-                }
+
+            // Check whether the last piece is bigger than current
+            if (placement.charAt(4 * i) < lastPiece) {
+                return false;
             }
 
+            lastPiece = placement.charAt(4 * i);
             // Minus the counter
             count[index] -= 1;
-            // Set the flag
-            flag[index] = 1;
         }
         // Check the counter, everyone shouldn't less than 0
         for (int i : count) {
