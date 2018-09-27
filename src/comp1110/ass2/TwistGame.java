@@ -217,7 +217,7 @@ public class TwistGame {
         for (int i = 0; i < 8; i++) {
             ch = (char)('a' + i);
             if (placedPieces[i] == 0) {
-                viable.addAll(testNewPieces(ch, placement));
+                viable.addAll(testNewPieces(placement, ch));
             }
         }
 
@@ -238,41 +238,19 @@ public class TwistGame {
     }
 
     // Try every possibility for the pieces
-    public static Set<String> testNewPieces(char ch, String placement) {
+    public static Set<String> testNewPieces(String placement, char ch) {
         Set<String> viable = new HashSet<>();
-        String firstString = "", secondString, thirdString = "", newPlacement;
-
-
-        // Utmost 8 times, till we find the right place to insert the piece
-        for (int i = 0; i < 8; i++){
-            char currentPiece = placement.charAt(4 * i);
-            // The last piece
-            if (currentPiece > 'h') {
-                firstString = placement.substring(0, 4 * i);
-                thirdString = placement.substring(4 * i);
-                break;
-            }
-            if (ch < currentPiece) {
-                // The first piece
-                if (i == 0) {
-                    firstString = "";
-                    thirdString = placement;
-                } else {
-                    firstString = placement.substring(0, 4 * i);
-                    thirdString = placement.substring(4 * i);
-                }
-                break;
-            }
-        }
+        String newPiece, newPlacement;
+        String[] splitedString = findInsertPosition(placement, ch);
 
         // For every possibility
         for (int j = 1; j < 9; j++) {
             for (int k = 0; k < 4; k++) {
                 for (int l = 0; l < 8; l++) {
-                    secondString = ch + Integer.toString(j) + (char)('A' + k) + Integer.toString(l);
-                    newPlacement = firstString + secondString + thirdString;
+                    newPiece = ch + Integer.toString(j) + (char)('A' + k) + Integer.toString(l);
+                    newPlacement = splitedString[0] + newPiece + splitedString[1];
                     if (isPlacementStringValid(newPlacement)) {
-                        viable.add(secondString);
+                        viable.add(newPiece);
                     }
                 }
             }
@@ -281,6 +259,34 @@ public class TwistGame {
             viable = reduceSymmetry(viable);
         }
         return viable;
+    }
+
+    public static String[] findInsertPosition(String placement, char ch) {
+        String[] splitedString = new String[2];
+
+        // Utmost 8 times, till we find the right place to insert the piece
+        for (int i = 0; i < 8; i++){
+            int charPosition = 4 * i;
+            char currentPiece = placement.charAt(charPosition);
+            // The last piece
+            if (currentPiece > 'h') {
+                splitedString[0] = placement.substring(0, charPosition);
+                splitedString[1] = placement.substring(charPosition);
+                break;
+            }
+            if (ch < currentPiece) {
+                // The first piece
+                if (i == 0) {
+                    splitedString[0] = "";
+                    splitedString[1] = placement;
+                } else {
+                    splitedString[0] = placement.substring(0, charPosition);
+                    splitedString[1] = placement.substring(charPosition);
+                }
+                break;
+            }
+        }
+        return splitedString;
     }
 
     public static Set<String> reduceSymmetry(Set<String> viable) {
@@ -359,7 +365,8 @@ public class TwistGame {
 
     public static void setNextPlacement(Set<String> solutions, String placement, int resultLength) {
         Set<String> viable;
-        String firstString = "", secondString = "", newPlacement;
+        String newPiece, newPlacement;
+        String[] splitedString = new String[2];
 
         // If the length of the List is 32, that is the full solutions
         if (placement.length() == resultLength) {
@@ -371,31 +378,9 @@ public class TwistGame {
         if (viable == null) {
             return;
         }
-        for (String newPiece : viable) {
-
-            // Utmost 8 times, till we find the right place to insert the piece
-            for (int i = 0; i < 8; i++) {
-                char currentPiece = placement.charAt(4 * i);
-                // The last piece
-                if (currentPiece > 'h') {
-                    firstString = placement.substring(0, 4 * i);
-                    secondString = placement.substring(4 * i);
-                    break;
-                }
-                if (newPiece.charAt(0) < currentPiece) {
-                    // The first piece
-                    if (i == 0) {
-                        firstString = "";
-                        secondString = placement;
-                    } else {
-                        firstString = placement.substring(0, 4 * i);
-                        secondString = placement.substring(4 * i);
-                    }
-                    break;
-                }
-            }
-
-            newPlacement = firstString + newPiece + secondString;
+        for (String s : viable) {
+            splitedString = findInsertPosition(placement, s.charAt(0));
+            newPlacement = splitedString[0] + s + splitedString[1];
             setNextPlacement(solutions, newPlacement, resultLength);
         }
     }
