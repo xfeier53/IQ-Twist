@@ -9,16 +9,6 @@ import java.util.*;
  * (http://www.smartgames.eu/en/smartgames/iq-twist)
  */
 public class TwistGame {
-
-    public static void main(String[] args) {
-
-
-        System.out.println(isPlacementStringValid("a7A7b7A7"));
-
-        //isPlacementStringValid("a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0");
-    }
-
-
     /**
      * Determine whether a piece or peg placement is well-formed according to the following:
      * - it consists of exactly four characters
