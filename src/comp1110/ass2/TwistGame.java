@@ -365,8 +365,8 @@ public class TwistGame {
 
     public static void setNextPlacement(Set<String> solutions, String placement, int resultLength) {
         Set<String> viable;
-        String newPiece, newPlacement;
-        String[] splitedString = new String[2];
+        String newPlacement;
+        String[] splitedString;
 
         // If the length of the List is 32, that is the full solutions
         if (placement.length() == resultLength) {
@@ -384,8 +384,6 @@ public class TwistGame {
             setNextPlacement(solutions, newPlacement, resultLength);
         }
     }
-
-    //c1A3d2A6e2C3g4A7i6B0j2B0j1C0k3C0l4B0l5C0
 
     // Get hint, return null means no solution, String[] are hints for different solutions
     public static String[] getHint(String placement) {
