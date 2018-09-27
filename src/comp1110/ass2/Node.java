@@ -1,7 +1,5 @@
 package comp1110.ass2;
 
-import java.sql.SQLOutput;
-
 /* The idea for check completion
    Node should be a array whose size is 32 = 8 * 4
    Node has a identifier all set to 0, which means not occupied
@@ -50,13 +48,15 @@ public class Node {
 
     private boolean validateAndSet(Node[][] nodes, Piece piece) {
 
-        if (piece.height + piece.row > 4 || piece.width + piece.column > 8){return false;}
+        if (piece.height + piece.row > 4 || piece.width + piece.column > 8) {
+            return false;
+        }
 
         //get the relative coordinates of the piece
         int[][] xy = piece.getRelativeXY();
 
         //loop through coordinates of the piece
-        for(int i = 0;i < xy.length;i++){
+        for (int i = 0; i < xy.length; i++) {
 
             //Get the ith set of absolute coordinates
             int x = xy[i][0] + piece.column;
@@ -76,7 +76,7 @@ public class Node {
             Boolean isTherePegNotInHole = !(ithNode.peg == null || xy[i][2] == 2);
 
             //return false if any of the fail conditions are not met
-            if (isTherePiece || isTherePegOfWrongColour || isTherePegNotInHole){
+            if (isTherePiece || isTherePegOfWrongColour || isTherePegNotInHole) {
                 return false;
             }
 

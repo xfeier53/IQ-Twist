@@ -225,8 +225,8 @@ public class TwistGame {
 
         // Process every unplaced pieces
         for (int i = 0; i < 8; i++) {
-            ch = (char) ('a' + i);
             if (placedPieces[i] == 0) {
+                ch = (char) ('a' + i);
                 viable.addAll(testNewPieces(placement, ch));
             }
         }
@@ -251,15 +251,23 @@ public class TwistGame {
     public static Set<String> testNewPieces(String placement, char ch) {
         Set<String> viable = new HashSet<>();
         String newPiece, orginalPiece, newPlacement;
+
+        // Get the occupation situation of the board
+        // And never put a new piece on it
+        int[][] occupation = getBoardSituation(placement);
+
         String[] splitedString = findInsertPosition(placement, ch);
 
         // For every possibility
         for (int j = 1; j < 9; j++) {
             for (int k = 0; k < 4; k++) {
                 for (int l = 0; l < 8; l++) {
+                    // This place has already been occupied
+                    if (occupation[j][k] == 1) {
+                        continue;
+                    }
                     newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
                     newPlacement = splitedString[0] + newPiece + splitedString[1];
-
                     // Reduce strict symmetry, remove all c and h pieces with rotation greater than 4
                     if ((newPiece.charAt(0) == 'c' || newPiece.charAt(0) == 'h') && newPiece.charAt(3) >= '4') {
                         continue;
@@ -295,6 +303,11 @@ public class TwistGame {
 //            viable = reduceSymmetry(viable);
 //        }
         return viable;
+    }
+
+    // Return array to present the occupation situation on the board
+    public static int[][] getBoardSituation(String placement) {
+        return new int[0][0];
     }
 
     public static String[] findInsertPosition(String placement, char ch) {
