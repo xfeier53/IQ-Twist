@@ -263,7 +263,7 @@ public class TwistGame {
             for (int k = 0; k < 4; k++) {
                 for (int l = 0; l < 8; l++) {
                     // This place has already been occupied
-                    if (occupation[j][k] == 1) {
+                    if (occupation[j - 1][k] == 1) {
                         continue;
                     }
                     newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
@@ -299,15 +299,17 @@ public class TwistGame {
                 }
             }
         }
-//        if (!viable.isEmpty()) {
-//            viable = reduceSymmetry(viable);
-//        }
         return viable;
     }
 
     // Return array to present the occupation situation on the board
+    // The length should be 8 and 4 for the column and row
+    // from 0-8 for 0-8 in column
+    // from 0-4 for A-D in row
     public static int[][] getBoardSituation(String placement) {
-        return new int[0][0];
+        int[][] situation = new int[8][4];
+
+        return situation;
     }
 
     public static String[] findInsertPosition(String placement, char ch) {
