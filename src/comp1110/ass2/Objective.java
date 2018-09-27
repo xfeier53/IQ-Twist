@@ -41,19 +41,11 @@ public class Objective {
     //Function to write objectives to file
     public static void writeObjectives(Objective[] objectives){
 
-        URL url = Objective.class.getResource("Values.csv");
 
-        String path = url.getPath();
-
-        path = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Values.csv";
+        String path = (System.getProperty("user.dir")) + "/src/comp1110/ass2/ProblemSet.csv";
 
         // /Users/James/IdeaProjects/comp1110-ass2/src/comp1110/ass2/Values.csv
         //System.out.println(path);
-
-        File file = new File(url.getPath());
-
-
-
 
         try{
 
@@ -80,7 +72,7 @@ public class Objective {
     //Read objectives into OBJECTIVES array
     public static void readObjectives(){
 
-        URL url = Objective.class.getResource("Values.csv");
+        URL url = Objective.class.getResource("ProblemSet.csv");
 
         File file = new File(url.getPath());
 
