@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.rules.Timeout;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -65,6 +66,13 @@ public class SolutionsTest {
     for (int i = 1; i < MULTI[1].length; i++)
       expected.add(MULTI[1][i]);
     test(MULTI[1][0], expected);
+  }
+
+
+  @Test
+  public void test5() {
+    String start = "i6B0j2B0j1C0k3C0l4B0l5C0";
+    test(start, new HashSet<>());
   }
 
 }
