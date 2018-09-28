@@ -346,61 +346,52 @@ public class TwistGame {
     // Given the situation and check if it is 1
     // If so, return false
     // I try to copy some of your code but failed
+
+
+    /*
+    Takes a two dimensionaly array representing the board state and updates to include a new piece
+
+    situation: the current board state; 0:unoccupied, 1:occupied (By a piece)
+
+    newPiece: String representation of a single piece follows encoding from other sections
+
+     */
     public static boolean getPieceSituation(int[][] situation, String newPiece) {
         char id;
         int row, column, orientation;
 
-
+        //seperate string and decode the values to create the piece
         id = newPiece.charAt(0);
         Piece piece = Piece.getPiece(id);
         column = Character.getNumericValue(newPiece.charAt(1)) - 1;
-
         row = (newPiece.charAt(2) - 'A');
-
         orientation = Character.getNumericValue(newPiece.charAt(3));
 
+        //Create the new piece with specific orientation and get the relative coordinates of the piece
         piece.setOrientation(orientation);
         int[][] xy = piece.getRelativeXY();
-
-        Boolean placmentGood = true;
-        int i = 0;
 
         //Loop through every set of coordinates in xy
         for (int[] c : xy) {
 
-            //break and set the return to be false if the piece is outside the range of the situation array
             if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
-                placmentGood = false;
-                break;
+
+                continue;
             }
-            //if a piece would occupy the same spot set the return to be false and break out of the loop
+
             if (situation[column + c[0]][row + c[1]] == 1) {
-                placmentGood = false;
-                break;
+                return false;
             }
-            //increment the counter to reverse the process if needed
-            i++;
-            situation[column + c[0]][row + c[1]] = 1;
 
         }
-
-        //loop back through and remove nodes flagged
-        if (!placmentGood){
-            for(int j = i - 1;j >= 0;j--){
-
-                situation[column + xy[j][0]][row + xy[j][1]] = 0;
-
-            }
-        }
-
-        return placmentGood;
+        return true;
     }
 
     public static void main(String[] args) {
 
         int[][] situation = getBoardSituation("e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0");
         printSituation(situation);
-        System.out.println(getPieceSituation(situation,"d7B1"));
+        System.out.println(getPieceSituation(situation,"d7A1"));
         System.out.println();
         printSituation(situation);
 
