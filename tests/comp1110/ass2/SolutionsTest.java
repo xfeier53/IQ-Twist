@@ -75,4 +75,9 @@ public class SolutionsTest {
     test(start, new HashSet<>());
   }
 
+  @Test
+  public void test6() {
+    String start = "h6D0i6B0j2B0j1C0k3C0l4B0l5C0";
+    test(start, new HashSet<>());
+  }
 }
