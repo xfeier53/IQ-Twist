@@ -346,8 +346,6 @@ public class TwistGame {
     // Given the situation and check if it is 1
     // If so, return false
     // I try to copy some of your code but failed
-    // Maybe you can try to reuse some of the code and create a new function called getXY something
-    // Can be used by both function
     public static boolean getPieceSituation(int[][] situation, String newPiece) {
         char id;
         int row, column, orientation;
