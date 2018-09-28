@@ -309,7 +309,63 @@ public class TwistGame {
     public static int[][] getBoardSituation(String placement) {
         int[][] situation = new int[8][4];
 
+        char id;
+        int row;
+        int column;
+        int orientation;
+
+        //loop through every piecePlacement in placement
+        pieceLoop : for(int i = 0;i < placement.length();i = i + 4){
+
+            id = placement.charAt(i);
+
+            Piece piece;
+
+            //break if the pegs have been reached
+            switch (id) {
+                case 'i':
+                case 'j':
+                case 'k':
+                case 'l':
+                    break pieceLoop;
+            }
+            //get the piece for the given id
+            piece = Piece.getPiece(id);
+
+            column =  Character.getNumericValue(placement.charAt(i + 1)) - 1;
+
+            row = (placement.charAt(i + 2) - 'A');
+
+            orientation = Character.getNumericValue(placement.charAt(i + 3));
+
+            piece.setOrientation(orientation);
+
+            int[][] xy = piece.getRelativeXY();
+
+            //Loop through every set of coordinates in xy
+            for(int[] c : xy){
+
+                //set nodes at coordinates to be 1
+                situation[column + c[0]][row + c[1]] = 1;
+            }
+        }
         return situation;
+    }
+
+    //function to print out a situation James
+    public static void printSituation(int[][] situation){
+
+        for(int i = 0;i < situation[0].length;i++){
+
+            for(int j = 0;j < situation.length;j++){
+
+                if(situation[j][i] == 1){
+                    System.out.print("o");
+                }
+                else System.out.print("*");
+            }
+            System.out.println();
+        }
     }
 
     public static String[] findInsertPosition(String placement, char ch) {
@@ -502,6 +558,7 @@ public class TwistGame {
                         case 2: temp = temp + "k"; break;
                         case 3: temp = temp + "l"; break;
                     }
+
                 }
             }
             combinations.add(temp);
