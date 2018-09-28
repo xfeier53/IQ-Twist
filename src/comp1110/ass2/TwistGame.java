@@ -388,7 +388,7 @@ public class TwistGame {
         if (!placmentGood){
             for(int j = i - 1;j >= 0;j--){
 
-                situation[column + xy[j][0]][row + xy[i][1]] = 0;
+                situation[column + xy[j][0]][row + xy[j][1]] = 0;
 
             }
         }
