@@ -22,6 +22,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
@@ -425,6 +426,13 @@ public class Board extends Application {
         diff.setX(600);
         diff.setY(300);
         root.getChildren().add(diff);
+        // UI -Elements Controls
+        Image ArrowKeys = new Image("comp1110/ass2/gui/assets/arrowKeys.png",200,200,true,false);
+        ImageView keyLayout = new ImageView();
+        keyLayout.setImage(ArrowKeys);
+        keyLayout.setX(570);
+        keyLayout.setY(450);
+        root.getChildren().add(keyLayout);
 //UIelements--forwardarrow
         Polygon fwd=new Polygon(750,120,750,150,800,135);
         fwd.setFill(Color.RED);
@@ -433,6 +441,14 @@ public class Board extends Application {
         Polygon back=new Polygon(630,120,630,150,580,135);
         back.setFill(Color.RED);
         root.getChildren().add(back);
+        //UI Elements- More Text
+        Text flipL= new Text("Rotate Left ");
+        flipL.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        flipL.setFill(Color.BLACK);
+        flipL.setX(470);
+        flipL.setY(550);
+        root.getChildren().add(flipL);
+
         //UIelements--select
         ImageView sillyString = new ImageView();
         sillyString.setImage(Waldo.waldo(0));
