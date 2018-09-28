@@ -350,24 +350,60 @@ public class TwistGame {
         char id;
         int row, column, orientation;
 
+
         id = newPiece.charAt(0);
         Piece piece = Piece.getPiece(id);
         column = Character.getNumericValue(newPiece.charAt(1)) - 1;
+
         row = (newPiece.charAt(2) - 'A');
+
         orientation = Character.getNumericValue(newPiece.charAt(3));
+
         piece.setOrientation(orientation);
         int[][] xy = piece.getRelativeXY();
 
+        Boolean placmentGood = true;
+        int i = 0;
+
         //Loop through every set of coordinates in xy
         for (int[] c : xy) {
+
+            //break and set the return to be false if the piece is outside the range of the situation array
             if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
-                continue;
+                placmentGood = false;
+                break;
             }
+            //if a piece would occupy the same spot set the return to be false and break out of the loop
             if (situation[column + c[0]][row + c[1]] == 1) {
-                return false;
+                placmentGood = false;
+                break;
+            }
+            //increment the counter to reverse the process if needed
+            i++;
+            situation[column + c[0]][row + c[1]] = 1;
+
+        }
+
+        //loop back through and remove nodes flagged
+        if (!placmentGood){
+            for(int j = i - 1;j >= 0;j--){
+
+                situation[column + xy[j][0]][row + xy[i][1]] = 0;
+
             }
         }
-        return true;
+
+        return placmentGood;
+    }
+
+    public static void main(String[] args) {
+
+        int[][] situation = getBoardSituation("e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0");
+        printSituation(situation);
+        System.out.println(getPieceSituation(situation,"d7B1"));
+        System.out.println();
+        printSituation(situation);
+
     }
 
     //function to print out a situation James
