@@ -314,11 +314,7 @@ public class TwistGame {
         //loop through every piecePlacement in placement
         pieceLoop:
         for (int i = 0; i < placement.length(); i = i + 4) {
-
             id = placement.charAt(i);
-
-            Piece piece;
-
             //break if the pegs have been reached
             switch (id) {
                 case 'i':
@@ -328,16 +324,11 @@ public class TwistGame {
                     break pieceLoop;
             }
             //get the piece for the given id
-            piece = Piece.getPiece(id);
-
+            Piece piece = Piece.getPiece(id);
             column = Character.getNumericValue(placement.charAt(i + 1)) - 1;
-
             row = (placement.charAt(i + 2) - 'A');
-
             orientation = Character.getNumericValue(placement.charAt(i + 3));
-
             piece.setOrientation(orientation);
-
             int[][] xy = piece.getRelativeXY();
 
             //Loop through every set of coordinates in xy
@@ -362,23 +353,18 @@ public class TwistGame {
         int row, column, orientation;
 
         id = newPiece.charAt(0);
-
-        Piece piece;
-        piece = Piece.getPiece(id);
-
+        Piece piece = Piece.getPiece(id);
         column = Character.getNumericValue(newPiece.charAt(1)) - 1;
-
         row = (newPiece.charAt(2) - 'A');
-
         orientation = Character.getNumericValue(newPiece.charAt(3));
-
         piece.setOrientation(orientation);
-
         int[][] xy = piece.getRelativeXY();
 
         //Loop through every set of coordinates in xy
         for (int[] c : xy) {
-            //set nodes at coordinates to be 1
+            if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
+                continue;
+            }
             if (situation[column + c[0]][row + c[1]] == 1) {
                 return false;
             }
@@ -386,18 +372,16 @@ public class TwistGame {
         return true;
     }
 
-
     //function to print out a situation James
-    public static void printSituation(int[][] situation){
+    public static void printSituation(int[][] situation) {
 
-        for(int i = 0;i < situation[0].length;i++){
+        for (int i = 0; i < situation[0].length; i++) {
 
-            for(int j = 0;j < situation.length;j++){
+            for (int j = 0; j < situation.length; j++) {
 
-                if(situation[j][i] == 1){
+                if (situation[j][i] == 1) {
                     System.out.print("o");
-                }
-                else System.out.print("*");
+                } else System.out.print("*");
             }
             System.out.println();
         }

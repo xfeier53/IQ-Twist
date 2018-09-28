@@ -64,25 +64,15 @@ public enum Piece {
     }
 
     public static Piece getPiece(char id){
-        Piece piece = PIECEa;
-
         switch (id){
-            case 'a':
-                return PIECEa;
-            case 'b':
-                return PIECEb;
-            case 'c':
-                return PIECEc;
-            case 'd':
-                return PIECEd;
-            case 'e':
-                return PIECEe;
-            case 'f':
-                return PIECEf;
-            case 'g':
-                return PIECEg;
-            case 'h':
-                return PIECEh;
+            case 'a': return PIECEa;
+            case 'b': return PIECEb;
+            case 'c': return PIECEc;
+            case 'd': return PIECEd;
+            case 'e': return PIECEe;
+            case 'f': return PIECEf;
+            case 'g': return PIECEg;
+            case 'h': return PIECEh;
 
         }
 
