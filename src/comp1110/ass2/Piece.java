@@ -81,6 +81,8 @@ public enum Piece {
                 return PIECEf;
             case 'g':
                 return PIECEg;
+            case 'h':
+                return PIECEh;
 
         }
 
