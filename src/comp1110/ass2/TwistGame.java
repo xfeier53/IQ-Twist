@@ -263,10 +263,10 @@ public class TwistGame {
             for (int k = 0; k < 4; k++) {
                 for (int l = 0; l < 8; l++) {
                     // This place has already been occupied
-                    if (occupation[j - 1][k] == 1) {
+                    newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
+                    if (getPieceSituation(occupation, newPiece)) {
                         continue;
                     }
-                    newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
                     newPlacement = splitedString[0] + newPiece + splitedString[1];
                     // Reduce strict symmetry, remove all c and h pieces with rotation greater than 4
                     if ((newPiece.charAt(0) == 'c' || newPiece.charAt(0) == 'h') && newPiece.charAt(3) >= '4') {
@@ -308,14 +308,12 @@ public class TwistGame {
     // from 0-4 for A-D in row
     public static int[][] getBoardSituation(String placement) {
         int[][] situation = new int[8][4];
-
         char id;
-        int row;
-        int column;
-        int orientation;
+        int row, column, orientation;
 
         //loop through every piecePlacement in placement
-        pieceLoop : for(int i = 0;i < placement.length();i = i + 4){
+        pieceLoop:
+        for (int i = 0; i < placement.length(); i = i + 4) {
 
             id = placement.charAt(i);
 
@@ -332,7 +330,7 @@ public class TwistGame {
             //get the piece for the given id
             piece = Piece.getPiece(id);
 
-            column =  Character.getNumericValue(placement.charAt(i + 1)) - 1;
+            column = Character.getNumericValue(placement.charAt(i + 1)) - 1;
 
             row = (placement.charAt(i + 2) - 'A');
 
@@ -343,7 +341,7 @@ public class TwistGame {
             int[][] xy = piece.getRelativeXY();
 
             //Loop through every set of coordinates in xy
-            for(int[] c : xy){
+            for (int[] c : xy) {
 
                 //set nodes at coordinates to be 1
                 situation[column + c[0]][row + c[1]] = 1;
@@ -351,6 +349,43 @@ public class TwistGame {
         }
         return situation;
     }
+
+    // Check if the piece is available
+    // Like the last one, but for one piece only
+    // Given the situation and check if it is 1
+    // If so, return false
+    // I try to copy some of your code but failed
+    // Maybe you can try to reuse some of the code and create a new function called getXY something
+    // Can be used by both function
+    public static boolean getPieceSituation(int[][] situation, String newPiece) {
+        char id;
+        int row, column, orientation;
+
+        id = newPiece.charAt(0);
+
+        Piece piece;
+        piece = Piece.getPiece(id);
+
+        column = Character.getNumericValue(newPiece.charAt(1)) - 1;
+
+        row = (newPiece.charAt(2) - 'A');
+
+        orientation = Character.getNumericValue(newPiece.charAt(3));
+
+        piece.setOrientation(orientation);
+
+        int[][] xy = piece.getRelativeXY();
+
+        //Loop through every set of coordinates in xy
+        for (int[] c : xy) {
+            //set nodes at coordinates to be 1
+            if (situation[column + c[0]][row + c[1]] == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     //function to print out a situation James
     public static void printSituation(int[][] situation){
