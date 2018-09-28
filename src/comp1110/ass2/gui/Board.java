@@ -442,13 +442,26 @@ public class Board extends Application {
         back.setFill(Color.RED);
         root.getChildren().add(back);
         //UI Elements- More Text
-        Text flipL= new Text("Rotate Left ");
+        Text flipL= new Text("Rotate Left ← ");
         flipL.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
         flipL.setFill(Color.BLACK);
-        flipL.setX(470);
+        flipL.setX(440);
         flipL.setY(550);
         root.getChildren().add(flipL);
-
+// ui Elements FlipR
+        Text flipR= new Text("  → Rotate Right ");
+        flipR.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        flipR.setFill(Color.BLACK);
+        flipR.setX(770);
+        flipR.setY(550);
+        root.getChildren().add(flipR);
+        // UI elements Flip/\\/
+        Text flipUp= new Text("Flip ↑ ↓ ");
+        flipUp.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        flipUp.setFill(Color.BLACK);
+        flipUp.setX(640);
+        flipUp.setY(600);
+        root.getChildren().add(flipUp);
         //UIelements--select
         ImageView sillyString = new ImageView();
         sillyString.setImage(Waldo.waldo(0));
