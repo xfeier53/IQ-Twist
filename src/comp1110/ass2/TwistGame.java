@@ -264,7 +264,7 @@ public class TwistGame {
                 for (int l = 0; l < 8; l++) {
                     // This place has already been occupied
                     newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
-                    if (getPieceSituation(occupation, newPiece)) {
+                    if (!getPieceSituation(occupation, newPiece)) {
                         continue;
                     }
                     newPlacement = splitedString[0] + newPiece + splitedString[1];
