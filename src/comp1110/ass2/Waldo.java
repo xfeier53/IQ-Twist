@@ -6,14 +6,14 @@ import javafx.scene.image.Image;
 
 public class Waldo {
     public static Image waldo(int number){
-        Image a = new Image("comp1110/ass2/gui/assets/a.png",100,96,false,false);
-        Image b = new Image("comp1110/ass2/gui/assets/b.png",100,97,false,false);
-        Image c = new Image("comp1110/ass2/gui/assets/c.png",100,98,false,false);
-        Image d = new Image("comp1110/ass2/gui/assets/d.png",100,99,false,false);
-        Image e = new Image("comp1110/ass2/gui/assets/e.png",100,100,false,false);
-        Image f = new Image("comp1110/ass2/gui/assets/f.png",100,101,false,false);
-        Image g = new Image("comp1110/ass2/gui/assets/g.png",100,102,false,false);
-        Image h = new Image("comp1110/ass2/gui/assets/h.png",100,103,false,false);
+        Image a = new Image("comp1110/ass2/gui/assets/a.png",96,96,true,false);
+        Image b = new Image("comp1110/ass2/gui/assets/b.png",97,97,true,false);
+        Image c = new Image("comp1110/ass2/gui/assets/c.png",98,98,true,false);
+        Image d = new Image("comp1110/ass2/gui/assets/d.png",99,99,true,false);
+        Image e = new Image("comp1110/ass2/gui/assets/e.png",100,100,true,false);
+        Image f = new Image("comp1110/ass2/gui/assets/f.png",101,101,true,false);
+        Image g = new Image("comp1110/ass2/gui/assets/g.png",102,102,true,false);
+        Image h = new Image("comp1110/ass2/gui/assets/h.png",103,103,true,false);
 
 
         if(number%8==0){return a;}
@@ -27,7 +27,7 @@ public class Waldo {
         return a;
     }
     public static int ImageAnal (Image image){
-        int a = (int) image.getHeight();
+        int a = (int) image.getWidth();
         System.out.println(a);
         return a;
 
