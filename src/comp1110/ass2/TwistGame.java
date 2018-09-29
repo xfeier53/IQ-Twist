@@ -104,15 +104,12 @@ public class TwistGame {
             if (!isPlacementWellFormed(placement.substring(4 * i, 4 + 4 * i))) {
                 return false;
             }
-
             // Get the index by ASCII value of each placement
             index = placement.charAt(4 * i) - 'a';
-
             // Check whether the last piece is bigger than current
             if (placement.charAt(4 * i) < lastPiece) {
                 return false;
             }
-
             lastPiece = placement.charAt(4 * i);
             // Minus the counter
             count[index] -= 1;
@@ -148,9 +145,9 @@ public class TwistGame {
         // Count the number of the placements
 
         initNodes(nodes);
-        if (!isPlacementStringWellFormed(placement)) {
-            return false;
-        }
+//        if (!isPlacementStringWellFormed(placement)) {
+//            return false;
+//        }
         // Set all the pegs first, so I reverse the placement order
         count = placement.length() / 4;
         for (int i = count - 1; i >= 0; i--) {
@@ -264,7 +261,7 @@ public class TwistGame {
                 for (int l = 0; l < 8; l++) {
                     // This place has already been occupied
                     newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
-                    if (getPieceSituation(occupation, newPiece)) {
+                    if (!getPieceSituation(occupation, newPiece)) {
                         continue;
                     }
                     newPlacement = splitedString[0] + newPiece + splitedString[1];
@@ -346,61 +343,48 @@ public class TwistGame {
     // Given the situation and check if it is 1
     // If so, return false
     // I try to copy some of your code but failed
+
+
+    /*
+    Takes a two dimensionaly array representing the board state and updates to include a new piece
+
+    situation: the current board state; 0:unoccupied, 1:occupied (By a piece)
+
+    newPiece: String representation of a single piece follows encoding from other sections
+
+     */
     public static boolean getPieceSituation(int[][] situation, String newPiece) {
         char id;
         int row, column, orientation;
 
-
+        //seperate string and decode the values to create the piece
         id = newPiece.charAt(0);
         Piece piece = Piece.getPiece(id);
         column = Character.getNumericValue(newPiece.charAt(1)) - 1;
-
         row = (newPiece.charAt(2) - 'A');
-
         orientation = Character.getNumericValue(newPiece.charAt(3));
 
+        //Create the new piece with specific orientation and get the relative coordinates of the piece
         piece.setOrientation(orientation);
         int[][] xy = piece.getRelativeXY();
 
-        Boolean placmentGood = true;
-        int i = 0;
-
         //Loop through every set of coordinates in xy
         for (int[] c : xy) {
-
-            //break and set the return to be false if the piece is outside the range of the situation array
             if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
-                placmentGood = false;
-                break;
+                continue;
             }
-            //if a piece would occupy the same spot set the return to be false and break out of the loop
             if (situation[column + c[0]][row + c[1]] == 1) {
-                placmentGood = false;
-                break;
-            }
-            //increment the counter to reverse the process if needed
-            i++;
-            situation[column + c[0]][row + c[1]] = 1;
-
-        }
-
-        //loop back through and remove nodes flagged
-        if (!placmentGood){
-            for(int j = i - 1;j >= 0;j--){
-
-                situation[column + xy[j][0]][row + xy[i][1]] = 0;
-
+                return false;
             }
         }
-
-        return placmentGood;
+        return true;
     }
 
     public static void main(String[] args) {
 
         int[][] situation = getBoardSituation("e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0");
         printSituation(situation);
-        System.out.println(getPieceSituation(situation,"d7B1"));
+        System.out.println(getPieceSituation(situation, "d7A1"));
         System.out.println();
         printSituation(situation);
 
@@ -410,7 +394,6 @@ public class TwistGame {
     public static void printSituation(int[][] situation) {
 
         for (int i = 0; i < situation[0].length; i++) {
-
             for (int j = 0; j < situation.length; j++) {
 
                 if (situation[j][i] == 1) {
