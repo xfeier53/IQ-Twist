@@ -107,7 +107,14 @@ return 'a';
 
     }
     public static Image changeDimension (Image image){
-        if (ImageAnal_String(image)=='a') {return new Image("comp1110/ass2/gui/assets/a.png", 140, 210, true, false);}
+        if (ImageAnal_String(image)=='a') {return new Image("comp1110/ass2/gui/assets/a.png", 210, 290, true, false);}
+        if (ImageAnal_String(image)=='b') {return new Image("comp1110/ass2/gui/assets/b.png", 210, 290, true, false);}
+        if (ImageAnal_String(image)=='c') {return new Image("comp1110/ass2/gui/assets/c.png", 280, 290, true, false);}
+        if (ImageAnal_String(image)=='d') {return new Image("comp1110/ass2/gui/assets/d.png", 210, 290, true, false);}
+        if (ImageAnal_String(image)=='e') {return new Image("comp1110/ass2/gui/assets/e.png", 140, 290, true, false);}
+        if (ImageAnal_String(image)=='f') {return new Image("comp1110/ass2/gui/assets/f.png", 210, 290, true, false);}
+        if (ImageAnal_String(image)=='g') {return new Image("comp1110/ass2/gui/assets/g.png", 210, 290, true, false);}
+        if (ImageAnal_String(image)=='h') {return new Image("comp1110/ass2/gui/assets/h.png", 210, 290, true, false);}
         return image;
     }
 }

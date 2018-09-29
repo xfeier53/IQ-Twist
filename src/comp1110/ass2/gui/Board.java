@@ -474,8 +474,8 @@ public class Board extends Application {
         // end shame
         root.getChildren().add(sillyString);
         // click on sillyString
-        sillyString.setOnMousePressed(event -> root.getChildren().add(new PieceView(
-                (sillyString.getImage()), // Piece Image
+        sillyString.setOnMouseClicked(event -> root.getChildren().add(new PieceView( // currently @root because it brings to front
+                Waldo.changeDimension(sillyString.getImage()), // Piece Image
                 Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
                 650,  // Initial X
                 150, // Initial y
