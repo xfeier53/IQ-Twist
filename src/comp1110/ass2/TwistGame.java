@@ -104,15 +104,12 @@ public class TwistGame {
             if (!isPlacementWellFormed(placement.substring(4 * i, 4 + 4 * i))) {
                 return false;
             }
-
             // Get the index by ASCII value of each placement
             index = placement.charAt(4 * i) - 'a';
-
             // Check whether the last piece is bigger than current
             if (placement.charAt(4 * i) < lastPiece) {
                 return false;
             }
-
             lastPiece = placement.charAt(4 * i);
             // Minus the counter
             count[index] -= 1;
@@ -148,9 +145,9 @@ public class TwistGame {
         // Count the number of the placements
 
         initNodes(nodes);
-        if (!isPlacementStringWellFormed(placement)) {
-            return false;
-        }
+//        if (!isPlacementStringWellFormed(placement)) {
+//            return false;
+//        }
         // Set all the pegs first, so I reverse the placement order
         count = placement.length() / 4;
         for (int i = count - 1; i >= 0; i--) {
@@ -373,16 +370,12 @@ public class TwistGame {
 
         //Loop through every set of coordinates in xy
         for (int[] c : xy) {
-
             if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
-
                 continue;
             }
-
             if (situation[column + c[0]][row + c[1]] == 1) {
                 return false;
             }
-
         }
         return true;
     }
@@ -391,7 +384,7 @@ public class TwistGame {
 
         int[][] situation = getBoardSituation("e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0");
         printSituation(situation);
-        System.out.println(getPieceSituation(situation,"d7A1"));
+        System.out.println(getPieceSituation(situation, "d7A1"));
         System.out.println();
         printSituation(situation);
 
@@ -401,7 +394,6 @@ public class TwistGame {
     public static void printSituation(int[][] situation) {
 
         for (int i = 0; i < situation[0].length; i++) {
-
             for (int j = 0; j < situation.length; j++) {
 
                 if (situation[j][i] == 1) {
