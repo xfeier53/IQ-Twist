@@ -471,9 +471,21 @@ public class Board extends Application {
         // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
         fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())+1)));
         back.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())-1)));
-        
         // end shame
         root.getChildren().add(sillyString);
+        // click on sillyString
+        sillyString.setOnMousePressed(event -> root.getChildren().add(new PieceView(
+                (sillyString.getImage()), // Piece Image
+                Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
+                650,  // Initial X
+                150, // Initial y
+                2,
+                3)
+
+
+
+
+        ));
 // UI - Difficulty Selecter
         Random rng = new Random();
         Rectangle easy = new Rectangle(590,310,35,20);
