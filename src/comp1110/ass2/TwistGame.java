@@ -410,7 +410,8 @@ public class TwistGame {
         // Utmost 8 times, till we find the right place to insert the piece
         for (int i = 0; i < 8; i++) {
             int charPosition = 4 * i;
-            char currentPiece = placement.charAt(charPosition);
+            char currentPiece;
+            currentPiece = placement.charAt(charPosition);
             // The last piece
             if (currentPiece > 'h') {
                 splitedString[0] = placement.substring(0, charPosition);
@@ -457,6 +458,8 @@ public class TwistGame {
         for (int i = 0; i < placement.length() / 4; i++) {
             if (isPiece(placement.charAt(4 * i))) {
                 resultLength = resultLength - 4;
+            } else {
+                break;
             }
         }
         // Get the result length by adding 32
@@ -469,6 +472,7 @@ public class TwistGame {
     }
 
     public static void setNextPlacement(Set<String> solutions, String placement, int resultLength) {
+        int[] pieces = new int[8];
         Set<String> viable;
         String newPlacement;
         String[] splitedString;
@@ -482,6 +486,21 @@ public class TwistGame {
         // There is no further viable piece to put
         if (viable == null) {
             return;
+        }
+        for (int i = 0; i < placement.length() / 4; i++) {
+            if (placement.charAt(4 * i) > 'h') {
+                break;
+            } else {
+                pieces[placement.charAt(4 * i) - 'a'] = 1;
+            }
+        }
+        for (String s : viable) {
+            pieces[s.charAt(0) - 'a'] = 1;
+        }
+        for (int i : pieces) {
+            if (i == 0) {
+                return;
+            }
         }
         for (String s : viable) {
             splitedString = findInsertPosition(placement, s.charAt(0));
