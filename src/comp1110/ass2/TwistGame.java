@@ -205,7 +205,7 @@ public class TwistGame {
      * @param placement A valid placement string (comprised of peg and piece placements)
      * @return An set of viable piece placements, or null if there are none.
      */
-    public static Set<String> getViablePiecePlacements(String placement) {
+    public static Set<String> getViablePiecePlacements(String placement,Set<String> blackList) {
         char ch;
         int[] placedPieces = new int[8];
         Set<String> viable = new HashSet<>();
@@ -224,7 +224,9 @@ public class TwistGame {
         for (int i = 0; i < 8; i++) {
             if (placedPieces[i] == 0) {
                 ch = (char) ('a' + i);
-                viable.addAll(testNewPieces(placement, ch));
+
+                //Added new blackList parameter
+                viable.addAll(testNewPieces(placement, ch,blackList));
             }
         }
 
@@ -245,7 +247,7 @@ public class TwistGame {
     }
 
     // Try every possibility for the pieces
-    public static Set<String> testNewPieces(String placement, char ch) {
+    public static Set<String> testNewPieces(String placement, char ch, Set<String> blackList) {
         Set<String> viable = new HashSet<>();
         String newPiece, orginalPiece, newPlacement;
 
@@ -261,6 +263,12 @@ public class TwistGame {
                 for (int l = 0; l < 8; l++) {
                     // This place has already been occupied
                     newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
+
+                    //Continue if piece is already found on the blackList
+                    if(blackList.contains(newPiece)){
+                        continue;
+                    }
+
                     if (!getPieceSituation(occupation, newPiece)) {
                         continue;
                     }
@@ -382,11 +390,13 @@ public class TwistGame {
 
     public static void main(String[] args) {
 
-        int[][] situation = getBoardSituation("e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0");
-        printSituation(situation);
-        System.out.println(getPieceSituation(situation, "d7A1"));
-        System.out.println();
-        printSituation(situation);
+        String test = ("i6B0i8A0i8C0j2B0j1C0j3B0k3C0k2C0k4C0k5D0l4B0l5C0l6C0l6D0");
+
+        String[] sol = getSolutions(test);
+
+        for(String s:sol){
+            System.out.println(s);
+        }
 
     }
 
@@ -454,6 +464,9 @@ public class TwistGame {
         int resultLength = placement.length();
         Set<String> solutions = new HashSet<>();
 
+        //New hashSet to contain piece placements already made so there is no repeated tests
+        HashSet<String> blackList = new HashSet<>();
+
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
             if (isPiece(placement.charAt(4 * i))) {
@@ -464,14 +477,14 @@ public class TwistGame {
         }
         // Get the result length by adding 32
         resultLength = resultLength + 32;
-        setNextPlacement(solutions, placement, resultLength);
+        setNextPlacement(solutions, placement, resultLength,blackList);
         String[] result = solutions.toArray(new String[0]);
 
         return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     }
 
-    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength) {
+    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList) {
         int[] pieces = new int[8];
         Set<String> viable;
         String newPlacement;
@@ -482,7 +495,7 @@ public class TwistGame {
             solutions.add(placement.substring(0, 32));
             return;
         }
-        viable = getViablePiecePlacements(placement);
+        viable = getViablePiecePlacements(placement,blackList);
         // There is no further viable piece to put
         if (viable == null) {
             return;
@@ -505,7 +518,14 @@ public class TwistGame {
         for (String s : viable) {
             splitedString = findInsertPosition(placement, s.charAt(0));
             newPlacement = splitedString[0] + s + splitedString[1];
-            setNextPlacement(solutions, newPlacement, resultLength);
+
+            //pass clone of blacklist don't want piece placements propagating up the recursion
+            setNextPlacement(solutions, newPlacement, resultLength,(HashSet<String>) blackList.clone());
+            //add s to blacklist so we don't place it again
+            blackList.add(s);
+
+
+
         }
     }
 
