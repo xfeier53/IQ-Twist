@@ -8,4 +8,4 @@ We declare that the work we have submitted for Stage F of this assignment and al
 the arrow key image is taken from
 https://www.101computing.net/wp/wp-content/uploads/arrowKeys-300x205.png
 
-Signed: Signed: Mary Jones (u2345678), Feier Xiao (u6609337), and Lachlan McVicar (u6406312)
+Signed: Signed: James Frampton Reid (u6079329), Feier Xiao (u6609337), and Lachlan McVicar (u6406312)
