@@ -364,6 +364,8 @@ public class TwistGame {
     newPiece: String representation of a single piece follows encoding from other sections
 
      */
+
+    //REVIEW THIS Feier
     public static boolean getPieceSituation(int[][] situation, String newPiece) {
         char id;
         int row, column, orientation;
@@ -391,9 +393,15 @@ public class TwistGame {
         return true;
     }
 
+
     public static void main(String[] args) {
 
-        String test = ("i6B0i8A0i8C0j2B0j1C0j3B0k3C0k2C0k4C0k5D0l4B0l5C0l6C0l6D0");
+
+        //a6A0b6B0c1A3d2A6e2C3f3C2g4A7h6D0, a6B4b6A4c1A3d2A6e2C3f3C2g4A1h6D0, a7A1b6A1c1A3d2A6e2C3f3C2g4A1h6D0, a7A7b6A5c1A3d2A6e2C3f3C2g4A7h6D0]
+        //
+        //	at org.junit.Assert.fail(Assert.java:88)
+        //	at org.junit.Assert.assertTrue(Assert.java:41)
+        String test = ("j2B0j1C0k3C0l4B0");
 
         String[] sol = getSolutions(test);
 
@@ -472,6 +480,10 @@ public class TwistGame {
 
         Set<String> viable = getViablePiecePlacements(placement);
 
+        Set<String> fjdkf = getViablePiecePlacements(placement);
+
+
+
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
             if (isPiece(placement.charAt(4 * i))) {
@@ -488,6 +500,9 @@ public class TwistGame {
         return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     }
+
+
+    //a1A13
 
     public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList,Set<String> viable) {
         int[] pieces = new int[8];
@@ -532,8 +547,11 @@ public class TwistGame {
         }
     }
 
+
+    //REVIEW THIS
     public static Set<String> removeNonViablePlacements(Set<String> viable, String s){
 
+        //Get board sitation
         int[][] situation = getBoardSituation(s);
         Set<String> nextViable = new HashSet<>();
 
