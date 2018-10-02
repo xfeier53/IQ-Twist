@@ -224,6 +224,7 @@ public class TwistGame {
         for (int i = 0; i < 8; i++) {
             if (placedPieces[i] == 0) {
                 ch = (char) ('a' + i);
+
                 viable.addAll(testNewPieces(placement, ch));
             }
         }
@@ -247,7 +248,8 @@ public class TwistGame {
     // Try every possibility for the pieces
     public static Set<String> testNewPieces(String placement, char ch) {
         Set<String> viable = new HashSet<>();
-        String newPiece, orginalPiece, newPlacement;
+        String newPiece, originalPiece, newPlacement;
+        int maxRow, maxColumn;
 
         // Get the occupation situation of the board
         // And never put a new piece on it
@@ -255,12 +257,22 @@ public class TwistGame {
 
         String[] splitedString = findInsertPosition(placement, ch);
 
+        // If it is not c or h piece, it can't be put at the edge
+        if (ch == 'c' || ch == 'h') {
+            maxColumn = 9;
+            maxRow = 4;
+        } else {
+            maxColumn = 8;
+            maxRow = 3;
+        }
         // For every possibility
-        for (int j = 1; j < 9; j++) {
-            for (int k = 0; k < 4; k++) {
-                for (int l = 0; l < 8; l++) {
+        for (int i = 1; i < maxColumn; i++) {
+            for (int j = 0; j < maxRow; j++) {
+                for (int k = 0; k < 8; k++) {
                     // This place has already been occupied
-                    newPiece = ch + Integer.toString(j) + (char) ('A' + k) + Integer.toString(l);
+                    newPiece = ch + Integer.toString(i) + (char) ('A' + j) + Integer.toString(k);
+
+
                     if (!getPieceSituation(occupation, newPiece)) {
                         continue;
                     }
@@ -269,23 +281,22 @@ public class TwistGame {
                     if ((newPiece.charAt(0) == 'c' || newPiece.charAt(0) == 'h') && newPiece.charAt(3) >= '4') {
                         continue;
                     }
-
                     // Reduce weak symmetry
                     // For b, c and h pieces, minus 2
                     if ((newPiece.charAt(0) == 'b' || newPiece.charAt(0) == 'c' || newPiece.charAt(0) == 'h') && (newPiece.charAt(3) == '2' | newPiece.charAt(3) == '3' | newPiece.charAt(3) == '6' | newPiece.charAt(3) == '7')) {
-                        orginalPiece = newPiece.substring(0, 3) + (char) (newPiece.charAt(3) - 2);
-                    } else if (newPiece.charAt(0) == 'e') {
-                        orginalPiece = newPiece.substring(0, 3) + ((newPiece.charAt(3) - '0' + 1) % 4);
-                    } else if (newPiece.charAt(0) == 'f') {
-                        orginalPiece = newPiece.substring(0, 3) + ((newPiece.charAt(3) - '0' + 2) % 4);
+                        originalPiece = newPiece.substring(0, 3) + (char) (newPiece.charAt(3) - 2);
+                    } else if ((newPiece.charAt(0) == 'e') && (newPiece.charAt(3) >= '4')) {
+                        originalPiece = newPiece.substring(0, 3) + ((newPiece.charAt(3) - '0' + 1) % 4);
+                    } else if ((newPiece.charAt(0) == 'f') && (newPiece.charAt(3) >= '4')) {
+                        originalPiece = newPiece.substring(0, 3) + ((newPiece.charAt(3) - '0' + 2) % 4);
                     } else {
-                        orginalPiece = null;
+                        originalPiece = null;
                     }
 
                     // If the original piece is in the viable
                     // We don't need the the symmetry piece no matter it is viable or not,
-                    if (orginalPiece != null) {
-                        if (viable.contains(orginalPiece)) {
+                    if (originalPiece != null) {
+                        if (viable.contains(originalPiece)) {
                             continue;
                         }
                     }
@@ -382,11 +393,13 @@ public class TwistGame {
 
     public static void main(String[] args) {
 
-        int[][] situation = getBoardSituation("e1C6f6A0g4A5h1A0j3B0j7D0k1C0k1D0l6B0l1A0");
-        printSituation(situation);
-        System.out.println(getPieceSituation(situation, "d7A1"));
-        System.out.println();
-        printSituation(situation);
+        String test = ("i6B0i8A0i8C0j2B0j1C0j3B0k3C0k2C0k4C0k5D0l4B0l5C0l6C0l6D0");
+
+        String[] sol = getSolutions(test);
+
+        for(String s:sol){
+            System.out.println(s);
+        }
 
     }
 
@@ -454,6 +467,11 @@ public class TwistGame {
         int resultLength = placement.length();
         Set<String> solutions = new HashSet<>();
 
+        //New hashSet to contain piece placements already made so there is no repeated tests
+        HashSet<String> blackList = new HashSet<>();
+
+        Set<String> viable = getViablePiecePlacements(placement);
+
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
             if (isPiece(placement.charAt(4 * i))) {
@@ -464,16 +482,16 @@ public class TwistGame {
         }
         // Get the result length by adding 32
         resultLength = resultLength + 32;
-        setNextPlacement(solutions, placement, resultLength);
+        setNextPlacement(solutions, placement, resultLength, blackList,viable);
         String[] result = solutions.toArray(new String[0]);
 
         return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     }
 
-    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength) {
+    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList,Set<String> viable) {
         int[] pieces = new int[8];
-        Set<String> viable;
+        //Set<String> viable;
         String newPlacement;
         String[] splitedString;
 
@@ -482,7 +500,6 @@ public class TwistGame {
             solutions.add(placement.substring(0, 32));
             return;
         }
-        viable = getViablePiecePlacements(placement);
         // There is no further viable piece to put
         if (viable == null) {
             return;
@@ -505,9 +522,35 @@ public class TwistGame {
         for (String s : viable) {
             splitedString = findInsertPosition(placement, s.charAt(0));
             newPlacement = splitedString[0] + s + splitedString[1];
-            setNextPlacement(solutions, newPlacement, resultLength);
+
+            if(!blackList.contains(s)){
+
+                Set<String> nextViable = removeNonViablePlacements(viable,s);
+                setNextPlacement(solutions, newPlacement, resultLength,(HashSet<String>) blackList.clone(),nextViable);
+                blackList.add(s);
+            }
         }
     }
+
+    public static Set<String> removeNonViablePlacements(Set<String> viable, String s){
+
+        int[][] situation = getBoardSituation(s);
+        Set<String> nextViable = new HashSet<>();
+
+        for(String v : viable){
+
+            if(v.charAt(0) != s.charAt(0) && getPieceSituation(situation,v)){
+                nextViable.add(v);
+            }
+        }
+
+        if(nextViable.size() == 0){
+            return null;
+        }
+
+        return nextViable;
+    }
+
 
     // Get hint, return null means no solution, String[] are hints for different solutions
     public static String[] getHint(String placement) {
