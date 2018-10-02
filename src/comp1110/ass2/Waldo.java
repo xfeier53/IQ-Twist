@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 
 
 public class Waldo {
+    // this method lets me determine which shape is which by the size of its width
     public static Image waldo(int number) {
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
         Image b = new Image("comp1110/ass2/gui/assets/b.png", 97, 97, true, false);
@@ -64,6 +65,8 @@ public class Waldo {
     //return "a";
 
     //    }
+
+    // this method returns the peg image valaue based on the width
     public static char ImageAnal_String(Image image) {
         Double number = image.getWidth();
         if (number % 8 == 0) {
@@ -94,6 +97,7 @@ public class Waldo {
 
     }
     //{{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3},{1,3}};
+    // unused but should return proper dimensions
     public static int ImageAnal_X(char letter){
         if (letter == 'a') {return 2;}
         if (letter == 'b') {return 2;}
@@ -106,6 +110,7 @@ public class Waldo {
 return 'a';
 
     }
+    // this based on the value of the string will return a properly sized piece
     public static Image changeDimension (Image image){
         if (ImageAnal_String(image)=='a') {return new Image("comp1110/ass2/gui/assets/a.png", 210, 290, true, false);}
         if (ImageAnal_String(image)=='b') {return new Image("comp1110/ass2/gui/assets/b.png", 210, 290, true, false);}
