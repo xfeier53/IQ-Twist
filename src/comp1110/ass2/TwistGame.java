@@ -504,6 +504,7 @@ public class TwistGame {
         if (viable == null) {
             return;
         }
+        // Set the flag in the pieces array 1 if it is placed
         for (int i = 0; i < placement.length() / 4; i++) {
             if (placement.charAt(4 * i) > 'h') {
                 break;
@@ -511,6 +512,8 @@ public class TwistGame {
                 pieces[placement.charAt(4 * i) - 'a'] = 1;
             }
         }
+        // See if the current placement have solution
+        // It should have all the pieces placed otherwise it is invalid
         for (String s : viable) {
             pieces[s.charAt(0) - 'a'] = 1;
         }
@@ -519,14 +522,17 @@ public class TwistGame {
                 return;
             }
         }
+        // Use recursion to find every viable after another till the solutions are found
         for (String s : viable) {
             splitedString = findInsertPosition(placement, s.charAt(0));
             newPlacement = splitedString[0] + s + splitedString[1];
 
+            // Black list works here
             if(!blackList.contains(s)){
 
                 Set<String> nextViable = removeNonViablePlacements(viable,s);
                 setNextPlacement(solutions, newPlacement, resultLength,(HashSet<String>) blackList.clone(),nextViable);
+                // The piece come here and it needs to be added to the black list
                 blackList.add(s);
             }
         }
