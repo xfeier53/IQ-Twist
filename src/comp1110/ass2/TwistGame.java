@@ -205,7 +205,7 @@ public class TwistGame {
      * @param placement A valid placement string (comprised of peg and piece placements)
      * @return An set of viable piece placements, or null if there are none.
      */
-    public static Set<String> getViablePiecePlacements(String placement, Set<String> blackList) {
+    public static Set<String> getViablePiecePlacements(String placement) {
         char ch;
         int[] placedPieces = new int[8];
         Set<String> viable = new HashSet<>();
@@ -225,8 +225,7 @@ public class TwistGame {
             if (placedPieces[i] == 0) {
                 ch = (char) ('a' + i);
 
-                //Added new blackList parameter
-                viable.addAll(testNewPieces(placement, ch, blackList));
+                viable.addAll(testNewPieces(placement, ch));
             }
         }
 
@@ -247,7 +246,7 @@ public class TwistGame {
     }
 
     // Try every possibility for the pieces
-    public static Set<String> testNewPieces(String placement, char ch, Set<String> blackList) {
+    public static Set<String> testNewPieces(String placement, char ch) {
         Set<String> viable = new HashSet<>();
         String newPiece, originalPiece, newPlacement;
         int maxRow, maxColumn;
@@ -272,10 +271,7 @@ public class TwistGame {
                 for (int k = 0; k < 8; k++) {
                     // This place has already been occupied
                     newPiece = ch + Integer.toString(i) + (char) ('A' + j) + Integer.toString(k);
-                    //Continue if piece is already found on the blackList
-                    if (blackList.contains(newPiece)) {
-                        continue;
-                    }
+
 
                     if (!getPieceSituation(occupation, newPiece)) {
                         continue;
@@ -474,6 +470,8 @@ public class TwistGame {
         //New hashSet to contain piece placements already made so there is no repeated tests
         HashSet<String> blackList = new HashSet<>();
 
+        Set<String> viable = getViablePiecePlacements(placement);
+
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
             if (isPiece(placement.charAt(4 * i))) {
@@ -484,16 +482,16 @@ public class TwistGame {
         }
         // Get the result length by adding 32
         resultLength = resultLength + 32;
-        setNextPlacement(solutions, placement, resultLength, blackList);
+        setNextPlacement(solutions, placement, resultLength, blackList,viable);
         String[] result = solutions.toArray(new String[0]);
 
         return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     }
 
-    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList) {
+    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList,Set<String> viable) {
         int[] pieces = new int[8];
-        Set<String> viable;
+        //Set<String> viable;
         String newPlacement;
         String[] splitedString;
 
@@ -502,7 +500,6 @@ public class TwistGame {
             solutions.add(placement.substring(0, 32));
             return;
         }
-        viable = getViablePiecePlacements(placement,blackList);
         // There is no further viable piece to put
         if (viable == null) {
             return;
@@ -525,14 +522,35 @@ public class TwistGame {
         for (String s : viable) {
             splitedString = findInsertPosition(placement, s.charAt(0));
             newPlacement = splitedString[0] + s + splitedString[1];
-            //pass clone of blacklist don't want piece placements propagating up the recursion
-            setNextPlacement(solutions, newPlacement, resultLength,(HashSet<String>) blackList.clone());
 
-            //add s to blacklist so we don't place it again
-            blackList.add(s);
+            if(!blackList.contains(s)){
 
+                Set<String> nextViable = removeNonViablePlacements(viable,s);
+                setNextPlacement(solutions, newPlacement, resultLength,(HashSet<String>) blackList.clone(),nextViable);
+                blackList.add(s);
+            }
         }
     }
+
+    public static Set<String> removeNonViablePlacements(Set<String> viable, String s){
+
+        int[][] situation = getBoardSituation(s);
+        Set<String> nextViable = new HashSet<>();
+
+        for(String v : viable){
+
+            if(v.charAt(0) != s.charAt(0) && getPieceSituation(situation,v)){
+                nextViable.add(v);
+            }
+        }
+
+        if(nextViable.size() == 0){
+            return null;
+        }
+
+        return nextViable;
+    }
+
 
     // Get hint, return null means no solution, String[] are hints for different solutions
     public static String[] getHint(String placement) {

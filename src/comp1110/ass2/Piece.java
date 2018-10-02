@@ -109,6 +109,18 @@ public enum Piece {
         return orientation;
     }
 
+    public char getId(){return id;}
+
+    public String getPiecePlacementString(){
+
+        String output = String.valueOf(id);
+        output = output + column;
+        output = output + (char) ((char)row + 'A' - 1);
+        output = output + orientation;
+
+        return output;
+    }
+
     //Function to set the orientation of a piece
     //Will also update the relativeXY, height, and width fields to match the new orientation
     //Importantly the order relativeXY array will not change after this function is called though the points in it will
