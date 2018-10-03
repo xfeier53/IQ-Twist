@@ -55,6 +55,9 @@ public class TwistGame {
         }
         return true;
     }
+    
+    // FIXME Task 2: determine whether a piece or peg placement is well-formed
+
 
 //    // I rewrite your code to see if it can be optimised
 //    public static boolean isPlacementWellFormed(String piecePlacement) {
