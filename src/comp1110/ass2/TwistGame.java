@@ -420,8 +420,14 @@ public class TwistGame {
     public static String[] findInsertPosition(String placement, char ch) {
         String[] splitedString = new String[2];
 
+        if (placement.equals("")) {
+            splitedString[0] = "";
+            splitedString[1] = "";
+            return splitedString;
+        }
+
         // Utmost 8 times, till we find the right place to insert the piece
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8 && i < placement.length() / 4; i++) {
             int charPosition = 4 * i;
             char currentPiece;
             currentPiece = placement.charAt(charPosition);
@@ -482,14 +488,14 @@ public class TwistGame {
         }
         // Get the result length by adding 32
         resultLength = resultLength + 32;
-        setNextPlacement(solutions, placement, resultLength, blackList,viable);
+        setNextPlacement(solutions, placement, resultLength, blackList, viable);
         String[] result = solutions.toArray(new String[0]);
 
         return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     }
 
-    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList,Set<String> viable) {
+    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList, Set<String> viable) {
         int[] pieces = new int[8];
         //Set<String> viable;
         String newPlacement;
