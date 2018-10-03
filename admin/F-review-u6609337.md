@@ -1,5 +1,5 @@
 Reviewer: Feier Xiao (u6609337)
-Component: getBoardSituation and getPieceSituation functions
+Component: getBoardSituation and getPieceSituation functions in TwistGame.java
 Author: James Frampton Reid (u6079329)
 
 Review Comments:
