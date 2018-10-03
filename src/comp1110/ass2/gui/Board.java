@@ -57,6 +57,7 @@ public class Board extends Application {
         String zed=pieceID;
         Image retur = new Image("comp1110/ass2/gui/assets/"+pieceID+".png",width,height,false,false);
         return retur;
+
     }
 
 
@@ -67,7 +68,7 @@ public class Board extends Application {
     public static String difficulty(String Difficulty, int insertRandom) {
         String output;
         if (Difficulty == "Easy") {
-            if (insertRandom == 0) { return "i1A0"+"k4A0"+"l8A0"+"k5C0"+"l2D0"+"j7D0"+"j8D0"; // this is problem 22 from the manual
+            if (insertRandom == 0) { return "i1A0"+"j7D0"+"j8D0"+"k4A0"+"k5C0"+"l8A0"+"l2D0"; // this is problem 22 from the manual
             }
             if (insertRandom == 1) {return "k1B0"+"k2B0"+"i3B0"+"j6B0"+"j2C0"+"l6C0"+"l1D0"; // this is problem 23 from the manual
             }
