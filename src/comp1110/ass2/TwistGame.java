@@ -310,10 +310,9 @@ public class TwistGame {
         return viable;
     }
 
-    // Return array to present the occupation situation on the board
-    // The length should be 8 and 4 for the column and row
-    // from 0-8 for 0-8 in column
-    // from 0-4 for A-D in row
+    //Takes a placement string of any length using the standard encoding
+    //Returns and 8 by 4 int array that represents the board state
+    //Has 1s where a space is occupied by a piece and 0s elsewhere
     public static int[][] getBoardSituation(String placement) {
         int[][] situation = new int[8][4];
         char id;
@@ -329,13 +328,17 @@ public class TwistGame {
                 case 'j':
                 case 'k':
                 case 'l':
-                    break pieceLoop;
+                    break pieceLoop;//break the loop not the case statement
             }
             //get the piece for the given id
             Piece piece = Piece.getPiece(id);
+
+            //decode the other attributes of the piece
             column = Character.getNumericValue(placement.charAt(i + 1)) - 1;
             row = (placement.charAt(i + 2) - 'A');
             orientation = Character.getNumericValue(placement.charAt(i + 3));
+
+            //Set the orientation and get the relative positions of all the piece segments
             piece.setOrientation(orientation);
             int[][] xy = piece.getRelativeXY();
 
@@ -364,6 +367,11 @@ public class TwistGame {
     newPiece: String representation of a single piece follows encoding from other sections
 
      */
+
+    //REVIEW THIS Feier
+    //Takes a board situation: an 8 by 4 int array with 1s where a piece is and 0s elsewhere
+    //Takes a new Piece placment: a String that follows standard coding
+    //return true if the newPiece can be placed on the board represented by situation, false otherwise
     public static boolean getPieceSituation(int[][] situation, String newPiece) {
         char id;
         int row, column, orientation;
@@ -381,19 +389,28 @@ public class TwistGame {
 
         //Loop through every set of coordinates in xy
         for (int[] c : xy) {
+            //check whether the coordinates are in the correct range
             if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
                 continue;
             }
+            //check if the coordinate in situation is already occupied
             if (situation[column + c[0]][row + c[1]] == 1) {
+                //if so return false
                 return false;
             }
         }
+        //only return true if no intersection was found
         return true;
     }
 
     public static void main(String[] args) {
 
-        String test = ("i6B0i8A0i8C0j2B0j1C0j3B0k3C0k2C0k4C0k5D0l4B0l5C0l6C0l6D0");
+
+        //a6A0b6B0c1A3d2A6e2C3f3C2g4A7h6D0, a6B4b6A4c1A3d2A6e2C3f3C2g4A1h6D0, a7A1b6A1c1A3d2A6e2C3f3C2g4A1h6D0, a7A7b6A5c1A3d2A6e2C3f3C2g4A7h6D0]
+        //
+        //	at org.junit.Assert.fail(Assert.java:88)
+        //	at org.junit.Assert.assertTrue(Assert.java:41)
+        String test = ("j2B0j1C0k3C0l4B0");
 
         String[] sol = getSolutions(test);
 
@@ -478,6 +495,10 @@ public class TwistGame {
 
         Set<String> viable = getViablePiecePlacements(placement);
 
+        Set<String> fjdkf = getViablePiecePlacements(placement);
+
+
+
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
             if (isPiece(placement.charAt(4 * i))) {
@@ -544,18 +565,28 @@ public class TwistGame {
         }
     }
 
-    public static Set<String> removeNonViablePlacements(Set<String> viable, String s){
 
-        int[][] situation = getBoardSituation(s);
+    //REVIEW THIS
+    //Function to take a set of viable placements and one specific viable piece placement
+    //Return a set of piece placements that are still viable with the new piecePlacement
+    public static Set<String> removeNonViablePlacements(Set<String> viable, String piecePlacement){
+
+        //Take piecePlacement and set it into an array
+        int[][] situation = getBoardSituation(piecePlacement);
+        //New set to contain the new viable pieces
         Set<String> nextViable = new HashSet<>();
 
+        //loop through elements of viable
         for(String v : viable){
 
-            if(v.charAt(0) != s.charAt(0) && getPieceSituation(situation,v)){
+            //for each element check whether it is a different type to piecePlacement
+            //and check if it intersects with the piecePlacement
+            if(v.charAt(0) != piecePlacement.charAt(0) && getPieceSituation(situation,v)){
                 nextViable.add(v);
             }
         }
 
+        //return null if size is zero
         if(nextViable.size() == 0){
             return null;
         }
