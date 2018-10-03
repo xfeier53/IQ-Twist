@@ -1,8 +1,8 @@
 We declare that the work toward our submission of Stage F was distributed among the group members as follows:
 
-* u2345678 30
-* u3456789 40
-* u0123456 30
+* u6079329 30
+* u6609337 40
+* u6406312 30
 
-Signed: Mary Jones (u2345678), Bob Smith (u3456789), and Sue Black (u0123456)
+Signed: James Frampton Reid (u6079329), Feier Xiao (u6609337), and Lachlan McVicar (u6406312)
 

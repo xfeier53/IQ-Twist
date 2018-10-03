@@ -1,31 +1,22 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.Piece;
-import comp1110.ass2.TwistGame;
+
 import comp1110.ass2.Waldo;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
-import javafx.scene.transform.Translate;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.shape.Shape;
 import javafx.scene.shape.Line;
 
 import java.util.Random;
@@ -35,7 +26,7 @@ public class Board extends Application {
     private static final int BOARD_HEIGHT = 700;
     public static final int SQUARE_SIZE = 70;
 
-    public static String boardState = "k3C0l4B0l5C0";
+    public static String boardState = "i6B0j2B0j1C0k3C0l4B0l5C0";
 
     private final Group root = new Group();
     //Contains all the PieceViews
@@ -44,6 +35,9 @@ public class Board extends Application {
     private final Group lines = new Group();
 
     private final Group pegs = new Group();
+
+    public static PieceView selectedPiece;
+
 
     double xy[] = {75,25};
 
@@ -57,7 +51,6 @@ public class Board extends Application {
         String zed=pieceID;
         Image retur = new Image("comp1110/ass2/gui/assets/"+pieceID+".png",width,height,false,false);
         return retur;
-
     }
 
 
@@ -68,9 +61,9 @@ public class Board extends Application {
     public static String difficulty(String Difficulty, int insertRandom) {
         String output;
         if (Difficulty == "Easy") {
-            if (insertRandom == 0) { return "i1A0"+"j7D0"+"j8D0"+"k4A0"+"k5C0"+"l8A0"+"l2D0"; // this is problem 22 from the manual
+            if (insertRandom == 0) { return "i1A0"+"j7D0"+"j8D0"+"k4A0"+"k5C0"+"l2D0"+"l8A0"; // this is problem 22 from the manual
             }
-            if (insertRandom == 1) {return "k1B0"+"k2B0"+"i3B0"+"j6B0"+"j2C0"+"l6C0"+"l1D0"; // this is problem 23 from the manual
+            if (insertRandom == 1) {return "i3B0"+"j2C0"+"j6B0"+"k1B0"+"k2B0"+"l1D0"+"l6C0"; // this is problem 23 from the manual
             }
             if (insertRandom == 2) {return "l1A0"+"i2A0"+"k6A0"+"k6B0"+"j6D0"+"j7C0"+"l6C0"; // this is problem 24 from the manual
             }
@@ -78,7 +71,7 @@ public class Board extends Application {
         if (Difficulty == "Medium") {
             if (insertRandom == 0) { return "j3B0"+"j5C0"; // this is problem 49 from the manual
             }
-            if (insertRandom == 1) { return "l3A0"+"l5A0"+"k3D0"+"k5D0"; // this is problem 79 from the manual
+            if (insertRandom == 1) { return"k3D0"+"k5D0"+"l3A0"+"l5A0"; // this is problem 79 from the manual
             }
             if (insertRandom == 2) { return "i4C0"+"j5B0"+"j7B0"; // this is problem 82 from the manual
             }
@@ -86,9 +79,9 @@ public class Board extends Application {
         if (Difficulty == "Hard") {
             if (insertRandom == 0) { return "i7C0"+"j5B0"+"k5D0"+"l3C0"; // this is problem 112 from the manual
             }
-            if (insertRandom == 1) { return "k5b0"+"j5C0"+"k5d0"; // this is problem 119 from the manual
+            if (insertRandom == 1) { return "j5C0"+"k5b0"+"k5d0"; // this is problem 119 from the manual
             }
-            if (insertRandom == 2) { return "k4C0"+"k6A0"+"j5B0"; // this is problem 105 from the manual
+            if (insertRandom == 2) { return "j5B0"+"k4C0"+"k6A0"; // this is problem 105 from the manual
             }
         }
         return "";
@@ -344,7 +337,6 @@ public class Board extends Application {
         }
     }
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -364,9 +356,39 @@ public class Board extends Application {
             @Override
             public void handle(KeyEvent event) {
 
+
+                if (selectedPiece != null){
+
+
+                    int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
+
+                    int newOrientation = selectedPiece.getOrientation() % 4;
+
+                    switch (event.getCode()){
+                        case UP:
+                            isFlipped = (isFlipped == 0) ? 4 : 0;
+                            break;
+                        case DOWN:
+                            isFlipped = (isFlipped == 0) ? 4 : 0;
+                            break;
+                        case RIGHT:
+                            newOrientation = (newOrientation + 1) % 4;
+                            break;
+                        case LEFT:
+                            newOrientation = Math.floorMod(newOrientation - 1,4);
+                            break;
+
+                    }
+
+
+                    selectedPiece.setOrientation(newOrientation + isFlipped);
+
+                }
+
             }
 
         });
+
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
 
@@ -378,6 +400,7 @@ public class Board extends Application {
         //UIelements--box1
         Rectangle tutorialBox=new Rectangle(580,10,250,300);
         tutorialBox.setFill(Color.ANTIQUEWHITE);
+        tutorialBox.toBack();
         root.getChildren().add(tutorialBox);
         //UIelements--text1
         javafx.scene.text.Text tut= new javafx.scene.text.Text("TutorialBox");
@@ -393,6 +416,13 @@ public class Board extends Application {
         diff.setX(600);
         diff.setY(300);
         root.getChildren().add(diff);
+        // UI -Elements Controls
+        Image ArrowKeys = new Image("comp1110/ass2/gui/assets/arrowKeys.png",200,200,true,false);
+        ImageView keyLayout = new ImageView();
+        keyLayout.setImage(ArrowKeys);
+        keyLayout.setX(570);
+        keyLayout.setY(450);
+        root.getChildren().add(keyLayout);
 //UIelements--forwardarrow
         Polygon fwd=new Polygon(750,120,750,150,800,135);
         fwd.setFill(Color.RED);
@@ -401,17 +431,49 @@ public class Board extends Application {
         Polygon back=new Polygon(630,120,630,150,580,135);
         back.setFill(Color.RED);
         root.getChildren().add(back);
+        //UI Elements- More Text
+        Text flipL= new Text("Rotate Left ← ");
+        flipL.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        flipL.setFill(Color.BLACK);
+        flipL.setX(440);
+        flipL.setY(550);
+        root.getChildren().add(flipL);
+// ui Elements FlipR
+        Text flipR= new Text("  → Rotate Right ");
+        flipR.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        flipR.setFill(Color.BLACK);
+        flipR.setX(770);
+        flipR.setY(550);
+        root.getChildren().add(flipR);
+        // UI elements Flip/\\/
+        Text flipUp= new Text("Flip ↑ ↓ ");
+        flipUp.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        flipUp.setFill(Color.BLACK);
+        flipUp.setX(640);
+        flipUp.setY(600);
+        root.getChildren().add(flipUp);
         //UIelements--select
         ImageView sillyString = new ImageView();
         sillyString.setImage(Waldo.waldo(0));
         sillyString.setX(650);
         sillyString.setY(150);
+        sillyString.toFront();
         // I am deeply ashamed of this following code .. never look into what [Waldo class] actually does.
         // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
         fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())+1)));
         back.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())-1)));
         // end shame
         root.getChildren().add(sillyString);
+        // click on sillyString
+        sillyString.setOnMousePressed(event -> root.getChildren().add(new PieceView( // currently @root because it brings to front
+                Waldo.changeDimension(sillyString.getImage()), // Piece Image
+                Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
+                650,  // Initial X
+                150, // Initial y
+                2,
+                3)
+        ));
+
 // UI - Difficulty Selecter
         Random rng = new Random();
         Rectangle easy = new Rectangle(590,310,35,20);
@@ -430,6 +492,7 @@ public class Board extends Application {
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
+
 
         primaryStage.setScene(scene);
         primaryStage.show();

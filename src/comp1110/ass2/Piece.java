@@ -63,6 +63,24 @@ public enum Piece {
         relativeXY = intialXY[id - 'a'];
     }
 
+    public static Piece getPiece(char id){
+        switch (id){
+            case 'a': return PIECEa;
+            case 'b': return PIECEb;
+            case 'c': return PIECEc;
+            case 'd': return PIECEd;
+            case 'e': return PIECEe;
+            case 'f': return PIECEf;
+            case 'g': return PIECEg;
+            case 'h': return PIECEh;
+
+        }
+
+        return null;
+    }
+
+
+
     public int getColumn() {
         return column;
     }
@@ -89,6 +107,18 @@ public enum Piece {
 
     public int getOrientation() {
         return orientation;
+    }
+
+    public char getId(){return id;}
+
+    public String getPiecePlacementString(){
+
+        String output = String.valueOf(id);
+        output = output + column;
+        output = output + (char) ((char)row + 'A' - 1);
+        output = output + orientation;
+
+        return output;
     }
 
     //Function to set the orientation of a piece
