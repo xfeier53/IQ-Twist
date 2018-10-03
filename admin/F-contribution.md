@@ -2,7 +2,7 @@ We declare that the work toward our submission of Stage F was distributed among 
 
 * u6079329 30
 * u6609337 40
-* u0123456 30
+* u6406312 30
 
-Signed: James Frampton Reid (u6079329), Feier Xiao (u6609337), and Sue Black (u0123456)
+Signed: James Frampton Reid (u6079329), Feier Xiao (u6609337), and Lachlan McVicar (u6406312)
 
