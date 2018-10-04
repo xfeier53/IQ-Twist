@@ -497,7 +497,14 @@ public class TwistGame {
         Set<String> fjdkf = getViablePiecePlacements(placement);
 
 
+        String test = "a7A7b6A5c1A1d2A6e2C3f3C2g4A7h6D0";
+        //viable.clear();
+        for(int i = 0;i < test.length();i=i+4){
 
+            //System.out.println(test.substring(i,i+4));
+            System.out.println(viable.contains(test.substring(i,i+4)));
+
+        }
 
 
         // Get the length of the peg

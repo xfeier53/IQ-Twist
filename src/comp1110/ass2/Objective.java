@@ -29,13 +29,42 @@ public class Objective {
     public static void main(String[] args) {
 
 
-        Objective objective1 = new Objective(0,"a7A7b6A7c1A3d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
-        Objective objective2 = new Objective(1,"h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
-        Objective objective3 = new Objective(1,"g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
+       // Objective objective1 = new Objective(0,"a7A7b6A7c1A3d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
+        //Objective objective2 = new Objective(1,"h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
+        //Objective objective3 = new Objective(1,"g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
 
-        Objective[] st = {objective1,objective2,objective3};
+        ArrayList<String> sol = readSolutions();
 
-        writeObjectives(st);
+
+
+
+    }
+
+
+    public static ArrayList<String> readSolutions(){
+
+        String path = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Solutions.csv";
+
+        File file = new File(path);
+
+        ArrayList<String> allSolutions = new ArrayList<>();
+
+        try{
+
+            Scanner csvScanner = new Scanner(file);
+            csvScanner.useDelimiter("\n");
+            while (csvScanner.hasNext()){
+
+                allSolutions.add(csvScanner.nextLine());
+            }
+            csvScanner.close();
+
+
+        }
+        catch (FileNotFoundException e){
+
+        }
+        return allSolutions;
     }
 
     //Function to write objectives to file
