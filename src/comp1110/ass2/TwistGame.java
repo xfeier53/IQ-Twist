@@ -439,6 +439,7 @@ public class TwistGame {
     }
 
     public static String[] findInsertPosition(String placement, char ch) {
+
         String[] splitedString = new String[2];
 
         if (placement.equals("")) {
@@ -453,11 +454,17 @@ public class TwistGame {
             char currentPiece;
             currentPiece = placement.charAt(charPosition);
             // The last piece
-            if (currentPiece > 'h') {
-                splitedString[0] = placement.substring(0, charPosition);
-                splitedString[1] = placement.substring(charPosition);
+            if (i == placement.length() / 4 - 1) {
+                if (currentPiece > 'h') {
+                    splitedString[0] = placement.substring(0, charPosition);
+                    splitedString[1] = placement.substring(charPosition);
+                } else {
+                    splitedString[0] = placement;
+                    splitedString[1] = "";
+                }
                 break;
             }
+
             if (ch < currentPiece) {
                 // The first piece
                 if (i == 0) {
