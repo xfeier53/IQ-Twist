@@ -5,6 +5,7 @@ import comp1110.ass2.Waldo;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,6 +46,8 @@ public class Board extends Application {
         String pieceID;
         int width;
         int height;
+
+
     }
 
     public Image tetris(String pieceID, int width, int height) {
@@ -458,6 +461,7 @@ public class Board extends Application {
         sillyString.setX(650);
         sillyString.setY(150);
         sillyString.toFront();
+        pieces.toFront();
         // I am deeply ashamed of this following code .. never look into what [Waldo class] actually does.
         // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
         fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())+1)));
@@ -465,14 +469,29 @@ public class Board extends Application {
         // end shame
         root.getChildren().add(sillyString);
         // click on sillyString
-        sillyString.setOnMousePressed(event -> root.getChildren().add(new PieceView( // currently @root because it brings to front
+        sillyString.setOnMousePressed(event -> {pieces.getChildren().add(new PieceView( // currently @root because it brings to front
                 Waldo.changeDimension(sillyString.getImage()), // Piece Image
                 Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
-                650,  // Initial X
-                150, // Initial y
+                600,  // Initial X
+                170, // Initial y
                 2,
-                3)
-        ));
+                3));
+               // pieces.getChildren().get(pieces.getChildren().size()-1).setLayoutX(event.getSceneX()); -- this refers to most recent placed piece
+        });
+        sillyString.setOnMouseDragged(event -> {
+                ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setX(event.getSceneX());
+            ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setY(event.getSceneY());
+            }
+
+
+
+
+        );
+        sillyString.setOnMouseReleased(event -> {
+            findSnapTo((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1));
+
+        });
+
 
 // UI - Difficulty Selecter
         Random rng = new Random();
@@ -483,12 +502,19 @@ public class Board extends Application {
         Rectangle hard = new Rectangle(750,310,35,20);
         hard.setFill(Color.RED);
 
-        easy.setOnMousePressed(event -> pegs.getChildren().clear() );
+        easy.setOnMousePressed(event -> {
+            pegs.getChildren().clear();
+            pieces.getChildren().clear();
+        });
         easy.setOnMouseReleased(event   ->makePegPlacement( difficulty("Easy",rng.nextInt(3))));
         medium.setOnMouseReleased(event->makePegPlacement( difficulty("Medium",rng.nextInt(3))));
-        medium.setOnMousePressed(event -> pegs.getChildren().clear() );
+        medium.setOnMousePressed(event -> {
+            pegs.getChildren().clear();
+            pieces.getChildren().clear();
+        });
         hard.setOnMouseReleased(event   ->makePegPlacement( difficulty("Hard",rng.nextInt(3))));
-        hard.setOnMousePressed(event -> pegs.getChildren().clear() );
+        hard.setOnMousePressed(event -> { pegs.getChildren().clear();
+        pieces.getChildren().clear();});
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
