@@ -414,7 +414,7 @@ public class TwistGame {
         //
         //	at org.junit.Assert.fail(Assert.java:88)
         //	at org.junit.Assert.assertTrue(Assert.java:41)
-        String test = ("j2B0j1C0k3C0l4B0");
+        String test = ("");
 
         String[] sol = getSolutions(test);
 
@@ -442,41 +442,29 @@ public class TwistGame {
 
         String[] splitedString = new String[2];
 
+        /*
         if (placement.equals("")) {
             splitedString[0] = "";
             splitedString[1] = "";
             return splitedString;
         }
+        */
 
         // Utmost 8 times, till we find the right place to insert the piece
-        for (int i = 0; i < 8 && i < placement.length() / 4; i++) {
-            int charPosition = 4 * i;
+        for (int i = 0;i < placement.length(); i = i + 4) {
             char currentPiece;
-            currentPiece = placement.charAt(charPosition);
-            // The last piece
-            if (i == placement.length() / 4 - 1) {
-                if (currentPiece > 'h') {
-                    splitedString[0] = placement.substring(0, charPosition);
-                    splitedString[1] = placement.substring(charPosition);
-                } else {
-                    splitedString[0] = placement;
-                    splitedString[1] = "";
-                }
-                break;
-            }
+            currentPiece = placement.charAt(i);
 
-            if (ch < currentPiece) {
-                // The first piece
-                if (i == 0) {
-                    splitedString[0] = "";
-                    splitedString[1] = placement;
-                } else {
-                    splitedString[0] = placement.substring(0, charPosition);
-                    splitedString[1] = placement.substring(charPosition);
-                }
-                break;
+            if (ch < currentPiece){
+                splitedString[0] = placement.substring(0,i);
+                splitedString[1] = placement.substring(i);
+                return splitedString;
             }
         }
+
+        splitedString[0] = placement;
+        splitedString[1] = "";
+
         return splitedString;
     }
 
@@ -507,6 +495,8 @@ public class TwistGame {
         Set<String> viable = getViablePiecePlacements(placement);
 
         Set<String> fjdkf = getViablePiecePlacements(placement);
+
+
 
 
 
@@ -553,7 +543,11 @@ public class TwistGame {
         // See if the current placement have solution
         // It should have all the pieces placed otherwise it is invalid
         for (String s : viable) {
-            pieces[s.charAt(0) - 'a'] = 1;
+            if(!blackList.contains(s)){
+                pieces[s.charAt(0) - 'a'] = 1;
+            }
+
+
         }
         for (int i : pieces) {
             if (i == 0) {
