@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -494,12 +495,6 @@ public class TwistGame {
 
         Set<String> viable = getViablePiecePlacements(placement);
 
-        Set<String> fjdkf = getViablePiecePlacements(placement);
-
-
-
-
-
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
             if (isPiece(placement.charAt(4 * i))) {
@@ -662,26 +657,26 @@ public class TwistGame {
 
 
     // Get dictionary
-    public static void getDictionary() {
+    public static void getDictionary() throws IOException {
         // JAMES HERE !!!
         // I need to CSV file into this solutions list
         // And the end of the function needs to convert into csv file
-        List<String> solutions = new ArrayList<>();
+        List<String> solutions = readCSV("/home/feier/Semester 1/Structured Programming/comp1110-ass2/src/comp1110/ass2/Solutions.csv");
 
-        // Test data, can be deleted
-        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
-        solutions.add("a1A6b3A4c1D0d6A3e7C2f1B2h8A1g4B7");
-        solutions.add("a1A6b3A4c1D0d6A6e6C0f1B2h8B1g4B7");
-        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
-        solutions.add("a1A6b3A4c1D0e7B0d6C2g4B1f1B2h6A0");
+//        // Test data, can be deleted
+//        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
+//        solutions.add("a1A6b3A4c1D0d6A3e7C2f1B2h8A1g4B7");
+//        solutions.add("a1A6b3A4c1D0d6A6e6C0f1B2h8B1g4B7");
+//        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
+//        solutions.add("a1A6b3A4c1D0e7B0d6C2g4B1f1B2h6A0");
 
-        Boolean isInvalid = false;
+        Boolean isInvalid;
         String pieceString;
         int row, column, orientation;
         List<String> iPegString, jPegString, kPegString, lPegString, pegString;
         List<String[]> pegPlacement = new ArrayList<>();
         List<String[]> toRemove = new ArrayList<>();
-        List<String> toAdd = new ArrayList<>();
+        List<String> toAdd;
 
         for (String solution : solutions) {
             toAdd = new ArrayList<>();
@@ -755,6 +750,8 @@ public class TwistGame {
             for (String s : toAdd) {
                 pegPlacement.add(new String[]{s, solution});
             }
+            System.out.println(pegPlacement.size());
+            System.out.println(toRemove.size());
 
         }
 
@@ -765,6 +762,31 @@ public class TwistGame {
             System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
         }
         System.out.println(pegPlacement.size());
+    }
+
+    public static List<String> readCSV(String path) throws IOException {
+        List<String> list = new ArrayList<>();
+        FileReader fr = new FileReader(path);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+
+        while((line = br.readLine()) != null) {
+            list.add(line);
+        }
+        br.close();
+
+        return list;
+    }
+
+    public static void writeCSV(String path, List<String[]> placement) throws IOException {
+        PrintWriter pw = new PrintWriter(new File(path));
+        StringBuilder sb = new StringBuilder();
+        for (String[] s : placement) {
+            sb.append(s[0] + " " + s[1]);
+            sb.append('\n');
+        }
+        pw.write(sb.toString());
+        pw.close();
     }
 
     public static List<String> getCombinations(List<String> iPegString, List<String> jPegString , List<String> kPegString, List<String> lPegString) {
