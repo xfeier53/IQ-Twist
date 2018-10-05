@@ -675,6 +675,7 @@ public class TwistGame {
         solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
         solutions.add("a1A6b3A4c1D0e7B0d6C2g4B1f1B2h6A0");
 
+        Boolean isInvalid = false;
         String pieceString;
         int row, column, orientation;
         List<String> iPegString, jPegString, kPegString, lPegString, pegString;
@@ -683,6 +684,7 @@ public class TwistGame {
         List<String> toAdd = new ArrayList<>();
 
         for (String solution : solutions) {
+            toAdd = new ArrayList<>();
             iPegString = new ArrayList<>();
             jPegString = new ArrayList<>();
             kPegString = new ArrayList<>();
@@ -721,29 +723,39 @@ public class TwistGame {
             pegString = getCombinations(iPegString, jPegString, kPegString, lPegString);
             // For every combinations check whether it is existed in the pegPlacement list
             for (String newPlacement : pegString) {
+                isInvalid = false;
                 // Check whether it is on the blacklist
-                for (String[] blacklist : toRemove) {
-                    if (newPlacement.equals(blacklist)) {
-                        continue;
+                for (String[] invalidPlacement : toRemove) {
+                    if (newPlacement.equals(invalidPlacement[0])) {
+                        isInvalid = true;
+                        break;
                     }
+                }
+                if (isInvalid == true) {
+                    continue;
                 }
                 for (String[] existedPlacement : pegPlacement) {
                     // Record the duplicate placements needed to be deleted
                     if (newPlacement.equals(existedPlacement[0])) {
                         toRemove.add(existedPlacement);
-                        continue;
+                        isInvalid = true;
+                        break;
                     }
+                }
+                if (isInvalid == true) {
+                    continue;
                 }
                 toAdd.add(newPlacement);
             }
             // Remove
             for (String[] duplicate : toRemove) {
-                pegPlacement.remove(duplicate);
+                    pegPlacement.remove(duplicate);
             }
             // Add
             for (String s : toAdd) {
-                pegPlacement.add(new String[] {s, solution});
+                pegPlacement.add(new String[]{s, solution});
             }
+
         }
 
         // AND HERE !!!
@@ -752,6 +764,7 @@ public class TwistGame {
         for (String[] s : pegPlacement) {
             System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
         }
+        System.out.println(pegPlacement.size());
     }
 
     public static List<String> getCombinations(List<String> iPegString, List<String> jPegString , List<String> kPegString, List<String> lPegString) {
