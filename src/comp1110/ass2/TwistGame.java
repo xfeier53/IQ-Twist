@@ -666,19 +666,25 @@ public class TwistGame {
         // I need to CSV file into this solutions list
         List<String> solutions = new ArrayList<>();
 
+        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
+        solutions.add("a1A6b3A4c1D0d6A3e7C2f1B2h8A1g4B7");
+        solutions.add("a1A6b3A4c1D0d6A6e6C0f1B2h8B1g4B7");
+        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
+        solutions.add("a1A6b3A4c1D0e7B0d6C2g4B1f1B2h6A0");
+
         String pieceString;
         int row, column, orientation;
-        List<String> iPegString = new ArrayList<>();
-        List<String> jPegString = new ArrayList<>();
-        List<String> kPegString = new ArrayList<>();
-        List<String> lPegString = new ArrayList<>();
-        List<String> pegString;
+        List<String> iPegString, jPegString, kPegString, lPegString, pegString;
         List<String[]> pegPlacement = new ArrayList<>();
         List<String[]> toRemove = new ArrayList<>();
         List<String> toAdd = new ArrayList<>();
 
         for (String solution : solutions) {
-            for (int i = 0; i < 9; i++) {
+            iPegString = new ArrayList<>();
+            jPegString = new ArrayList<>();
+            kPegString = new ArrayList<>();
+            lPegString = new ArrayList<>();
+            for (int i = 0; i < 8; i++) {
                 pieceString = solution.substring(4 * i, 4 * i + 4);
 
                 Piece piece = Piece.getPiece(pieceString.charAt(0));
@@ -697,14 +703,14 @@ public class TwistGame {
                     if (c[2] == 2) {
                         // The color will be the same as the piece
                         switch (piece.getId()) {
-                            case '1':
-                            case '2': iPegString.add("i" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
-                            case '3':
-                            case '4': jPegString.add("j" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
-                            case '5':
-                            case '6': kPegString.add("k" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
-                            case '7':
-                            case '8': lPegString.add("l" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case 'a':
+                            case 'b': iPegString.add("i" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case 'c':
+                            case 'd': jPegString.add("j" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case 'e':
+                            case 'f': kPegString.add("k" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case 'g':
+                            case 'h': lPegString.add("l" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
                         }
                     }
                 }
@@ -722,10 +728,10 @@ public class TwistGame {
                     // Record the duplicate placements needed to be deleted
                     if (newPlacement.equals(existedPlacement[0])) {
                         toRemove.add(existedPlacement);
-                    } else {
-                        toAdd.add(newPlacement);
+                        continue;
                     }
                 }
+                toAdd.add(newPlacement);
             }
             // Remove
             for (String[] duplicate : toRemove) {
@@ -738,6 +744,9 @@ public class TwistGame {
         }
 
         // Generate csv file with pegPlacement
+        for (String[] s : pegPlacement) {
+            System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
+        }
     }
 
     public static List<String> getCombinations(List<String> iPegString, List<String> jPegString , List<String> kPegString, List<String> lPegString) {
@@ -770,7 +779,7 @@ public class TwistGame {
                         if (l == -1) {
                             lPeg = "";
                         } else {
-                            lPeg = jPegList.get(l);
+                            lPeg = lPegList.get(l);
                         }
                         combinations.add(iPeg + jPeg + kPeg + lPeg);
                     }
