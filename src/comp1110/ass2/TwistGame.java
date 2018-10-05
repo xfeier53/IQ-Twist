@@ -663,9 +663,12 @@ public class TwistGame {
 
     // Get dictionary
     public static void getDictionary() {
+        // JAMES HERE !!!
         // I need to CSV file into this solutions list
+        // And the end of the function needs to convert into csv file
         List<String> solutions = new ArrayList<>();
 
+        // Test data, can be deleted
         solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
         solutions.add("a1A6b3A4c1D0d6A3e7C2f1B2h8A1g4B7");
         solutions.add("a1A6b3A4c1D0d6A6e6C0f1B2h8B1g4B7");
@@ -743,7 +746,9 @@ public class TwistGame {
             }
         }
 
+        // AND HERE !!!
         // Generate csv file with pegPlacement
+        // s[0] is the placement s[1] is the solutions
         for (String[] s : pegPlacement) {
             System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
         }
