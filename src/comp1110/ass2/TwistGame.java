@@ -659,70 +659,149 @@ public class TwistGame {
 //        }
 //    }
 
+
+
     // Get dictionary
-    public static String[] getDictionary() {
-        Set<String> dictionary = new HashSet<>();
-        Set<String> pegCombinations = getCombinations(7);
-        String placement;
+    public static void getDictionary() {
+        // I need to CSV file into this solutions list
+        List<String> solutions = new ArrayList<>();
 
-        // For every possible pegs combinations
-        for (String combination : pegCombinations) {
-            placement = "";
-            // For every pegs in one possible combination
-            for (int i = 0; i < combination.length(); i++) {
+        String pieceString;
+        int row, column, orientation;
+        List<String> iPegString = new ArrayList<>();
+        List<String> jPegString = new ArrayList<>();
+        List<String> kPegString = new ArrayList<>();
+        List<String> lPegString = new ArrayList<>();
+        List<String> pegString;
+        List<String[]> pegPlacement = new ArrayList<>();
+        List<String[]> toRemove = new ArrayList<>();
+        List<String> toAdd = new ArrayList<>();
 
-            }
+        for (String solution : solutions) {
+            for (int i = 0; i < 9; i++) {
+                pieceString = solution.substring(4 * i, 4 * i + 4);
 
-            System.out.println(placement);
-        }
-        return new String[0];
-    }
+                Piece piece = Piece.getPiece(pieceString.charAt(0));
+                column = pieceString.charAt(1);
+                row = pieceString.charAt(2);
+                orientation = Character.getNumericValue(pieceString.charAt(3));
 
-    // Get combinations of pegs
-    public static Set<String> getCombinations(int count) {
-        List<String> list = new ArrayList<>();
-        String temp = "";
-        Set<String> combinations = new HashSet<>();
+                //Create the new piece with specific orientation and get the relative coordinates of the piece
+                piece.setOrientation(orientation);
 
-        // Use binary to show the present of the pegs
-        for (int i = 0; i < Math.pow(2, count); i++) {
-            String s = Integer.toString(i, 2);
-            while (7 - s.length() > 0) {
-                s = "0" + s;
-            }
-            list.add(s);
-        }
+                int[][] xy = piece.getRelativeXY();
 
-        // Eliminate the duplicate
-        for (String s : list) {
-            temp = "";
-            for (int i = 0; i < s.length(); i++) {
-                if (s.charAt(i) == '1') {
-                    switch (i / 2) {
-                        case 0: temp = temp + "i"; break;
-                        case 1: temp = temp + "j"; break;
-                        case 2: temp = temp + "k"; break;
-                        case 3: temp = temp + "l"; break;
+                // Get the row and column of the pegs
+                for (int[] c : xy) {
+                    // If c[2] equals to 2, it is a hole, can put a peg in it
+                    if (c[2] == 2) {
+                        // The color will be the same as the piece
+                        switch (piece.getId()) {
+                            case '1':
+                            case '2': iPegString.add("i" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case '3':
+                            case '4': jPegString.add("j" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case '5':
+                            case '6': kPegString.add("k" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case '7':
+                            case '8': lPegString.add("l" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                        }
                     }
-
                 }
             }
-            combinations.add(temp);
+            pegString = getCombinations(iPegString, jPegString, kPegString, lPegString);
+            // For every combinations check whether it is existed in the pegPlacement list
+            for (String newPlacement : pegString) {
+                // Check whether it is on the blacklist
+                for (String[] blacklist : toRemove) {
+                    if (newPlacement.equals(blacklist)) {
+                        continue;
+                    }
+                }
+                for (String[] existedPlacement : pegPlacement) {
+                    // Record the duplicate placements needed to be deleted
+                    if (newPlacement.equals(existedPlacement[0])) {
+                        toRemove.add(existedPlacement);
+                    } else {
+                        toAdd.add(newPlacement);
+                    }
+                }
+            }
+            // Remove
+            for (String[] duplicate : toRemove) {
+                pegPlacement.remove(duplicate);
+            }
+            // Add
+            for (String s : toAdd) {
+                pegPlacement.add(new String[] {s, solution});
+            }
         }
 
+        // Generate csv file with pegPlacement
+    }
+
+    public static List<String> getCombinations(List<String> iPegString, List<String> jPegString , List<String> kPegString, List<String> lPegString) {
+        String iPeg, jPeg, kPeg, lPeg;
+        List<String> combinations = new ArrayList<>();
+        List<String> jPegList = getTwoPegs(jPegString);
+        List<String> kPegList = getTwoPegs(kPegString);
+        List<String> lPegList = getTwoPegs(lPegString);
+
+        // Starting with -1, because one or more kind of pegs can be missing
+        for (int i = -1; i < iPegString.size(); i++) {
+            if (i == -1) {
+                iPeg = "";
+            } else {
+                iPeg = iPegString.get(i);
+            }
+            for (int j = -1; j < jPegList.size(); j++) {
+                if (j == -1) {
+                    jPeg = "";
+                } else {
+                    jPeg = jPegList.get(j);
+                }
+                for (int k = -1; k < kPegList.size(); k++) {
+                    if (k == -1) {
+                        kPeg = "";
+                    } else {
+                        kPeg = kPegList.get(k);
+                    }
+                    for (int l = -1; l < lPegList.size(); l++) {
+                        if (l == -1) {
+                            lPeg = "";
+                        } else {
+                            lPeg = jPegList.get(l);
+                        }
+                        combinations.add(iPeg + jPeg + kPeg + lPeg);
+                    }
+                }
+            }
+        }
         return combinations;
     }
 
-    // Return every location
-    public static String returnLocation(String placement) {
-        // For every row
-        for (int i = 0; i < 4; i++) {
-            // For every column
-            for (int j = 0; j < 8; j++) {
-                placement = placement + (char) (i + '1') + (char) (j + 'A') + "0";
+    public static List<String> getTwoPegs(List<String> pegString) {
+        String firstPeg, secondPeg;
+        List<String> pegList = new ArrayList<>();
+
+        // Combinations of two j pegs
+        // i start with -1, can be nothing for one of the pegs
+        for (int i = -1; i < pegString.size(); i++) {
+            for (int j = i + 1; j < pegString.size(); j++) {
+                if (i == -1) {
+                    firstPeg = "";
+                } else {
+                    firstPeg = pegString.get(i);
+                }
+                if (j == -1) {
+                    secondPeg = "";
+                } else {
+                    secondPeg = pegString.get(j);
+                }
+                pegList.add(firstPeg + secondPeg);
             }
         }
-        return placement;
+        return pegList;
     }
 
 
