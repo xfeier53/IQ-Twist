@@ -38,10 +38,10 @@ public class PieceSetOrientationTest {
     //Roate the piece without flipping it ie no orientations 4 or above
     @Test
     public void rotatePieceWithoutFlipTest(){
-        Piece pieceB = Piece.PIECEb;
-        Piece pieceD = Piece.PIECEd;
-        Piece pieceH = Piece.PIECEh;
-        Piece pieceE = Piece.PIECEe;
+        Piece pieceB = new Piece("b1A0");
+        Piece pieceD = new  Piece("d1A0");//d
+        Piece pieceH = new  Piece("h1A0");//h
+        Piece pieceE = new  Piece("e1A0");//e
 
         int testCount = 1;
         String testName = "rotatePieceWithoutFlipTest";
@@ -94,9 +94,9 @@ public class PieceSetOrientationTest {
     @Test
     public void flipPieceWithoutRotateTest(){
 
-        Piece pieceA = Piece.PIECEa;
-        Piece pieceF = Piece.PIECEf;
-        Piece pieceG = Piece.PIECEg;
+        Piece pieceA = new  Piece("a1A0");//a
+        Piece pieceF = new  Piece("f1A0");//f
+        Piece pieceG = new  Piece("g1A0");//g
 
         String testName = "flipPieceWithoutRotateTest";
 
@@ -138,9 +138,9 @@ public class PieceSetOrientationTest {
     //General test to any value from an orientation of 0
     @Test
     public void rotateAndFlipTest(){
-        Piece pieceE = Piece.PIECEe;
-        Piece pieceC = Piece.PIECEc;
-        Piece pieceG = Piece.PIECEg;
+        Piece pieceE = new  Piece("e1A0");//e
+        Piece pieceC = new  Piece("c1A0");//c
+        Piece pieceG = new  Piece("g1A0");//g
 
         int testCount = 1;
         String testName = "rotateAndFlipTest";
@@ -179,9 +179,9 @@ public class PieceSetOrientationTest {
     //Change orientation from 0 and then change it again
     @Test
     public void rotateAndFlipFromAnyOrientationTest(){
-        Piece pieceD = Piece.PIECEd;
-        Piece pieceA = Piece.PIECEa;
-        Piece pieceF = Piece.PIECEf;
+        Piece pieceD = new  Piece("d1A0");//d
+        Piece pieceA = new  Piece("a1A0");//a
+        Piece pieceF = new  Piece("f1A0");//f
 
         int testCount = 1;
         String testName = "rotateAndFlipFromAnyOrientationTest";
@@ -229,7 +229,7 @@ public class PieceSetOrientationTest {
     @Test(expected = AssertionError.class)
     public void badPositiveOrientationTest(){
 
-        Piece pieceA = Piece.PIECEa;
+        Piece pieceA = new  Piece("a1A0");//a
 
         pieceA.setOrientation(8);
     }
@@ -237,7 +237,7 @@ public class PieceSetOrientationTest {
     @Test(expected = AssertionError.class)
     public void negativeOrientationTest(){
 
-        Piece pieceD = Piece.PIECEd;
+        Piece pieceD = new  Piece("d1A0");//d
 
         pieceD.setOrientation(-1);
     }
