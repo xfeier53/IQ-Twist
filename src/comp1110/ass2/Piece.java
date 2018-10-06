@@ -127,6 +127,18 @@ public class Piece {
         return length;
     }
 
+    public int[][] getPieceSituation(){
+        int[][] situation = new int[8][4];
+
+        for(int i = 0;i < length;i++){
+            int[] coordinate = getRelativeCoordinate(i);
+
+            situation[column+coordinate[0]][row + coordinate[1]] = 1;
+
+        }
+        return situation;
+    }
+
     public String getEncoding(){
         return encoding;
     }
