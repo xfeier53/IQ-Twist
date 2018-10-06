@@ -144,22 +144,25 @@ public class TwistGame {
     public static boolean isPlacementStringValid(String placement) {
 
         char pieceType;
+        String piecePlacement;
         int column, row, orientation, count;
         Node[][] nodes = new Node[4][8];
         // Count the number of the placements
 
+        Piece piece;
+
         initNodes(nodes);
-//        if (!isPlacementStringWellFormed(placement)) {
-//            return false;
-//        }
+        if (!isPlacementStringWellFormed(placement)) {
+            return false;
+        }
         // Set all the pegs first, so I reverse the placement order
         count = placement.length() / 4;
         for (int i = count - 1; i >= 0; i--) {
+
             pieceType = placement.charAt(4 * i);
-            column = placement.charAt(4 * i + 1) - '1';
-            row = placement.charAt(4 * i + 2) - 'A';
-            orientation = placement.charAt(4 * i + 3) - '0';
-            if (!setPieces(nodes, row, column, orientation, pieceType)) {
+            piecePlacement = placement.substring(i * 4,i*4+4);
+
+            if (!setPieces(nodes, piecePlacement, pieceType)) {
                 return false;
             }
         }
@@ -175,21 +178,22 @@ public class TwistGame {
         }
     }
 
-    public static boolean setPieces(Node[][] nodes, int row, int column, int orientation, char pieceType) {
-        switch (pieceType) {
-            case 'a': if (nodes[row][column].setPiece(nodes, Piece.PIECEa, row, column,  orientation)) { return true; } break;
-            case 'b': if (nodes[row][column].setPiece(nodes, Piece.PIECEb, row, column,  orientation)) { return true; } break;
-            case 'c': if (nodes[row][column].setPiece(nodes, Piece.PIECEc, row, column,  orientation)) { return true; } break;
-            case 'd': if (nodes[row][column].setPiece(nodes, Piece.PIECEd, row, column,  orientation)) { return true; } break;
-            case 'e': if (nodes[row][column].setPiece(nodes, Piece.PIECEe, row, column,  orientation)) { return true; } break;
-            case 'f': if (nodes[row][column].setPiece(nodes, Piece.PIECEf, row, column,  orientation)) { return true; } break;
-            case 'g': if (nodes[row][column].setPiece(nodes, Piece.PIECEg, row, column,  orientation)) { return true; } break;
-            case 'h': if (nodes[row][column].setPiece(nodes, Piece.PIECEh, row, column,  orientation)) { return true; } break;
+    public static boolean setPieces(Node[][] nodes, String placement, char pieceType) {
 
-            case 'i': if (nodes[row][column].setPeg(nodes, Peg.PEGi, row, column)) { return true; } break;
-            case 'j': if (nodes[row][column].setPeg(nodes, Peg.PEGj, row, column)) { return true; } break;
-            case 'k': if (nodes[row][column].setPeg(nodes, Peg.PEGk, row, column)) { return true; } break;
-            case 'l': if (nodes[row][column].setPeg(nodes, Peg.PEGl, row, column)) { return true; } break;
+        switch (pieceType) {
+            case 'a':
+            case 'b':
+            case 'c':
+            case 'd':
+            case 'e':
+            case 'f':
+            case 'g':
+            case 'h': return Node.setPiece(nodes,new Piece(placement));
+
+            case 'i': ;
+            case 'j': ;
+            case 'k': ;
+            case 'l': return Node.setPeg(nodes,Peg.getPegForPlacement(placement));
 
         }
         return false;
@@ -335,7 +339,7 @@ public class TwistGame {
                     break pieceLoop;//break the loop not the case statement
             }
             //get the piece for the given id
-            Piece piece = Piece.getPiece(id);
+            Piece piece = new Piece(placement.substring(i,i+4));
 
             //decode the other attributes of the piece
             column = Character.getNumericValue(placement.charAt(i + 1)) - 1;
@@ -382,23 +386,23 @@ public class TwistGame {
 
         //seperate string and decode the values to create the piece
         id = newPiece.charAt(0);
-        Piece piece = Piece.getPiece(id);
-        column = Character.getNumericValue(newPiece.charAt(1)) - 1;
-        row = (newPiece.charAt(2) - 'A');
-        orientation = Character.getNumericValue(newPiece.charAt(3));
+        Piece piece = new Piece(newPiece);
+        //column = Character.getNumericValue(newPiece.charAt(1)) - 1;
+        //row = (newPiece.charAt(2) - 'A');
+        //orientation = Character.getNumericValue(newPiece.charAt(3));
 
         //Create the new piece with specific orientation and get the relative coordinates of the piece
-        piece.setOrientation(orientation);
+        //piece.setOrientation(orientation);
         int[][] xy = piece.getRelativeXY();
 
         //Loop through every set of coordinates in xy
         for (int[] c : xy) {
             //check whether the coordinates are in the correct range
-            if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
+            if (piece.getColumn() + c[0] < 0 || piece.getColumn() + c[0] > 7 || piece.getRow() + c[1] < 0 || piece.getRow() + c[1] > 3) {
                 continue;
             }
             //check if the coordinate in situation is already occupied
-            if (situation[column + c[0]][row + c[1]] == 1) {
+            if (situation[piece.getColumn() + c[0]][piece.getRow() + c[1]] == 1) {
                 //if so return false
                 return false;
             }
@@ -699,7 +703,7 @@ public class TwistGame {
             for (int i = 0; i < 8; i++) {
                 pieceString = solution.substring(4 * i, 4 * i + 4);
 
-                Piece piece = Piece.getPiece(pieceString.charAt(0));
+                Piece piece = new Piece(pieceString);//Piece.getPiece(pieceString.charAt(0));
                 column = pieceString.charAt(1);
                 row = pieceString.charAt(2);
                 orientation = Character.getNumericValue(pieceString.charAt(3));
