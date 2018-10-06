@@ -703,6 +703,12 @@ public class TwistGame {
         int count = 1;
 
         for (String solution : solutions) {
+            if (solution.equals("a1C2b3C0c2A0d4B0e6A0f6C2g1A0h8A1")){
+                System.out.println("first solution found");
+            }
+            if (solution.equals("a1C2b3C0c2A0d4B0e7B1f6A0g1A0h6D0")) {
+                System.out.println("second solution found");
+            }
             toAdd = new ArrayList<>();
             iPegString = new ArrayList<>();
             jPegString = new ArrayList<>();
@@ -750,6 +756,10 @@ public class TwistGame {
 //                        break;
 //                    }
 //                }
+
+                if (newPlacement.equals("i4D0j5C0j6C0k7B0k7C0l2C0")) {
+                    System.out.println("Hello");
+                }
 
                 if (toRemove.contains(newPlacement)) {
 //                    isInvalid = true;
@@ -874,12 +884,16 @@ public class TwistGame {
                 }
             }
         }
+        if (combinations.contains("i4D0j5C0j6C0k7C0k7B0l2C0")){
+            System.out.println("combination found");
+        }
         return combinations;
     }
 
     public static List<String> getTwoPegs(List<String> pegString) {
         String firstPeg, secondPeg;
         List<String> pegList = new ArrayList<>();
+        Collections.sort(pegString);
 
         // Combinations of two j pegs
         // i start with -1, can be nothing for one of the pegs
