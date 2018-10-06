@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -158,7 +159,6 @@ public class TwistGame {
         // Set all the pegs first, so I reverse the placement order
         count = placement.length() / 4;
         for (int i = count - 1; i >= 0; i--) {
-
             pieceType = placement.charAt(4 * i);
             piecePlacement = placement.substring(i * 4,i*4+4);
 
@@ -501,14 +501,7 @@ public class TwistGame {
         Set<String> fjdkf = getViablePiecePlacements(placement);
 
 
-        String test = "a7A7b6A5c1A1d2A6e2C3f3C2g4A7h6D0";
-        //viable.clear();
-        for(int i = 0;i < test.length();i=i+4){
 
-            //System.out.println(test.substring(i,i+4));
-            System.out.println(viable.contains(test.substring(i,i+4)));
-
-        }
 
 
         // Get the length of the peg
