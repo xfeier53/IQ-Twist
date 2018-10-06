@@ -790,10 +790,10 @@ public class TwistGame {
             System.out.println("No." + count++);
             System.out.println("pegPlacement : " + pegPlacement.size());
             System.out.println("Add : " + toAdd.size());
-            System.out.println("Remoce : " + toRemove.size());
+            System.out.println("Remove : " + toRemove.size());
         }
 
-        
+
 //        for (String[] s : pegPlacement) {
 //            System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
 //        }
@@ -830,8 +830,9 @@ public class TwistGame {
         for (Map.Entry<String, String> entry: placement.entrySet()) {
             sb.append(entry.getKey() + " " + entry.getValue());
             sb.append('\n');
+            pw.write(sb.toString());
+            sb.setLength(0);
         }
-        pw.write(sb.toString());
         pw.close();
     }
 

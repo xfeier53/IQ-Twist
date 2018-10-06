@@ -27,12 +27,13 @@ import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.Line;
+
 import javax.xml.soap.Text;
 import java.util.Random;
 
 /**
  * A very simple viewer for piece placements in the twist game.
- *
+ * <p>
  * NOTE: This class is separate from your main game class.  This
  * class does not play a game, it just illustrates various piece
  * placements.
@@ -54,15 +55,19 @@ public class Viewer extends Application {
     TextField textField;
 
     private double[] relativeMouseClick = new double[2];
-// this this is difficulty tests - u6406312
+
+    // this this is difficulty tests - u6406312
     public static String difficulty(String Difficulty, int insertRandom) {
         String output;
         if (Difficulty == "Easy") {
-            if (insertRandom == 0) { return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 0) {
+                return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
             }
-            if (insertRandom == 1) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 1) {
+                return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
             }
-            if (insertRandom == 2) {return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
+            if (insertRandom == 2) {
+                return "a1B5b2C0c5A2d7B7e5B0f1A6g3A7h5D0i1B0j7A0j7B0k1A0k2B0l3B0l4C0";
             }
         }
         if (Difficulty == "Medium") {
@@ -88,7 +93,7 @@ public class Viewer extends Application {
     /**
      * Draw a placement in the window, removing any previously drawn one
      *
-     * @param placement  A valid placement string
+     * @param placement A valid placement string
      */
     void makePlacement(String placement) {
 
@@ -96,10 +101,10 @@ public class Viewer extends Application {
         pieces.getChildren().clear();
 
         //loop through every four characters in placement
-        for(int i = 0; i < placement.length()/4;i++){
+        for (int i = 0; i < placement.length() / 4; i++) {
 
             //get the 4 character substring at i
-            String piecePlacement = placement.substring(i*4,i*4+4);
+            String piecePlacement = placement.substring(i * 4, i * 4 + 4);
             //place the piece
             makePiecePlacement(piecePlacement);
 
@@ -109,20 +114,19 @@ public class Viewer extends Application {
     }
 
 
-
-    void makePiecePlacement(String piecePlacement){
+    void makePiecePlacement(String piecePlacement) {
 
 
         //get the id of the piece ie 'a' and get the png image
         char pieceId = piecePlacement.charAt(0);
-        Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
+        Image pieceImg = new Image("comp1110/ass2/gui/assets/" + pieceId + ".png");
 
         //get the height of the piece
         double height = pieceImg.getHeight() / 100;
         double width = pieceImg.getWidth() / 100;
 
         //get the piece resized to suit the board
-        pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png",SQUARE_SIZE * width,SQUARE_SIZE * height,true,false);
+        pieceImg = new Image("comp1110/ass2/gui/assets/" + pieceId + ".png", SQUARE_SIZE * width, SQUARE_SIZE * height, true, false);
 
         //set the the image to an imageView
         ImageView pieceView = new ImageView();
@@ -141,7 +145,7 @@ public class Viewer extends Application {
         //parses the orientation into an int
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
 
-        rotateAndFlip(pieceView,orientation);
+        rotateAndFlip(pieceView, orientation);
 
         //Find where the piece was clicked on and store it
         pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -163,7 +167,7 @@ public class Viewer extends Application {
         pieceView.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                translatePiece(event,pieceView,relativeMouseClick);
+                translatePiece(event, pieceView, relativeMouseClick);
             }
         });
 
@@ -172,37 +176,37 @@ public class Viewer extends Application {
 
     }
 
-    void translatePiece(MouseEvent event,ImageView pieceView, double[] relativePoint){
+    void translatePiece(MouseEvent event, ImageView pieceView, double[] relativePoint) {
 
         //Move piece to mouse considering where the mouse was clicked inside the piece
-        pieceView.setX(event.getX()-relativePoint[0]);
-        pieceView.setY(event.getY()-relativePoint[1]);
+        pieceView.setX(event.getX() - relativePoint[0]);
+        pieceView.setY(event.getY() - relativePoint[1]);
 
     }
 
-    void findSnapTo(ImageView pieceView){
+    void findSnapTo(ImageView pieceView) {
 
         int xSnap = -1000;
         int ySnap = -1000;
 
         double checkLength = SQUARE_SIZE / 2;
 
-        for(int i = 0; i <= 7 ; i++){
+        for (int i = 0; i <= 7; i++) {
 
             double xLine = (i * SQUARE_SIZE - pieceView.getX());
 
-            if(xLine <= checkLength && xLine >= -checkLength){
+            if (xLine <= checkLength && xLine >= -checkLength) {
                 xSnap = i * SQUARE_SIZE;
                 break;
             }
 
         }
 
-        for(int i = 0; i <= 3 ; i++){
+        for (int i = 0; i <= 3; i++) {
 
             double yLine = (i * SQUARE_SIZE - pieceView.getY());
 
-            if(yLine <= checkLength && yLine >= -checkLength){
+            if (yLine <= checkLength && yLine >= -checkLength) {
                 ySnap = i * SQUARE_SIZE;
                 break;
             }
@@ -216,13 +220,10 @@ public class Viewer extends Application {
     }
 
 
-
-
-
-    void rotateAndFlip(ImageView pieceView,int orientation){
+    void rotateAndFlip(ImageView pieceView, int orientation) {
 
         //flip the piece over if needed
-        if(orientation > 3){
+        if (orientation > 3) {
             pieceView.setScaleY(-1);
             orientation = orientation - 4;
         }
@@ -230,7 +231,7 @@ public class Viewer extends Application {
         pieceView.setRotate(90 * orientation);
 
         //correct x y positioning due to orientation change, this assumes that all pieces fit in a rectangle
-        if(orientation % 2 != 0){
+        if (orientation % 2 != 0) {
 
             //float adjust = (float)SQUARE_SIZE / 100;
 
@@ -250,7 +251,7 @@ public class Viewer extends Application {
      */
     private void makeControls() {
         Label label1 = new Label("Placement:");
-        textField = new TextField ();
+        textField = new TextField();
         textField.setPrefWidth(300);
         Button button = new Button("Refresh");
         button.setOnAction(new EventHandler<ActionEvent>() {
@@ -268,9 +269,9 @@ public class Viewer extends Application {
         controls.getChildren().add(hb);
     }
 
-    private void makeLines(){
+    private void makeLines() {
 
-        for(int i = 1; i <= 8; i++){
+        for (int i = 1; i <= 8; i++) {
 
             Line boardLine = new Line();
             boardLine.setStartY(0);
@@ -280,7 +281,7 @@ public class Viewer extends Application {
             lines.getChildren().add(boardLine);
         }
 
-        for(int i = 1; i <= 4; i++){
+        for (int i = 1; i <= 4; i++) {
 
             Line boardLine = new Line();
             boardLine.setStartY(i * SQUARE_SIZE);
@@ -313,45 +314,43 @@ public class Viewer extends Application {
         primaryStage.show();
 
         //UIelements--box1
-        Rectangle tutorialBox=new Rectangle(490,10,250,300);
+        Rectangle tutorialBox = new Rectangle(490, 10, 250, 300);
         tutorialBox.setFill(Color.ANTIQUEWHITE);
         root.getChildren().add(tutorialBox);
 //UIelements--text1
-        javafx.scene.text.Text tut= new javafx.scene.text.Text("TutorialBox");
-        tut.setFont(Font.font("Tahoma",FontWeight.NORMAL,30));
+        javafx.scene.text.Text tut = new javafx.scene.text.Text("TutorialBox");
+        tut.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
         tut.setFill(Color.BLACK);
         tut.setX(520);
         tut.setY(50);
         root.getChildren().add(tut);
         //UIelements--text2
-        javafx.scene.text.Text diff= new javafx.scene.text.Text("Easy    Medium    Hard");
-        diff.setFont(Font.font("Tahoma",FontWeight.NORMAL,20));
+        javafx.scene.text.Text diff = new javafx.scene.text.Text("Easy    Medium    Hard");
+        diff.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         diff.setFill(Color.BLACK);
         diff.setX(520);
         diff.setY(300);
         root.getChildren().add(diff);
 //UIelements--forwardarrow
-        Polygon fwd=new Polygon(670,120,670,150,700,135);
+        Polygon fwd = new Polygon(670, 120, 670, 150, 700, 135);
         fwd.setFill(Color.RED);
         root.getChildren().add(fwd);
 
 // UI - Difficulty Selecter
         Random rng = new Random();
-Rectangle easy = new Rectangle(520,310,35,20);
-easy.setFill(Color.GREEN);
-Rectangle medium = new Rectangle(600,310,35,20);
-medium.setFill(Color.ORANGE);
-Rectangle hard = new Rectangle(680,310,35,20);
-hard.setFill(Color.RED);
+        Rectangle easy = new Rectangle(520, 310, 35, 20);
+        easy.setFill(Color.GREEN);
+        Rectangle medium = new Rectangle(600, 310, 35, 20);
+        medium.setFill(Color.ORANGE);
+        Rectangle hard = new Rectangle(680, 310, 35, 20);
+        hard.setFill(Color.RED);
 
-easy.setOnMouseClicked(event   ->makePlacement( difficulty("Easy",rng.nextInt(2))));
-medium.setOnMouseClicked(event->makePlacement( difficulty("Medium",rng.nextInt(2))));
-hard.setOnMouseClicked(event   ->makePlacement( difficulty("Hard",rng.nextInt(2))));
-root.getChildren().add(easy);
-root.getChildren().add(medium);
-root.getChildren().add(hard);
-
-
+        easy.setOnMouseClicked(event -> makePlacement(difficulty("Easy", rng.nextInt(2))));
+        medium.setOnMouseClicked(event -> makePlacement(difficulty("Medium", rng.nextInt(2))));
+        hard.setOnMouseClicked(event -> makePlacement(difficulty("Hard", rng.nextInt(2))));
+        root.getChildren().add(easy);
+        root.getChildren().add(medium);
+        root.getChildren().add(hard);
 
 
         primaryStage.setScene(scene);

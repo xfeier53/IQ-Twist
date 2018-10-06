@@ -11,7 +11,7 @@ import comp1110.ass2.gui.Board;
 import comp1110.ass2.TwistGame;
 
 
-public class PieceView extends ImageView{
+public class PieceView extends ImageView {
 
     final double startX;
     final double startY;
@@ -25,7 +25,7 @@ public class PieceView extends ImageView{
     private boolean isPressed = false;
     private double[] relativeMouseClick = new double[2];
 
-    PieceView(Image image, char id, double startX, double startY, double originalHeight, double originalWidth){
+    PieceView(Image image, char id, double startX, double startY, double originalHeight, double originalWidth) {
 
         this.id = id;
         this.startX = startX;
@@ -63,19 +63,17 @@ public class PieceView extends ImageView{
                 Board.selectedPiece = null;
 
                 //get snap coordinates
-                double[] testCoordinates =  pieceView.findSnapTo();
+                double[] testCoordinates = pieceView.findSnapTo();
                 isPressed = false;
 
                 String newBoard = getNewBoardState(Board.boardState);
 
                 //test coordinates reset the piece is valid or set piece if it is
-                if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000 || !TwistGame.isPlacementStringValid(newBoard)){
-
+                if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000 || !TwistGame.isPlacementStringValid(newBoard)) {
 
 
                     pieceView.resetPiece();
-                }
-                else{
+                } else {
                     Board.boardState = newBoard;
 
                     pieceView.setX(testCoordinates[0]);
@@ -89,8 +87,8 @@ public class PieceView extends ImageView{
             @Override
             public void handle(MouseEvent event) {
                 toFront();
-                pieceView.setX(event.getSceneX()-relativeMouseClick[0]);
-                pieceView.setY(event.getSceneY()-relativeMouseClick[1]);
+                pieceView.setX(event.getSceneX() - relativeMouseClick[0]);
+                pieceView.setY(event.getSceneY() - relativeMouseClick[1]);
 
             }
         });
@@ -99,16 +97,15 @@ public class PieceView extends ImageView{
             @Override
             public void handle(ScrollEvent event) {
 
-                if (isPressed && event.getDeltaY() > 0){
+                if (isPressed && event.getDeltaY() > 0) {
 
                     int isFlipped = (pieceView.getOrientation() < 4) ? 0 : 4;
                     int newOrientation = (orientation + 1) % 4 + isFlipped;
 
                     setOrientation(newOrientation);
-                }
-                else if(isPressed && event.getDeltaY() < 0){
+                } else if (isPressed && event.getDeltaY() < 0) {
                     int isFlipped = (pieceView.getOrientation() < 4) ? 0 : 4;
-                    int newOrientation = Math.floorMod(orientation - 1,4) + isFlipped;
+                    int newOrientation = Math.floorMod(orientation - 1, 4) + isFlipped;
 
                     setOrientation(newOrientation);
                 }
@@ -116,20 +113,19 @@ public class PieceView extends ImageView{
         });
     }
 
-    String getNewBoardState(String boardState){
+    String getNewBoardState(String boardState) {
 
-        for(int i = 0; i < boardState.length(); i = i + 4){
+        for (int i = 0; i < boardState.length(); i = i + 4) {
 
-            if(boardState.charAt(i) == id){
+            if (boardState.charAt(i) == id) {
 
-                String newBoard = boardState.substring(0,i) + getPiecePlacementString() + boardState.substring(i+4);
+                String newBoard = boardState.substring(0, i) + getPiecePlacementString() + boardState.substring(i + 4);
 
                 return (newBoard);
 
-            }
-            else if(boardState.charAt(i) > id){
+            } else if (boardState.charAt(i) > id) {
 
-                String newBoard = boardState.substring(0,i) + getPiecePlacementString() + boardState.substring(i);
+                String newBoard = boardState.substring(0, i) + getPiecePlacementString() + boardState.substring(i);
                 return (newBoard);
 
 
@@ -140,7 +136,7 @@ public class PieceView extends ImageView{
     }
 
     //Finds point where the piece snaps to after being released from the drag
-    double[] findSnapTo(){
+    double[] findSnapTo() {
 
         PieceView pieceView = this;
 
@@ -150,7 +146,7 @@ public class PieceView extends ImageView{
         //correction amount no correction needed if the piece is in an even orientation
         double correction = 0;
         //new correction if in odd orientation
-        if (orientation % 2 != 0){
+        if (orientation % 2 != 0) {
             double width = (pieceView.getImage().getWidth());// * adjust;
             double height = pieceView.getImage().getHeight();// * adjust;
 
@@ -159,38 +155,39 @@ public class PieceView extends ImageView{
         //get the check length ie how close it has to be to a line to snap to it
         double checkLength = Board.SQUARE_SIZE / 2;
         //loop through columns and find snap target
-        for(int i = 0; i <= 7 ; i++){
+        for (int i = 0; i <= 7; i++) {
             //distance to line
             double xLine = (i * Board.SQUARE_SIZE - pieceView.getX() - correction);
             //If distance is less than the checkLength snap to that line
-            if(xLine <= checkLength && xLine >= -checkLength){
-                xSnap = i * Board.SQUARE_SIZE -correction;
+            if (xLine <= checkLength && xLine >= -checkLength) {
+                xSnap = i * Board.SQUARE_SIZE - correction;
                 pieceView.column = i + 1;
                 break;
             }
 
         }
         //Same as above but for rows not columns
-        for(int i = 0; i <= 3 ; i++){
+        for (int i = 0; i <= 3; i++) {
 
             double yLine = (i * Board.SQUARE_SIZE - pieceView.getY() + correction);
 
-            if(yLine <= checkLength && yLine >= -checkLength){
+            if (yLine <= checkLength && yLine >= -checkLength) {
                 ySnap = i * Board.SQUARE_SIZE + correction;
                 pieceView.row = i + 1;
                 break;
             }
         }
         //Return snapCoordinates as array
-        double[] snapCoordinates = {xSnap,ySnap};
+        double[] snapCoordinates = {xSnap, ySnap};
         return snapCoordinates;
     }
-    //reset the piece to where it's starting location and orientation(orientation is always 0 currently)
-    void resetPiece(){
 
-        for(int i = 0; i < Board.boardState.length(); i=i + 4){
-            if (Board.boardState.charAt(i) == id){
-                Board.boardState = Board.boardState.substring(0,i)+Board.boardState.substring(i+4);
+    //reset the piece to where it's starting location and orientation(orientation is always 0 currently)
+    void resetPiece() {
+
+        for (int i = 0; i < Board.boardState.length(); i = i + 4) {
+            if (Board.boardState.charAt(i) == id) {
+                Board.boardState = Board.boardState.substring(0, i) + Board.boardState.substring(i + 4);
             }
         }
 
@@ -204,63 +201,59 @@ public class PieceView extends ImageView{
 
     public void setOrientation(int orientation) {
 
-        relativeMouseClick =  rotateAndFlip((orientation), relativeMouseClick);
+        relativeMouseClick = rotateAndFlip((orientation), relativeMouseClick);
 
         this.orientation = orientation;
     }
 
     //rotate and flip PieceView around a point and return where that point ends up relative to the origin
-    public double[] rotateAndFlip(int orientation, double[] xy){
+    public double[] rotateAndFlip(int orientation, double[] xy) {
 
 
         double width = getWidth();
         double height = getHeight();
 
-        if(this.orientation % 2 == 1){
-            xy[0] = xy[0] + (width - height)/2;
+        if (this.orientation % 2 == 1) {
+            xy[0] = xy[0] + (width - height) / 2;
             xy[1] = xy[1] - (width - height) / 2;
         }
 
 
-        double deltaX = xy[0] - width/2;
-        double deltaY = xy[1] - height/2;
+        double deltaX = xy[0] - width / 2;
+        double deltaY = xy[1] - height / 2;
 
-        boolean needFlip = orientation/4 != this.orientation/4;
+        boolean needFlip = orientation / 4 != this.orientation / 4;
 
         boolean flipOverVertical = (this.orientation % 2) == 1 && needFlip;
         boolean flipOverHorizontal = needFlip && !flipOverVertical;
 
 
-
-        if (flipOverHorizontal){
+        if (flipOverHorizontal) {
 
             setY(getY() + (2 * deltaY));
             xy[1] = height - xy[1];
-        }
-        else if(flipOverVertical){
+        } else if (flipOverVertical) {
 
             setX(getX() + (2 * deltaX));
             xy[0] = width - xy[0];
         }
 
 
-
         int numberOfRotations;
         int newOrientation = orientation % 4;
         int oldOrientation = this.orientation % 4;
 
-        if(newOrientation >= oldOrientation){
+        if (newOrientation >= oldOrientation) {
             numberOfRotations = newOrientation - oldOrientation;
-        }
-        else{
+        } else {
             numberOfRotations = (4 - oldOrientation) + newOrientation;
         }
 
-        for (int i = 1; i<=numberOfRotations;i++){
+        for (int i = 1; i <= numberOfRotations; i++) {
 
 
-            deltaX = xy[0] - width/2;
-            deltaY = xy[1] - height/2;
+            deltaX = xy[0] - width / 2;
+            deltaY = xy[1] - height / 2;
 
             setY(getY() + deltaY);
             setX(getX() + deltaY);
@@ -279,8 +272,8 @@ public class PieceView extends ImageView{
 
         rotateAndFlip(orientation);
 
-        if(orientation % 2 == 1){
-            xy[0] = xy[0] - (width - height)/2;
+        if (orientation % 2 == 1) {
+            xy[0] = xy[0] - (width - height) / 2;
             xy[1] = xy[1] + (width - height) / 2;
         }
 
@@ -289,7 +282,7 @@ public class PieceView extends ImageView{
     }
 
     //rotate and or flip the PieceView
-    void rotateAndFlip(int orientation){
+    void rotateAndFlip(int orientation) {
 
         PieceView pieceView = this;
 
@@ -301,61 +294,59 @@ public class PieceView extends ImageView{
         pieceView.setRotate(90 * numberOfRotations);
 
 
-        if(orientation > 3){
+        if (orientation > 3) {
             setScaleY(-1);
 
+        } else {
+            setScaleY(1);
         }
-        else{setScaleY(1);}
 
         pieceView.orientation = orientation;
     }
 
-    char getID(){
+    char getID() {
         return this.id;
     }
 
-    int getOrientation(){
+    int getOrientation() {
         return orientation;
     }
 
-    int getRow(){
+    int getRow() {
         return row;
     }
 
-    int getColumn(){
+    int getColumn() {
         return column;
     }
 
 
+    double getHeight() {
 
-    double getHeight(){
-
-        if (orientation % 2 == 0){
+        if (orientation % 2 == 0) {
             return this.getImage().getHeight();
-        }
-        else {
+        } else {
             return this.getImage().getWidth();
         }
 
     }
 
-    double getWidth(){
+    double getWidth() {
 
-        if (orientation % 2 == 0){
+        if (orientation % 2 == 0) {
             return this.getImage().getWidth();
-        }
-        else {
+        } else {
             return this.getImage().getHeight();
         }
 
     }
 
     //Gets the piecePlacementString using coding from elsewhere in TwistGame
-    String getPiecePlacementString(){
+    String getPiecePlacementString() {
 
         String output = String.valueOf(id);
         output = output + column;
-        output = output + (char) ((char)row + 'A' - 1);
+        output = output + (char) ((char) row + 'A' - 1);
         output = output + orientation;
 
         return output;
