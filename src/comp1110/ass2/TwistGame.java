@@ -281,7 +281,7 @@ public class TwistGame {
                     newPiece = ch + Integer.toString(i) + (char) ('A' + j) + Integer.toString(k);
 
 
-                    if (!getPieceSituation(occupation, newPiece)) {
+                    if (!getPieceSituation(occupation, new Piece(newPiece))) {
                         continue;
                     }
                     newPlacement = splitedString[0] + newPiece + splitedString[1];
@@ -342,19 +342,16 @@ public class TwistGame {
             Piece piece = new Piece(placement.substring(i,i+4));
 
             //decode the other attributes of the piece
-            column = Character.getNumericValue(placement.charAt(i + 1)) - 1;
-            row = (placement.charAt(i + 2) - 'A');
-            orientation = Character.getNumericValue(placement.charAt(i + 3));
-
-            //Set the orientation and get the relative positions of all the piece segments
-            piece.setOrientation(orientation);
-            int[][] xy = piece.getRelativeXY();
+            column = piece.getColumn();
+            row = piece.getRow();
 
             //Loop through every set of coordinates in xy
-            for (int[] c : xy) {
+            for (int j = 0;j<piece.getLength(); j++) {
+
+                int[] coordinate = piece.getRelativeCoordinate(j);
 
                 //set nodes at coordinates to be 1
-                situation[column + c[0]][row + c[1]] = 1;
+                situation[column + coordinate[0]][row + coordinate[1]] = 1;
             }
         }
         return situation;
@@ -380,29 +377,21 @@ public class TwistGame {
     //Takes a board situation: an 8 by 4 int array with 1s where a piece is and 0s elsewhere
     //Takes a new Piece placment: a String that follows standard coding
     //return true if the newPiece can be placed on the board represented by situation, false otherwise
-    public static boolean getPieceSituation(int[][] situation, String newPiece) {
-        char id;
-        int row, column, orientation;
+    public static boolean getPieceSituation(int[][] situation, Piece newPiece) {
 
-        //seperate string and decode the values to create the piece
-        id = newPiece.charAt(0);
-        Piece piece = new Piece(newPiece);
-        //column = Character.getNumericValue(newPiece.charAt(1)) - 1;
-        //row = (newPiece.charAt(2) - 'A');
-        //orientation = Character.getNumericValue(newPiece.charAt(3));
 
-        //Create the new piece with specific orientation and get the relative coordinates of the piece
-        //piece.setOrientation(orientation);
-        int[][] xy = piece.getRelativeXY();
 
         //Loop through every set of coordinates in xy
-        for (int[] c : xy) {
+        for (int i = 0; i < newPiece.getLength();i++) {
+
+            int[] c = newPiece.getRelativeCoordinate(i);
+
             //check whether the coordinates are in the correct range
-            if (piece.getColumn() + c[0] < 0 || piece.getColumn() + c[0] > 7 || piece.getRow() + c[1] < 0 || piece.getRow() + c[1] > 3) {
+            if (newPiece.getColumn() + c[0] < 0 || newPiece.getColumn() + c[0] > 7 || newPiece.getRow() + c[1] < 0 || newPiece.getRow() + c[1] > 3) {
                 continue;
             }
             //check if the coordinate in situation is already occupied
-            if (situation[piece.getColumn() + c[0]][piece.getRow() + c[1]] == 1) {
+            if (situation[newPiece.getColumn() + c[0]][newPiece.getRow() + c[1]] == 1) {
                 //if so return false
                 return false;
             }
@@ -494,15 +483,17 @@ public class TwistGame {
         Set<String> solutions = new HashSet<>();
 
         //New hashSet to contain piece placements already made so there is no repeated tests
-        HashSet<String> blackList = new HashSet<>();
+        HashSet<Piece> blackList = new HashSet<>();
 
         Set<String> viable = getViablePiecePlacements(placement);
 
-        Set<String> fjdkf = getViablePiecePlacements(placement);
+        HashSet<Piece> viablePieces = new HashSet<>();
 
+        for(String s:viable){
 
+            viablePieces.add(new Piece(s));
 
-
+        }
 
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
@@ -514,14 +505,14 @@ public class TwistGame {
         }
         // Get the result length by adding 32
         resultLength = resultLength + 32;
-        setNextPlacement(solutions, placement, resultLength, blackList, viable);
+        setNextPlacement(solutions, placement, resultLength, blackList, viablePieces);
         String[] result = solutions.toArray(new String[0]);
 
         return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     }
 
-    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList, Set<String> viable) {
+    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<Piece> blackList, HashSet<Piece> viable) {
         int[] pieces = new int[8];
         //Set<String> viable;
         String newPlacement;
@@ -546,51 +537,49 @@ public class TwistGame {
         }
         // See if the current placement have solution
         // It should have all the pieces placed otherwise it is invalid
-        for (String s : viable) {
+        for (Piece s : viable) {
             if(!blackList.contains(s)){
-                pieces[s.charAt(0) - 'a'] = 1;
+                pieces[s.getId() - 'a'] = 1;
             }
-
-
         }
+
         for (int i : pieces) {
             if (i == 0) {
                 return;
             }
         }
         // Use recursion to find every viable after another till the solutions are found
-        for (String s : viable) {
-            splitedString = findInsertPosition(placement, s.charAt(0));
-            newPlacement = splitedString[0] + s + splitedString[1];
+        for (Piece s : viable) {
+            splitedString = findInsertPosition(placement, s.getId());
+            newPlacement = splitedString[0] + s.getEncoding() + splitedString[1];
 
             // Black list works here
             if(!blackList.contains(s)){
 
-                Set<String> nextViable = removeNonViablePlacements(viable,s);
-                setNextPlacement(solutions, newPlacement, resultLength,(HashSet<String>) blackList.clone(),nextViable);
+                HashSet<Piece> nextViable = removeNonViablePlacements(viable,s);
+                setNextPlacement(solutions, newPlacement, resultLength,(HashSet<Piece>) blackList.clone(),nextViable);
                 // The piece come here and it needs to be added to the black list
                 blackList.add(s);
             }
         }
     }
 
-
     //REVIEW THIS
     //Function to take a set of viable placements and one specific viable piece placement
     //Return a set of piece placements that are still viable with the new piecePlacement
-    public static Set<String> removeNonViablePlacements(Set<String> viable, String piecePlacement){
+    public static HashSet<Piece> removeNonViablePlacements(Set<Piece> viable, Piece nextPiece){
 
         //Take piecePlacement and set it into an array
-        int[][] situation = getBoardSituation(piecePlacement);
+        int[][] situation = nextPiece.getPieceSituation();
         //New set to contain the new viable pieces
-        Set<String> nextViable = new HashSet<>();
+        HashSet<Piece> nextViable = new HashSet<>();
 
         //loop through elements of viable
-        for(String v : viable){
+        for(Piece v : viable){
 
             //for each element check whether it is a different type to piecePlacement
             //and check if it intersects with the piecePlacement
-            if(v.charAt(0) != piecePlacement.charAt(0) && getPieceSituation(situation,v)){
+            if(v.getId() != nextPiece.getId() && getPieceSituation(situation,v)){
                 nextViable.add(v);
             }
         }
@@ -681,6 +670,18 @@ public class TwistGame {
         catch (IOException e){
             
         }
+
+        //HashSet<String> duplicatePegPlacements= new HashSet<>();
+        //List<Piece> piecePlacements = new ArrayList<>() = readCSV(path);
+        //List<HashSet<String>> listOfPegPlacements = new ArrayList<>();
+
+        //Step 1 Generate pegPlacements for a piecePlacement[i]
+        //Repeat Steps 2-4 for each pegPlacement[j] generated in Step 1
+        //Step 2 Discard pegPlacement if contained in duplicatePegPlacements and get the next pegPlacement
+        //Step 3 Check if PegPlacement is contained in listOfPegPlacements for all indexs less than i,
+        // if so remove it and add it to duplicatePegPlacements
+        //Step 4 add pegPlacement to listOfPegPlacements[i]
+        //Step 5 Go back to Step 1 with the next piecePlacement
 
         //List<String> solutions = readCSV(path);
 
