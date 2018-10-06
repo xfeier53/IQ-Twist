@@ -668,7 +668,7 @@ public class TwistGame {
             solutions = readCSV(path);
         }
         catch (IOException e){
-            
+            System.out.println(e);
         }
 
         //HashSet<String> duplicatePegPlacements= new HashSet<>();
@@ -692,13 +692,15 @@ public class TwistGame {
 //        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
 //        solutions.add("a1A6b3A4c1D0e7B0d6C2g4B1f1B2h6A0");
 
-        Boolean isInvalid;
+//        Boolean isInvalid;
         String pieceString;
         int row, column, orientation;
         List<String> iPegString, jPegString, kPegString, lPegString, pegString;
-        List<String[]> pegPlacement = new ArrayList<>();
-        List<String[]> toRemove = new ArrayList<>();
+        Map<String, String> pegPlacement = new HashMap<>();
+        Set<String> toRemove = new HashSet<>();
         List<String> toAdd;
+
+        int count = 1;
 
         for (String solution : solutions) {
             toAdd = new ArrayList<>();
@@ -740,50 +742,73 @@ public class TwistGame {
             pegString = getCombinations(iPegString, jPegString, kPegString, lPegString);
             // For every combinations check whether it is existed in the pegPlacement list
             for (String newPlacement : pegString) {
-                isInvalid = false;
+//                isInvalid = false;
                 // Check whether it is on the blacklist
-                for (String[] invalidPlacement : toRemove) {
-                    if (newPlacement.equals(invalidPlacement[0])) {
-                        isInvalid = true;
-                        break;
-                    }
-                }
-                if (isInvalid == true) {
+//                for (String[] invalidPlacement : toRemove) {
+//                    if (newPlacement.equals(invalidPlacement[0])) {
+//                        isInvalid = true;
+//                        break;
+//                    }
+//                }
+
+                if (toRemove.contains(newPlacement)) {
+//                    isInvalid = true;
                     continue;
                 }
-                for (String[] existedPlacement : pegPlacement) {
-                    // Record the duplicate placements needed to be deleted
-                    if (newPlacement.equals(existedPlacement[0])) {
-                        toRemove.add(existedPlacement);
-                        isInvalid = true;
-                        break;
-                    }
-                }
-                if (isInvalid == true) {
+
+//                if (isInvalid) {
+//                    continue;
+//                }
+
+//                for (String[] existedPlacement : pegPlacement) {
+//                    // Record the duplicate placements needed to be deleted
+//                    if (newPlacement.equals(existedPlacement[0])) {
+//                        toRemove.add(existedPlacement);
+//                        isInvalid = true;
+//                        break;
+//                    }
+//                }
+
+                if (pegPlacement.containsKey(newPlacement)) {
+                    toRemove.add(newPlacement);
+//                    isInvalid = true;
                     continue;
                 }
+
+//                if (isInvalid) {
+//                    continue;
+//                }
                 toAdd.add(newPlacement);
             }
             // Remove
-            for (String[] duplicate : toRemove) {
-                    pegPlacement.remove(duplicate);
+            for (String duplicate : toRemove) {
+                pegPlacement.remove(duplicate);
             }
             // Add
             for (String s : toAdd) {
-                pegPlacement.add(new String[]{s, solution});
+                pegPlacement.put(s, solution);
             }
-            System.out.println(pegPlacement.size());
-            System.out.println(toRemove.size());
-
+            System.out.println("No." + count++);
+            System.out.println("pegPlacement : " + pegPlacement.size());
+            System.out.println("Add : " + toAdd.size());
+            System.out.println("Remoce : " + toRemove.size());
         }
 
-        // AND HERE !!!
-        // Generate csv file with pegPlacement
-        // s[0] is the placement s[1] is the solutions
-        for (String[] s : pegPlacement) {
-            System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
-        }
+        
+//        for (String[] s : pegPlacement) {
+//            System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
+//        }
         System.out.println(pegPlacement.size());
+
+        String resultPath = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Placement.csv";
+
+        try{
+            writeCSV(resultPath, pegPlacement);
+        }
+        catch (IOException e){
+            System.out.println(e);
+        }
+
     }
 
     public static List<String> readCSV(String path) throws IOException {
@@ -800,11 +825,11 @@ public class TwistGame {
         return list;
     }
 
-    public static void writeCSV(String path, List<String[]> placement) throws IOException {
+    public static void writeCSV(String path, Map<String, String> placement) throws IOException {
         PrintWriter pw = new PrintWriter(new File(path));
         StringBuilder sb = new StringBuilder();
-        for (String[] s : placement) {
-            sb.append(s[0] + " " + s[1]);
+        for (Map.Entry<String, String> entry: placement.entrySet()) {
+            sb.append(entry.getKey() + " " + entry.getValue());
             sb.append('\n');
         }
         pw.write(sb.toString());
