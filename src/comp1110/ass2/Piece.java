@@ -32,90 +32,64 @@ public class Piece {
     PIECEh('h', 3, Colour.YELLOW, 1, 3);
     */
 
+    //id of a piece, ie what type values 'a',...,'h'
     private final char id;
-    private int side; // Side length of the array
+    //Colour, depending on id this is picked from the colour array
     private final Colour colour;
+    //number of segments in a piece chosen from intial dimensions depends on id
     private final int length;
 
     //private final int intialHeight;//Height and width when orientation is equal to 0
     //private final int intialWidth;
 
+    //column takes values 0-7
     private int column;
+    //row takes values 0-3
     private int row;
 
+    //The width and height of a piece their values can swap depending on orientation
+    //Intially set from intialDimensions array
     private int width;
     private int height;
 
-    String encoding;
+    //the string encoding a1A0, a:id, 1:column, A:row, 0:orientation
+    //updated when column, row or orientation are changed
+    private String encoding;
 
+    //the current orientation 0-7
     private int orientation;
 
     //Array to contain relative [x,y] locations of all the nodes that a piece occupies it not be ordered -James
     private int[][] relativeXY;
 
+    //Properties of a piece in orientation 0
+    //{height,width,length}
     int[][] intialDimensions = {{2,3,4},{2,3,4},{1,4,4},{2,3,5},{2,2,3},{2,3,4},{3,3,5},{1,3,3}};
+    //the colour a piece takes
     Colour[] colours = {Colour.RED,Colour.RED,Colour.BLUE,Colour.BLUE,Colour.GREEN,Colour.GREEN,Colour.YELLOW,Colour.YELLOW};
 
 
-    //Set the Piece orientation and relative coordinates are intially all assuming Orientation == 0
+    //Create new piece from encoding
     Piece(String encoding) {
+        //set the encoding and id
         this.encoding = encoding;
         this.id = encoding.charAt(0);
 
+        //get the pieces position in the intialDimensions and colours arrays
         int pieceNum = id - 'a';
 
+        //set the preset values depending on the id
         height = intialDimensions[pieceNum][0];
         width = intialDimensions[pieceNum][1];
         length = intialDimensions[pieceNum][2];
         colour = colours[pieceNum];
         relativeXY = intialXY[id - 'a'];
 
+        //decode the encoding and set column, row and orientation
         this.column = (Character.getNumericValue(encoding.charAt(1) - 1));
         this.row = (encoding.charAt(2) - 'A');
         this.setOrientation(Character.getNumericValue(encoding.charAt(3)));
     }
-
-    /*
-    Piece(char id, char id1){
-
-        new Piece(id + "1A0");
-    }
-    */
-
-    /*
-    public static Piece getPieceForPlacement(String encoding){
-
-        Piece piece;
-
-
-
-        piece = getPieceForId(encoding.charAt(0));
-
-        piece.setColumn(Character.getNumericValue(encoding.charAt(1)));
-        piece.setRow(encoding.charAt(2) - 'A');
-        piece.setOrientation(Character.getNumericValue(encoding.charAt(3)));
-
-        return piece;
-    }
-
-    public static Piece getPieceForId(char id){
-        switch (id){
-            case 'a': return PIECEa;
-            case 'b': return PIECEb;
-            case 'c': return PIECEc;
-            case 'd': return PIECEd;
-            case 'e': return PIECEe;
-            case 'f': return PIECEf;
-            case 'g': return PIECEg;
-            case 'h': return PIECEh;
-
-        }
-
-        return null;
-    }
-    */
-
-
 
     public int getColumn() {
         return column;
@@ -123,6 +97,7 @@ public class Piece {
 
     public void setColumn(int column) {
 
+        //update encoding
         encoding = encoding.substring(0,1) + column + encoding.substring(2);
 
         this.column = column;
@@ -134,6 +109,7 @@ public class Piece {
 
     public void setRow(int row) {
 
+        //update encoding
         encoding = encoding.substring(0,2) + (char)row + encoding.substring(3);
 
         this.row = row;
@@ -154,7 +130,6 @@ public class Piece {
     public String getEncoding(){
         return encoding;
     }
-
 
     public int getOrientation() {
         return orientation;
@@ -243,19 +218,16 @@ public class Piece {
         return newCoordinates;
     }
 
-
-
-
+    //should use getRelativeCoordinate now
+    @Deprecated
     public int[][] getRelativeXY() {
         return relativeXY;
     }
 
-    public int[] getRelativeCoordinate(int index){
-        return relativeXY[index].clone();
-    }
 
-    public int getSide() {
-        return side;
+    public int[] getRelativeCoordinate(int index){
+        //clone so as to protect the array
+        return relativeXY[index].clone();
     }
 
     public Colour getColour() {
@@ -279,6 +251,7 @@ public class Piece {
                     {{0, 0, 2}, {1, 0, 1}, {2, 0, 1}}
             };
 
+    //function to print string, prints relative XY and other properties
     @Override
     public String toString() {
 
@@ -311,6 +284,7 @@ public class Piece {
         return output;
     }
 
+    //to pieces are equal if their encodings are the same
     @Override
     public boolean equals(Object object){
 
@@ -327,6 +301,7 @@ public class Piece {
         return this.encoding.equals(otherPiece.encoding);
     }
 
+    //get hashcode from encoding
     @Override
     public int hashCode(){
         return this.encoding.hashCode();
