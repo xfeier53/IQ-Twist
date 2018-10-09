@@ -19,8 +19,9 @@ package comp1110.ass2;
    In this way, we can get the shape and the hole of pieces -- feier
 */
 
-public enum Piece {
+public class Piece {
 
+    /*
     PIECEa('a', 3, Colour.RED, 2, 3),
     PIECEb('b', 3, Colour.RED, 2, 3),
     PIECEc('c', 4, Colour.BLUE, 1, 4),
@@ -29,63 +30,76 @@ public enum Piece {
     PIECEf('f', 3, Colour.GREEN, 2, 3),
     PIECEg('g', 3, Colour.YELLOW, 3, 3),
     PIECEh('h', 3, Colour.YELLOW, 1, 3);
+    */
 
+    //id of a piece, ie what type values 'a',...,'h'
     private final char id;
-    private final int side; // Side length of the array
+    //Colour, depending on id this is picked from the colour array
     private final Colour colour;
+    //number of segments in a piece chosen from intial dimensions depends on id
+    private final int length;
 
-    private final int intialHeight;//Height and width when orientation is equal to 0
-    private final int intialWidth;
+    //private final int intialHeight;//Height and width when orientation is equal to 0
+    //private final int intialWidth;
 
-    int column;
-    int row;
+    //column takes values 0-7
+    private int column;
+    //row takes values 0-3
+    private int row;
 
-    int width;
-    int height;
+    //The width and height of a piece their values can swap depending on orientation
+    //Intially set from intialDimensions array
+    private int width;
+    private int height;
 
+    //the string encoding a1A0, a:id, 1:column, A:row, 0:orientation
+    //updated when column, row or orientation are changed
+    private String encoding;
+
+    //the current orientation 0-7
     private int orientation;
 
     //Array to contain relative [x,y] locations of all the nodes that a piece occupies it not be ordered -James
     private int[][] relativeXY;
 
-    //Set the Piece orientation and relative coordinates are intially all assuming Orientation == 0
-    Piece(char id, int side, Colour colour, int intialHeight, int intialWidth) {
-        this.id = id;
+    //Properties of a piece in orientation 0
+    //{height,width,length}
+    int[][] intialDimensions = {{2,3,4},{2,3,4},{1,4,4},{2,3,5},{2,2,3},{2,3,4},{3,3,5},{1,3,3}};
+    //the colour a piece takes
+    Colour[] colours = {Colour.RED,Colour.RED,Colour.BLUE,Colour.BLUE,Colour.GREEN,Colour.GREEN,Colour.YELLOW,Colour.YELLOW};
 
-        this.side = side;
-        this.colour = colour;
-        this.intialHeight = intialHeight;
-        height = intialHeight;
-        this.intialWidth = intialWidth;
-        width = intialWidth;
-        orientation = 0;
 
+    //Create new piece from encoding
+    Piece(String encoding) {
+        //set the encoding and id
+        this.encoding = encoding;
+        this.id = encoding.charAt(0);
+
+        //get the pieces position in the intialDimensions and colours arrays
+        int pieceNum = id - 'a';
+
+        //set the preset values depending on the id
+        height = intialDimensions[pieceNum][0];
+        width = intialDimensions[pieceNum][1];
+        length = intialDimensions[pieceNum][2];
+        colour = colours[pieceNum];
         relativeXY = intialXY[id - 'a'];
+
+        //decode the encoding and set column, row and orientation
+        this.column = (Character.getNumericValue(encoding.charAt(1) - 1));
+        this.row = (encoding.charAt(2) - 'A');
+        this.setOrientation(Character.getNumericValue(encoding.charAt(3)));
     }
-
-    public static Piece getPiece(char id){
-        switch (id){
-            case 'a': return PIECEa;
-            case 'b': return PIECEb;
-            case 'c': return PIECEc;
-            case 'd': return PIECEd;
-            case 'e': return PIECEe;
-            case 'f': return PIECEf;
-            case 'g': return PIECEg;
-            case 'h': return PIECEh;
-
-        }
-
-        return null;
-    }
-
-
 
     public int getColumn() {
         return column;
     }
 
     public void setColumn(int column) {
+
+        //update encoding
+        encoding = encoding.substring(0,1) + column + encoding.substring(2);
+
         this.column = column;
     }
 
@@ -94,6 +108,10 @@ public enum Piece {
     }
 
     public void setRow(int row) {
+
+        //update encoding
+        encoding = encoding.substring(0,2) + (char)row + encoding.substring(3);
+
         this.row = row;
     }
 
@@ -105,21 +123,31 @@ public enum Piece {
         return width;
     }
 
+    public int getLength(){
+        return length;
+    }
+
+    public int[][] getPieceSituation(){
+        int[][] situation = new int[8][4];
+
+        for(int i = 0;i < length;i++){
+            int[] coordinate = getRelativeCoordinate(i);
+
+            situation[column+coordinate[0]][row + coordinate[1]] = 1;
+
+        }
+        return situation;
+    }
+
+    public String getEncoding(){
+        return encoding;
+    }
+
     public int getOrientation() {
         return orientation;
     }
 
     public char getId(){return id;}
-
-    public String getPiecePlacementString(){
-
-        String output = String.valueOf(id);
-        output = output + column;
-        output = output + (char) ((char)row + 'A' - 1);
-        output = output + orientation;
-
-        return output;
-    }
 
     //Function to set the orientation of a piece
     //Will also update the relativeXY, height, and width fields to match the new orientation
@@ -127,6 +155,8 @@ public enum Piece {
     public void setOrientation(int newOrientation) {
 
         assert(newOrientation <=7 && newOrientation >= 0);
+
+        encoding = encoding.substring(0,3) + newOrientation;
 
         //Check if piece needs to be flipped and then flip it over either the horzontal or vertical axis
         if (newOrientation / 4 != orientation / 4) {
@@ -200,15 +230,16 @@ public enum Piece {
         return newCoordinates;
     }
 
-
-
-
+    //should use getRelativeCoordinate now
+    @Deprecated
     public int[][] getRelativeXY() {
         return relativeXY;
     }
 
-    public int getSide() {
-        return side;
+
+    public int[] getRelativeCoordinate(int index){
+        //clone so as to protect the array
+        return relativeXY[index].clone();
     }
 
     public Colour getColour() {
@@ -232,6 +263,7 @@ public enum Piece {
                     {{0, 0, 2}, {1, 0, 1}, {2, 0, 1}}
             };
 
+    //function to print string, prints relative XY and other properties
     @Override
     public String toString() {
 
@@ -262,6 +294,29 @@ public enum Piece {
         output = output + "\n height: " + height + " width: " + width + " orientation: " + orientation;
 
         return output;
+    }
+
+    //to pieces are equal if their encodings are the same
+    @Override
+    public boolean equals(Object object){
+
+        if(object.getClass() != this.getClass()){
+            return false;
+        }
+
+        if(object == null){
+            return false;
+        }
+
+        Piece otherPiece = (Piece) object;
+
+        return this.encoding.equals(otherPiece.encoding);
+    }
+
+    //get hashcode from encoding
+    @Override
+    public int hashCode(){
+        return this.encoding.hashCode();
     }
 
     /* This array is to get shape using array

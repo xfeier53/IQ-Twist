@@ -24,39 +24,26 @@ public class Node {
         this.piece = piece;
     }
 
-    // From the placement String, modify the identifier --feier
-    public boolean setPiece(Node[][] nodes, Piece piece, int row, int column, int orientation) {
-        piece.setRow(row);
-        piece.setColumn(column);
-        piece.setOrientation(orientation);
+    public static boolean setPeg(Node[][] nodes, Peg peg) {
 
-        if (validateAndSet(nodes, piece)) {
-            return true;
-        }
-        return false;
-    }
-
-    boolean setPeg(Node[][] nodes, Peg peg, int row, int column) {
-        if (nodes[row][column].peg != null) {
+        if (nodes[peg.getRow()][peg.getColumn()].peg != null) {
             return false;
         }
-        this.peg = peg;
-        this.peg.setRow(row);
-        this.peg.setColumn(column);
+        nodes[peg.getRow()][peg.getColumn()].peg = peg;
         return true;
     }
 
-    private boolean validateAndSet(Node[][] nodes, Piece piece) {
-        if (piece.height + piece.row > 4 || piece.width + piece.column > 8) {
+    public static boolean setPiece(Node[][] nodes, Piece piece) {
+
+        //check that piece is in bounds of array/board
+        if (piece.getHeight() + piece.getRow() > 4 || piece.getWidth() + piece.getColumn() > 8) {
             return false;
         }
-        //get the relative coordinates of the piece
-        int[][] xy = piece.getRelativeXY();
-        //loop through coordinates of the piece
-        for (int i = 0; i < xy.length; i++) {
+
+        for (int i = 0; i < piece.getLength(); i++) {
             //Get the ith set of absolute coordinates
-            int x = xy[i][0] + piece.column;
-            int y = xy[i][1] + piece.row;
+            int x = piece.getRelativeCoordinate(i)[0] + piece.getColumn();//xy[i][0] + piece.getColumn();
+            int y = piece.getRelativeCoordinate(i)[1] + piece.getRow();//xy[i][1] + piece.getRow();
             Node ithNode = nodes[y][x];
             //failure conditions that if not met cause the piece not to be set
             //Is there a piece already occupying the node
@@ -64,7 +51,7 @@ public class Node {
             //Is there a peg of the wrong colour under the piece
             Boolean isTherePegOfWrongColour = !((ithNode.peg == null) || (ithNode.peg.getColour() == piece.getColour()));
             //Is there a peg under the piece not in a hole
-            Boolean isTherePegNotInHole = !(ithNode.peg == null || xy[i][2] == 2);
+            Boolean isTherePegNotInHole = !(ithNode.peg == null || piece.getRelativeCoordinate(i)[2] == 2);
             //return false if any of the fail conditions are not met
             if (isTherePiece || isTherePegOfWrongColour || isTherePegNotInHole) {
                 return false;

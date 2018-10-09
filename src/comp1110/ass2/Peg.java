@@ -14,6 +14,34 @@ public enum Peg {
         this.colour = colour;
     }
 
+    public static Peg getPegForPlacement(String placement){
+
+        char id = placement.charAt(0);
+        int column = placement.charAt(1) - '1';
+        int row = placement.charAt(2) - 'A';
+
+        Peg peg = PEGi;
+
+        switch (id){
+            case 'i':
+                peg = PEGi;
+                break;
+            case 'j':
+                peg = PEGj;
+                break;
+            case 'k':
+                peg = PEGk;
+                break;
+            case 'l':
+                peg = PEGl;
+        }
+        peg.setColumn(column);
+        peg.setRow(row);
+
+        return peg;
+    }
+
+
     public int getColumn() {
         return column;
     }

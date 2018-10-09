@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -144,22 +145,24 @@ public class TwistGame {
     public static boolean isPlacementStringValid(String placement) {
 
         char pieceType;
+        String piecePlacement;
         int column, row, orientation, count;
         Node[][] nodes = new Node[4][8];
         // Count the number of the placements
 
+        Piece piece;
+
         initNodes(nodes);
-//        if (!isPlacementStringWellFormed(placement)) {
-//            return false;
-//        }
+        if (!isPlacementStringWellFormed(placement)) {
+            return false;
+        }
         // Set all the pegs first, so I reverse the placement order
         count = placement.length() / 4;
         for (int i = count - 1; i >= 0; i--) {
             pieceType = placement.charAt(4 * i);
-            column = placement.charAt(4 * i + 1) - '1';
-            row = placement.charAt(4 * i + 2) - 'A';
-            orientation = placement.charAt(4 * i + 3) - '0';
-            if (!setPieces(nodes, row, column, orientation, pieceType)) {
+            piecePlacement = placement.substring(i * 4,i*4+4);
+
+            if (!setPieces(nodes, piecePlacement, pieceType)) {
                 return false;
             }
         }
@@ -175,21 +178,22 @@ public class TwistGame {
         }
     }
 
-    public static boolean setPieces(Node[][] nodes, int row, int column, int orientation, char pieceType) {
-        switch (pieceType) {
-            case 'a': if (nodes[row][column].setPiece(nodes, Piece.PIECEa, row, column,  orientation)) { return true; } break;
-            case 'b': if (nodes[row][column].setPiece(nodes, Piece.PIECEb, row, column,  orientation)) { return true; } break;
-            case 'c': if (nodes[row][column].setPiece(nodes, Piece.PIECEc, row, column,  orientation)) { return true; } break;
-            case 'd': if (nodes[row][column].setPiece(nodes, Piece.PIECEd, row, column,  orientation)) { return true; } break;
-            case 'e': if (nodes[row][column].setPiece(nodes, Piece.PIECEe, row, column,  orientation)) { return true; } break;
-            case 'f': if (nodes[row][column].setPiece(nodes, Piece.PIECEf, row, column,  orientation)) { return true; } break;
-            case 'g': if (nodes[row][column].setPiece(nodes, Piece.PIECEg, row, column,  orientation)) { return true; } break;
-            case 'h': if (nodes[row][column].setPiece(nodes, Piece.PIECEh, row, column,  orientation)) { return true; } break;
+    public static boolean setPieces(Node[][] nodes, String placement, char pieceType) {
 
-            case 'i': if (nodes[row][column].setPeg(nodes, Peg.PEGi, row, column)) { return true; } break;
-            case 'j': if (nodes[row][column].setPeg(nodes, Peg.PEGj, row, column)) { return true; } break;
-            case 'k': if (nodes[row][column].setPeg(nodes, Peg.PEGk, row, column)) { return true; } break;
-            case 'l': if (nodes[row][column].setPeg(nodes, Peg.PEGl, row, column)) { return true; } break;
+        switch (pieceType) {
+            case 'a':
+            case 'b':
+            case 'c':
+            case 'd':
+            case 'e':
+            case 'f':
+            case 'g':
+            case 'h': return Node.setPiece(nodes,new Piece(placement));
+
+            case 'i': ;
+            case 'j': ;
+            case 'k': ;
+            case 'l': return Node.setPeg(nodes,Peg.getPegForPlacement(placement));
 
         }
         return false;
@@ -277,7 +281,7 @@ public class TwistGame {
                     newPiece = ch + Integer.toString(i) + (char) ('A' + j) + Integer.toString(k);
 
 
-                    if (!getPieceSituation(occupation, newPiece)) {
+                    if (!getPieceSituation(occupation, new Piece(newPiece))) {
                         continue;
                     }
                     newPlacement = splitedString[0] + newPiece + splitedString[1];
@@ -335,22 +339,19 @@ public class TwistGame {
                     break pieceLoop;//break the loop not the case statement
             }
             //get the piece for the given id
-            Piece piece = Piece.getPiece(id);
+            Piece piece = new Piece(placement.substring(i,i+4));
 
             //decode the other attributes of the piece
-            column = Character.getNumericValue(placement.charAt(i + 1)) - 1;
-            row = (placement.charAt(i + 2) - 'A');
-            orientation = Character.getNumericValue(placement.charAt(i + 3));
-
-            //Set the orientation and get the relative positions of all the piece segments
-            piece.setOrientation(orientation);
-            int[][] xy = piece.getRelativeXY();
+            column = piece.getColumn();
+            row = piece.getRow();
 
             //Loop through every set of coordinates in xy
-            for (int[] c : xy) {
+            for (int j = 0;j<piece.getLength(); j++) {
+
+                int[] coordinate = piece.getRelativeCoordinate(j);
 
                 //set nodes at coordinates to be 1
-                situation[column + c[0]][row + c[1]] = 1;
+                situation[column + coordinate[0]][row + coordinate[1]] = 1;
             }
         }
         return situation;
@@ -376,29 +377,21 @@ public class TwistGame {
     //Takes a board situation: an 8 by 4 int array with 1s where a piece is and 0s elsewhere
     //Takes a new Piece placment: a String that follows standard coding
     //return true if the newPiece can be placed on the board represented by situation, false otherwise
-    public static boolean getPieceSituation(int[][] situation, String newPiece) {
-        char id;
-        int row, column, orientation;
+    public static boolean getPieceSituation(int[][] situation, Piece newPiece) {
 
-        //seperate string and decode the values to create the piece
-        id = newPiece.charAt(0);
-        Piece piece = Piece.getPiece(id);
-        column = Character.getNumericValue(newPiece.charAt(1)) - 1;
-        row = (newPiece.charAt(2) - 'A');
-        orientation = Character.getNumericValue(newPiece.charAt(3));
 
-        //Create the new piece with specific orientation and get the relative coordinates of the piece
-        piece.setOrientation(orientation);
-        int[][] xy = piece.getRelativeXY();
 
         //Loop through every set of coordinates in xy
-        for (int[] c : xy) {
+        for (int i = 0; i < newPiece.getLength();i++) {
+
+            int[] c = newPiece.getRelativeCoordinate(i);
+
             //check whether the coordinates are in the correct range
-            if (column + c[0] < 0 || column + c[0] > 7 || row + c[1] < 0 || row + c[1] > 3) {
+            if (newPiece.getColumn() + c[0] < 0 || newPiece.getColumn() + c[0] > 7 || newPiece.getRow() + c[1] < 0 || newPiece.getRow() + c[1] > 3) {
                 continue;
             }
             //check if the coordinate in situation is already occupied
-            if (situation[column + c[0]][row + c[1]] == 1) {
+            if (situation[newPiece.getColumn() + c[0]][newPiece.getRow() + c[1]] == 1) {
                 //if so return false
                 return false;
             }
@@ -490,15 +483,17 @@ public class TwistGame {
         Set<String> solutions = new HashSet<>();
 
         //New hashSet to contain piece placements already made so there is no repeated tests
-        HashSet<String> blackList = new HashSet<>();
+        HashSet<Piece> blackList = new HashSet<>();
 
         Set<String> viable = getViablePiecePlacements(placement);
 
-        Set<String> fjdkf = getViablePiecePlacements(placement);
+        HashSet<Piece> viablePieces = new HashSet<>();
 
+        for(String s:viable){
 
+            viablePieces.add(new Piece(s));
 
-
+        }
 
         // Get the length of the peg
         for (int i = 0; i < placement.length() / 4; i++) {
@@ -510,14 +505,14 @@ public class TwistGame {
         }
         // Get the result length by adding 32
         resultLength = resultLength + 32;
-        setNextPlacement(solutions, placement, resultLength, blackList, viable);
+        setNextPlacement(solutions, placement, resultLength, blackList, viablePieces);
         String[] result = solutions.toArray(new String[0]);
 
         return result;
         // FIXME Task 9: determine all solutions to the game, given a particular starting placement
     }
 
-    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<String> blackList, Set<String> viable) {
+    public static void setNextPlacement(Set<String> solutions, String placement, int resultLength, HashSet<Piece> blackList, HashSet<Piece> viable) {
         int[] pieces = new int[8];
         //Set<String> viable;
         String newPlacement;
@@ -542,51 +537,49 @@ public class TwistGame {
         }
         // See if the current placement have solution
         // It should have all the pieces placed otherwise it is invalid
-        for (String s : viable) {
+        for (Piece s : viable) {
             if(!blackList.contains(s)){
-                pieces[s.charAt(0) - 'a'] = 1;
+                pieces[s.getId() - 'a'] = 1;
             }
-
-
         }
+
         for (int i : pieces) {
             if (i == 0) {
                 return;
             }
         }
         // Use recursion to find every viable after another till the solutions are found
-        for (String s : viable) {
-            splitedString = findInsertPosition(placement, s.charAt(0));
-            newPlacement = splitedString[0] + s + splitedString[1];
+        for (Piece s : viable) {
+            splitedString = findInsertPosition(placement, s.getId());
+            newPlacement = splitedString[0] + s.getEncoding() + splitedString[1];
 
             // Black list works here
             if(!blackList.contains(s)){
 
-                Set<String> nextViable = removeNonViablePlacements(viable,s);
-                setNextPlacement(solutions, newPlacement, resultLength,(HashSet<String>) blackList.clone(),nextViable);
+                HashSet<Piece> nextViable = removeNonViablePlacements(viable,s);
+                setNextPlacement(solutions, newPlacement, resultLength,(HashSet<Piece>) blackList.clone(),nextViable);
                 // The piece come here and it needs to be added to the black list
                 blackList.add(s);
             }
         }
     }
 
-
     //REVIEW THIS
     //Function to take a set of viable placements and one specific viable piece placement
     //Return a set of piece placements that are still viable with the new piecePlacement
-    public static Set<String> removeNonViablePlacements(Set<String> viable, String piecePlacement){
+    public static HashSet<Piece> removeNonViablePlacements(Set<Piece> viable, Piece nextPiece){
 
         //Take piecePlacement and set it into an array
-        int[][] situation = getBoardSituation(piecePlacement);
+        int[][] situation = nextPiece.getPieceSituation();
         //New set to contain the new viable pieces
-        Set<String> nextViable = new HashSet<>();
+        HashSet<Piece> nextViable = new HashSet<>();
 
         //loop through elements of viable
-        for(String v : viable){
+        for(Piece v : viable){
 
             //for each element check whether it is a different type to piecePlacement
             //and check if it intersects with the piecePlacement
-            if(v.charAt(0) != piecePlacement.charAt(0) && getPieceSituation(situation,v)){
+            if(v.getId() != nextPiece.getId() && getPieceSituation(situation,v)){
                 nextViable.add(v);
             }
         }
@@ -659,70 +652,267 @@ public class TwistGame {
 //        }
 //    }
 
+
+
     // Get dictionary
-    public static String[] getDictionary() {
-        Set<String> dictionary = new HashSet<>();
-        Set<String> pegCombinations = getCombinations(7);
-        String placement;
+    public static void getDictionary() {
+        // JAMES HERE !!!
+        // I need to CSV file into this solutions list
+        // And the end of the function needs to convert into csv file
 
-        // For every possible pegs combinations
-        for (String combination : pegCombinations) {
-            placement = "";
-            // For every pegs in one possible combination
-            for (int i = 0; i < combination.length(); i++) {
+        String path = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Solutions.csv";
 
-            }
+        List<String> solutions = new ArrayList<>();
 
-            System.out.println(placement);
+        try{
+            solutions = readCSV(path);
         }
-        return new String[0];
-    }
-
-    // Get combinations of pegs
-    public static Set<String> getCombinations(int count) {
-        List<String> list = new ArrayList<>();
-        String temp = "";
-        Set<String> combinations = new HashSet<>();
-
-        // Use binary to show the present of the pegs
-        for (int i = 0; i < Math.pow(2, count); i++) {
-            String s = Integer.toString(i, 2);
-            while (7 - s.length() > 0) {
-                s = "0" + s;
-            }
-            list.add(s);
+        catch (IOException e){
+            System.out.println(e);
         }
 
-        // Eliminate the duplicate
-        for (String s : list) {
-            temp = "";
-            for (int i = 0; i < s.length(); i++) {
-                if (s.charAt(i) == '1') {
-                    switch (i / 2) {
-                        case 0: temp = temp + "i"; break;
-                        case 1: temp = temp + "j"; break;
-                        case 2: temp = temp + "k"; break;
-                        case 3: temp = temp + "l"; break;
+        //HashSet<String> duplicatePegPlacements= new HashSet<>();
+        //List<Piece> piecePlacements = new ArrayList<>() = readCSV(path);
+        //List<HashSet<String>> listOfPegPlacements = new ArrayList<>();
+
+        //Step 1 Generate pegPlacements for a piecePlacement[i]
+        //Repeat Steps 2-4 for each pegPlacement[j] generated in Step 1
+        //Step 2 Discard pegPlacement if contained in duplicatePegPlacements and get the next pegPlacement
+        //Step 3 Check if PegPlacement is contained in listOfPegPlacements for all indexs less than i,
+        // if so remove it and add it to duplicatePegPlacements
+        //Step 4 add pegPlacement to listOfPegPlacements[i]
+        //Step 5 Go back to Step 1 with the next piecePlacement
+
+        //List<String> solutions = readCSV(path);
+
+//        // Test data, can be deleted
+//        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
+//        solutions.add("a1A6b3A4c1D0d6A3e7C2f1B2h8A1g4B7");
+//        solutions.add("a1A6b3A4c1D0d6A6e6C0f1B2h8B1g4B7");
+//        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
+//        solutions.add("a1A6b3A4c1D0e7B0d6C2g4B1f1B2h6A0");
+
+//        Boolean isInvalid;
+        String pieceString;
+        int row, column, orientation;
+        List<String> iPegString, jPegString, kPegString, lPegString, pegString;
+        Map<String, String> pegPlacement = new HashMap<>();
+        Set<String> toRemove = new HashSet<>();
+        List<String> toAdd;
+
+        int count = 1;
+
+        for (String solution : solutions) {
+            if (solution.equals("a1C2b3C0c2A0d4B0e6A0f6C2g1A0h8A1")){
+                System.out.println("first solution found");
+            }
+            if (solution.equals("a1C2b3C0c2A0d4B0e7B1f6A0g1A0h6D0")) {
+                System.out.println("second solution found");
+            }
+            toAdd = new ArrayList<>();
+            iPegString = new ArrayList<>();
+            jPegString = new ArrayList<>();
+            kPegString = new ArrayList<>();
+            lPegString = new ArrayList<>();
+            for (int i = 0; i < 8; i++) {
+                pieceString = solution.substring(4 * i, 4 * i + 4);
+
+                Piece piece = new Piece(pieceString);//Piece.getPiece(pieceString.charAt(0));
+                column = pieceString.charAt(1);
+                row = pieceString.charAt(2);
+                orientation = Character.getNumericValue(pieceString.charAt(3));
+
+                //Create the new piece with specific orientation and get the relative coordinates of the piece
+                piece.setOrientation(orientation);
+
+                int[][] xy = piece.getRelativeXY();
+
+                // Get the row and column of the pegs
+                for (int[] c : xy) {
+                    // If c[2] equals to 2, it is a hole, can put a peg in it
+                    if (c[2] == 2) {
+                        // The color will be the same as the piece
+                        switch (piece.getId()) {
+                            case 'a':
+                            case 'b': iPegString.add("i" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case 'c':
+                            case 'd': jPegString.add("j" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case 'e':
+                            case 'f': kPegString.add("k" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                            case 'g':
+                            case 'h': lPegString.add("l" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                        }
                     }
-
                 }
             }
-            combinations.add(temp);
+            pegString = getCombinations(iPegString, jPegString, kPegString, lPegString);
+            // For every combinations check whether it is existed in the pegPlacement list
+            for (String newPlacement : pegString) {
+//                isInvalid = false;
+                // Check whether it is on the blacklist
+//                for (String[] invalidPlacement : toRemove) {
+//                    if (newPlacement.equals(invalidPlacement[0])) {
+//                        isInvalid = true;
+//                        break;
+//                    }
+//                }
+
+                if (newPlacement.equals("i4D0j5C0j6C0k7B0k7C0l2C0")) {
+                    System.out.println("Hello");
+                }
+
+                if (toRemove.contains(newPlacement)) {
+//                    isInvalid = true;
+                    continue;
+                }
+
+//                if (isInvalid) {
+//                    continue;
+//                }
+
+//                for (String[] existedPlacement : pegPlacement) {
+//                    // Record the duplicate placements needed to be deleted
+//                    if (newPlacement.equals(existedPlacement[0])) {
+//                        toRemove.add(existedPlacement);
+//                        isInvalid = true;
+//                        break;
+//                    }
+//                }
+
+                if (pegPlacement.containsKey(newPlacement)) {
+                    toRemove.add(newPlacement);
+//                    isInvalid = true;
+                    continue;
+                }
+
+//                if (isInvalid) {
+//                    continue;
+//                }
+                toAdd.add(newPlacement);
+            }
+            // Remove
+            for (String duplicate : toRemove) {
+                pegPlacement.remove(duplicate);
+            }
+            // Add
+            for (String s : toAdd) {
+                pegPlacement.put(s, solution);
+            }
+            System.out.println("No." + count++);
+            System.out.println("pegPlacement : " + pegPlacement.size());
+            System.out.println("Add : " + toAdd.size());
+            System.out.println("Remove : " + toRemove.size());
         }
 
+
+//        for (String[] s : pegPlacement) {
+//            System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
+//        }
+        System.out.println(pegPlacement.size());
+
+        String resultPath = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Placement.csv";
+
+        try{
+            writeCSV(resultPath, pegPlacement);
+        }
+        catch (IOException e){
+            System.out.println(e);
+        }
+
+    }
+
+    public static List<String> readCSV(String path) throws IOException {
+        List<String> list = new ArrayList<>();
+        FileReader fr = new FileReader(path);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+
+        while((line = br.readLine()) != null) {
+            list.add(line);
+        }
+        br.close();
+
+        return list;
+    }
+
+    public static void writeCSV(String path, Map<String, String> placement) throws IOException {
+        PrintWriter pw = new PrintWriter(new File(path));
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry: placement.entrySet()) {
+            sb.append(entry.getKey() + " " + entry.getValue());
+            sb.append('\n');
+            pw.write(sb.toString());
+            sb.setLength(0);
+        }
+        pw.close();
+    }
+
+    public static List<String> getCombinations(List<String> iPegString, List<String> jPegString , List<String> kPegString, List<String> lPegString) {
+        String iPeg, jPeg, kPeg, lPeg;
+        List<String> combinations = new ArrayList<>();
+        List<String> jPegList = getTwoPegs(jPegString);
+        List<String> kPegList = getTwoPegs(kPegString);
+        List<String> lPegList = getTwoPegs(lPegString);
+
+        // Starting with -1, because one or more kind of pegs can be missing
+        for (int i = -1; i < iPegString.size(); i++) {
+            if (i == -1) {
+                iPeg = "";
+            } else {
+                iPeg = iPegString.get(i);
+            }
+            for (int j = -1; j < jPegList.size(); j++) {
+                if (j == -1) {
+                    jPeg = "";
+                } else {
+                    jPeg = jPegList.get(j);
+                }
+                for (int k = -1; k < kPegList.size(); k++) {
+                    if (k == -1) {
+                        kPeg = "";
+                    } else {
+                        kPeg = kPegList.get(k);
+                    }
+                    for (int l = -1; l < lPegList.size(); l++) {
+                        if (l == -1) {
+                            lPeg = "";
+                        } else {
+                            lPeg = lPegList.get(l);
+                        }
+                        combinations.add(iPeg + jPeg + kPeg + lPeg);
+                    }
+                }
+            }
+        }
+        if (combinations.contains("i4D0j5C0j6C0k7C0k7B0l2C0")){
+            System.out.println("combination found");
+        }
         return combinations;
     }
 
-    // Return every location
-    public static String returnLocation(String placement) {
-        // For every row
-        for (int i = 0; i < 4; i++) {
-            // For every column
-            for (int j = 0; j < 8; j++) {
-                placement = placement + (char) (i + '1') + (char) (j + 'A') + "0";
+    public static List<String> getTwoPegs(List<String> pegString) {
+        String firstPeg, secondPeg;
+        List<String> pegList = new ArrayList<>();
+        Collections.sort(pegString);
+
+        // Combinations of two j pegs
+        // i start with -1, can be nothing for one of the pegs
+        for (int i = -1; i < pegString.size(); i++) {
+            for (int j = i + 1; j < pegString.size(); j++) {
+                if (i == -1) {
+                    firstPeg = "";
+                } else {
+                    firstPeg = pegString.get(i);
+                }
+                if (j == -1) {
+                    secondPeg = "";
+                } else {
+                    secondPeg = pegString.get(j);
+                }
+                pegList.add(firstPeg + secondPeg);
             }
         }
-        return placement;
+        return pegList;
     }
 
 
