@@ -3,23 +3,30 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.Waldo;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Line;
 
+import java.net.URL;
 import java.util.Random;
 
 public class Board extends Application {
@@ -456,6 +463,7 @@ public class Board extends Application {
         flipUp.setY(600);
         root.getChildren().add(flipUp);
         //UIelements--select
+        ImageView xAndY = new ImageView();
         ImageView sillyString = new ImageView();
         sillyString.setImage(Waldo.waldo(0));
         sillyString.setX(650);
@@ -469,18 +477,23 @@ public class Board extends Application {
         // end shame
         root.getChildren().add(sillyString);
         // click on sillyString
-        sillyString.setOnMousePressed(event -> {pieces.getChildren().add(new PieceView( // currently @root because it brings to front
+        sillyString.setOnMousePressed(event -> {pieces.getChildren().add(new PieceView( // currently @root because it brings to frontmak
                 Waldo.changeDimension(sillyString.getImage()), // Piece Image
                 Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
-                600,  // Initial X
-                170, // Initial y
+                670,  // Initial X
+                100, // Initial y
                 2,
                 3));
-               // pieces.getChildren().get(pieces.getChildren().size()-1).setLayoutX(event.getSceneX()); -- this refers to most recent placed piece
+            findSnapTo((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1));
+        xAndY.setX(event.getSceneX()-670);
+        xAndY.setY(event.getSceneY()-100);
         });
         sillyString.setOnMouseDragged(event -> {
-                ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setX(event.getSceneX());
-            ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setY(event.getSceneY());
+            double newX = (event.getSceneX()-(xAndY.getX()));
+            double newY = (event.getSceneY()-(xAndY.getY()));
+                ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setX(newX);
+            ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setY(newY);
+
             }
 
 
@@ -492,6 +505,40 @@ public class Board extends Application {
 
         });
 
+        // UI - Instructions
+        Button whatDo = new Button();
+        whatDo.setText("Instructions");
+        whatDo.setLayoutY(300);
+        whatDo.setLayoutX(20);
+        whatDo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Label instruct = new Label("Rules\n" +
+                        "\n" +
+                        "The game is a puzzle; the objective is to place all eight colored\n" +
+                        "playing pieces onto a board comprising 32 locations (the grid) on which\n" +
+                        "up to seven colored pegs may be arranged.  The player must place the\n" +
+                        "pieces such that they fit together correctly on the board, without\n" +
+                        "overlaps or gaps. Also, each of the pegs must be surrounded by a piece\n" +
+                        "of the same colour, meaning the piece must have a hole in the\n" +
+                        "necessary place. In the photo above, a blue peg at upper right is\n" +
+                        "surrounded by a blue piece, with the peg fitting exactly into a hole\n" +
+                        "in the blue piece.  The player will need to place the green and red\n" +
+                        "pieces so that they fit neatly on the green and red pegs, and to\n" +
+                        "complete the game will need to ensure that all pieces are placed with\n" +
+                        "no overlaps and no gaps.");
+                StackPane instructPane = new StackPane();
+                instructPane.getChildren().add(instruct);
+                Scene instructScene = new Scene(instructPane,400,250);
+                Stage instructWindow = new Stage();
+                instructWindow.setTitle("Instructions");
+                instructWindow.setScene(instructScene);
+                instructWindow.show();
+
+            }
+        });
+
+        root.getChildren().add(whatDo);
 
 // UI - Difficulty Selecter
         Random rng = new Random();
