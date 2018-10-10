@@ -902,7 +902,15 @@ public class TwistGame {
                         } else {
                             lPeg = lPegList.get(l);
                         }
-                        combinations.add(iPeg + jPeg + kPeg + lPeg);
+                        if((iPeg + jPeg + kPeg + lPeg).length() == 12){
+                            combinations.add(iPeg + jPeg + kPeg + lPeg);
+                        }
+
+                        //combinations.add(iPeg + jPeg + kPeg + lPeg);
+
+
+
+
                     }
                 }
             }
