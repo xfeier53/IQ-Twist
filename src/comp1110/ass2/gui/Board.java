@@ -1,6 +1,6 @@
 package comp1110.ass2.gui;
 
-
+import comp1110.ass2.Objective;
 import comp1110.ass2.TwistGame;
 import comp1110.ass2.Waldo;
 import javafx.application.Application;
@@ -55,15 +55,12 @@ public class Board extends Application {
 
     public static PieceView selectedPiece;
 
-
-    double xy[] = {75,25};
+    double xy[] = {75, 25};
 
     public class Tetris {
         String pieceID;
         int width;
         int height;
-
-
     }
 
     public Image tetris(String pieceID, int width, int height) {
@@ -71,9 +68,7 @@ public class Board extends Application {
         Image retur = new Image("comp1110/ass2/gui/assets/" + pieceID + ".png", width, height, false, false);
         return retur;
     }
-
-
-        //("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false)
+    //("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false)
     private double[] relativeMouseClick = new double[2];
 
     // this this is difficulty tests - u6406312
@@ -130,6 +125,8 @@ public class Board extends Application {
         //Intialise the gameState, should only be done at beginning of the game
         boardState = placement;
 
+        pegs.getChildren().clear();
+
         //loop through pegs and place them
         for (int i = 0; i < placement.length(); i = i + 4) {
 
@@ -149,94 +146,7 @@ public class Board extends Application {
 
             pegView.setX(SQUARE_SIZE * column);
             pegView.setY(SQUARE_SIZE * row);
-
         }
-
-
-    }
-
-
-
-
-    //makes placement of new placement String, Please do not use this functions
-    @Deprecated
-    void makePlacement(String placement) {
-
-        //clears pieces currently on the screen
-        //pieces.getChildren().clear();
-
-        //loop through every four characters in placement
-        for(int i = 0; i < placement.length()/4;i++){
-
-            //get the 4 character substring at i
-            String piecePlacement = placement.substring(i*4,i*4+4);
-            //place the piece
-            makePiecePlacement(piecePlacement);
-
-        }
-    }
-
-    //Place a single piece in placement
-    @Deprecated
-    void makePiecePlacement(String piecePlacement){
-
-        //get the id of the piece ie 'a' and get the png image
-        char pieceId = piecePlacement.charAt(0);
-        Image pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png");
-
-        //get the height of the piece
-        double height = pieceImg.getHeight() / 100;
-        double width = pieceImg.getWidth() / 100;
-
-        //get the piece resized to suit the board
-        pieceImg = new Image("comp1110/ass2/gui/assets/"+pieceId+".png",SQUARE_SIZE * width,SQUARE_SIZE * height,true,false);
-
-        //set the the image to an imageView
-        ImageView pieceView = new ImageView();
-        pieceView.setImage(pieceImg);
-        //Set the x y coord
-        pieceView.setX(0);
-        pieceView.setY(0);
-        //get numeric values for column and row from string
-        int column = Character.getNumericValue(piecePlacement.charAt(1)) - 1;
-        int row = (piecePlacement.charAt(2)) - 'A';
-
-        //place the piece
-        pieceView.setX(pieceView.getX() + (SQUARE_SIZE * column));
-        pieceView.setY(pieceView.getY() + (SQUARE_SIZE * row));
-
-        //parses the orientation into an int
-        int orientation = Character.getNumericValue(piecePlacement.charAt(3));
-
-        rotateAndFlip(pieceView,orientation);
-
-        //Find where the piece was clicked on and store it
-        pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                relativeMouseClick[0] = event.getX() - pieceView.getX();
-                relativeMouseClick[1] = event.getY() - pieceView.getY();
-            }
-        });
-        //Upon release find where it will snap to and determine whether that is a good location or not
-        pieceView.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                findSnapTo(pieceView);
-            }
-        });
-
-        //Move piece on drag
-        pieceView.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                translatePiece(event,pieceView,relativeMouseClick);
-            }
-        });
-
-        //add the imageView
-        pieces.getChildren().add(pieceView);
-
     }
 
     void makeHintPiecePlacement(String piecePlacement){
@@ -281,14 +191,6 @@ public class Board extends Application {
     }
 
 
-    @Deprecated
-    void translatePiece(MouseEvent event,ImageView pieceView, double[] relativePoint){
-
-        //Move piece to mouse considering where the mouse was clicked inside the piece
-        pieceView.setX(event.getX()-relativePoint[0]);
-        pieceView.setY(event.getY()-relativePoint[1]);
-
-    }
 
     @Deprecated
     void findSnapTo(ImageView pieceView) {
@@ -420,9 +322,18 @@ public class Board extends Application {
             @Override
             public void handle(KeyEvent event) {
 
+                if(event.getCode() == KeyCode.SPACE){
 
+                    Objective objective = new Objective(0,"a7B1b2C4c1B2d4C4e1C3f4A0g6A1h1A0j3B0j5C0");
+
+                    objective.addRandomPegsToObjective(objective,5);
+
+                    System.out.println(objective.getPegPlacement());
+
+                    makePegPlacement(objective.getPegPlacement());
+
+                }
                 if(isHintShown == false && event.getCode() == KeyCode.SLASH){
-
 
                     isHintShown = true;
 
@@ -430,42 +341,47 @@ public class Board extends Application {
 
                     if(hintPlacement != null && hintPlacement.length > 0){
                         makeHintPiecePlacement(hintPlacement[0]);
-
                     }
-
                 }
-
 
                 if (selectedPiece != null) {
 
+                    //true if current orientation is even
+                    boolean isEven = selectedPiece.getOrientation() % 2 == 0;
 
+                    //int to take value 0 if unflipped ie orientation less than 4, and 4 if flipped
                     int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
 
+                    //take the remainder after dividing by four newOrientation -> 0,1,2,3
                     int newOrientation = selectedPiece.getOrientation() % 4;
 
+                    //depending on the code either rotate or flip the piece
                     switch (event.getCode()) {
                         case UP:
+                            //add 2 to newOrientation if it is even this causes the piece to always flip horizontally
+                            newOrientation = (isEven) ? newOrientation : (newOrientation + 2) % 4;
+                            //change the isFlipped to be the opposite of what it was
                             isFlipped = (isFlipped == 0) ? 4 : 0;
                             break;
                         case DOWN:
+                            newOrientation = (isEven) ? newOrientation : (newOrientation + 2) % 4;
                             isFlipped = (isFlipped == 0) ? 4 : 0;
                             break;
                         case RIGHT:
+                            //increase the newOrientation by 1
                             newOrientation = (newOrientation + 1) % 4;
                             break;
                         case LEFT:
+                            //decrease the newOrientation by 1
+                            //Math.floorMod is used becasue the value could be negative
                             newOrientation = Math.floorMod(newOrientation - 1, 4);
                             break;
 
                     }
-
-
+                    //add isFlipped to newOrientation and set it to the piece
                     selectedPiece.setOrientation(newOrientation + isFlipped);
-
                 }
-
             }
-
         });
 
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
