@@ -26,6 +26,8 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Line;
 
+import java.awt.*;
+import java.awt.event.InputEvent;
 import java.net.URL;
 import java.util.Random;
 
@@ -95,6 +97,22 @@ public class Board extends Application {
             }
         }
         return "";
+    }
+    public static String getPieciesOnBoard () {
+        String board = "";
+        int x = 0;
+
+        while (x < boardState.length()){
+            if        (boardState.charAt(x) != 'i'
+                    && boardState.charAt(x) != 'j'
+                    && boardState.charAt(x) != 'k'
+                    && boardState.charAt(x) != 'l') {board = board+ boardState.charAt(x);
+            x+=4;}
+            else {x+=4;}
+
+        }
+
+        return board;
     }
 
 
@@ -472,45 +490,49 @@ public class Board extends Application {
         pieces.toFront();
         // I am deeply ashamed of this following code .. never look into what [Waldo class] actually does.
         // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
-        fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())+1)));
-        back.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage())-1)));
+        fwd.setOnMouseClicked(event -> {sillyString.setImage(Waldo.waldoFWD(Waldo.ImageAnal(sillyString.getImage())));
+        sillyString.setOpacity(100);});
+        back.setOnMouseClicked(event -> {sillyString.setImage(Waldo.waldoBCK(Waldo.ImageAnal(sillyString.getImage())));
+        sillyString.setOpacity(100);});
         // end shame
         root.getChildren().add(sillyString);
         // click on sillyString
-        sillyString.setOnMousePressed(event -> {pieces.getChildren().add(new PieceView( // currently @root because it brings to frontmak
-                Waldo.changeDimension(sillyString.getImage()), // Piece Image
-                Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
-                670,  // Initial X
-                100, // Initial y
-                2,
-                3));
-            findSnapTo((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1));
-        xAndY.setX(event.getSceneX()-670);
-        xAndY.setY(event.getSceneY()-100);
-        });
-        sillyString.setOnMouseDragged(event -> {
-            double newX = (event.getSceneX()-(xAndY.getX()));
-            double newY = (event.getSceneY()-(xAndY.getY()));
-                ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setX(newX);
-            ((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1)).setY(newY);
-
+        sillyString.setOnMousePressed(event -> { if (sillyString.getOpacity() != 0.0) {
+            pieces.getChildren().add(new PieceView( // currently @root because it brings to frontmak
+                    Waldo.changeDimension(sillyString.getImage()), // Piece Image
+                    Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
+                    630,  // Initial X
+                    110, // Initial y
+                    2,
+                    3));
+            // automate a second mouse click
+            try {
+                Robot waldoBot = new Robot();
+                waldoBot.mouseRelease(InputEvent.BUTTON1_MASK);
+            } catch (AWTException e) {
+                e.printStackTrace();
             }
-
-
-
-
-        );
-        sillyString.setOnMouseReleased(event -> {
-            findSnapTo((ImageView) pieces.getChildren().get(pieces.getChildren().size()-1));
+            System.out.println(getPieciesOnBoard());
+            sillyString.setOpacity(0);
+        }
 
         });
+      //  sillyString.setOnMouseDragged(event -> {  try {
+      //      Robot waldoBot2 = new Robot();
+      //      waldoBot2.mouseMove((int) Math.round(event.getSceneY()),(int) Math.round(event.getSceneY()));
+      //  }
+      //  catch (AWTException e)
+       // {
+      //      e.printStackTrace();
+      //  }});
+
 
         // UI - Instructions
-        Button whatDo = new Button();
-        whatDo.setText("Instructions");
-        whatDo.setLayoutY(300);
-        whatDo.setLayoutX(20);
-        whatDo.setOnAction(new EventHandler<ActionEvent>() {
+        Button informationToPlayer = new Button();
+        informationToPlayer.setText("Instructions");
+        informationToPlayer.setLayoutY(300);
+        informationToPlayer.setLayoutX(20);
+        informationToPlayer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Label instruct = new Label("Rules\n" +
@@ -538,7 +560,7 @@ public class Board extends Application {
             }
         });
 
-        root.getChildren().add(whatDo);
+        root.getChildren().add(informationToPlayer);
 
 // UI - Difficulty Selecter
         Random rng = new Random();
