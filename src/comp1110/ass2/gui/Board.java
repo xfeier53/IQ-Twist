@@ -1,6 +1,7 @@
 package comp1110.ass2.gui;
 
 
+import comp1110.ass2.TwistGame;
 import comp1110.ass2.Waldo;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -36,6 +37,13 @@ public class Board extends Application {
     private static final int BOARD_HEIGHT = 700;
     public static final int SQUARE_SIZE = 70;
 
+    private boolean isHintShown = false;
+
+    public static final char[] PIECE_IDS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+    public static final double[][] INTIAL_STARTS = {{0, 4}, {0, 5}, {5, 4}, {6, 5}, {3, 4}, {5, 5}, {9, 5}, {9, 8}};
+    public static final int[][] INTIAL_DIMENSIONS = {{2, 3}, {2, 3}, {1, 4}, {2, 3}, {2, 2}, {2, 3}, {3, 3}, {1, 3}, {3, 3}, {1, 3}};
+
+
     public static String boardState = "i6B0j2B0j1C0k3C0l4B0l5C0";
 
     private final Group root = new Group();
@@ -45,6 +53,8 @@ public class Board extends Application {
     private final Group lines = new Group();
 
     private final Group pegs = new Group();
+
+    private ImageView hintView;
 
     public static PieceView selectedPiece;
 
@@ -240,6 +250,48 @@ public class Board extends Application {
 
     }
 
+    void makeHintPiecePlacement(String piecePlacement){
+
+        System.out.println(piecePlacement);
+
+        int index = 0;
+        char pieceId = piecePlacement.charAt(0);
+
+        while(pieceId != PIECE_IDS[index]){
+            index++;
+        }
+
+        int height = INTIAL_DIMENSIONS[index][0];
+        int width = INTIAL_DIMENSIONS[index][1];
+
+        //get the piece resized to suit the board
+        Image pieceIamge = new Image("comp1110/ass2/gui/assets/" + pieceId + ".png", SQUARE_SIZE * width, SQUARE_SIZE * height, true, false);
+
+        //set the the image to an imageView
+        hintView = new ImageView();
+        hintView.setImage(pieceIamge);
+        //Set the x y coord
+        hintView.setX(0);
+        hintView.setY(0);
+        //get numeric values for column and row from string
+        int column = Character.getNumericValue(piecePlacement.charAt(1)) - 1;
+        int row = (piecePlacement.charAt(2)) - 'A';
+
+        //place the piece
+        hintView.setX(hintView.getX() + (SQUARE_SIZE * column));
+        hintView.setY(hintView.getY() + (SQUARE_SIZE * row));
+
+        //parses the orientation into an int
+        int orientation = Character.getNumericValue(piecePlacement.charAt(3));
+
+        rotateAndFlip(hintView,orientation);
+
+        root.getChildren().add(hintView);
+
+
+    }
+
+
     @Deprecated
     void translatePiece(MouseEvent event,ImageView pieceView, double[] relativePoint){
 
@@ -287,7 +339,7 @@ public class Board extends Application {
 
     //Take image and rotate it depending on orientation
     @Deprecated
-    void rotateAndFlip(ImageView pieceView,int orientation){
+    void rotateAndFlip(ImageView pieceView, int orientation) {
 
         //flip the piece over if needed
         if(orientation > 3){
@@ -327,7 +379,7 @@ public class Board extends Application {
         }
 
         //loop through all rows and add a new line
-        for(int i = 1; i <= 4; i++){
+        for (int i = 1; i <= 4; i++) {
 
             Line boardLine = new Line();
             boardLine.setStartY(i * SQUARE_SIZE);
@@ -385,14 +437,29 @@ public class Board extends Application {
             public void handle(KeyEvent event) {
 
 
-                if (selectedPiece != null){
+                if(isHintShown == false && event.getCode() == KeyCode.SLASH){
+
+
+                    isHintShown = true;
+
+                    String[] hintPlacement =  TwistGame.getHint(boardState);
+
+                    if(hintPlacement != null && hintPlacement.length > 0){
+                        makeHintPiecePlacement(hintPlacement[0]);
+
+                    }
+
+                }
+
+
+                if (selectedPiece != null) {
 
 
                     int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
 
                     int newOrientation = selectedPiece.getOrientation() % 4;
 
-                    switch (event.getCode()){
+                    switch (event.getCode()) {
                         case UP:
                             isFlipped = (isFlipped == 0) ? 4 : 0;
                             break;
@@ -403,7 +470,7 @@ public class Board extends Application {
                             newOrientation = (newOrientation + 1) % 4;
                             break;
                         case LEFT:
-                            newOrientation = Math.floorMod(newOrientation - 1,4);
+                            newOrientation = Math.floorMod(newOrientation - 1, 4);
                             break;
 
                     }

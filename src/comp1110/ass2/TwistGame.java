@@ -190,9 +190,9 @@ public class TwistGame {
             case 'g':
             case 'h': return Node.setPiece(nodes,new Piece(placement));
 
-            case 'i': ;
-            case 'j': ;
-            case 'k': ;
+            case 'i':
+            case 'j':
+            case 'k':
             case 'l': return Node.setPeg(nodes,Peg.getPegForPlacement(placement));
 
         }
@@ -279,6 +279,9 @@ public class TwistGame {
                 for (int k = 0; k < 8; k++) {
                     // This place has already been occupied
                     newPiece = ch + Integer.toString(i) + (char) ('A' + j) + Integer.toString(k);
+                    if (newPiece.equals("f1A6")) {
+                        System.out.println("there");
+                    }
 
 
                     if (!getPieceSituation(occupation, new Piece(newPiece))) {
@@ -518,6 +521,11 @@ public class TwistGame {
         String newPlacement;
         String[] splitedString;
 
+        //a7B7b5B0c5A0d1B5e3C2f1A6g3A7h5D0
+        if (placement.equals("a7B7i8B0j6A0k1A0l5C0l5D0")){
+            System.out.println("here");
+        }
+
         // If the length of the List is 32, that is the full solutions
         if (placement.length() == resultLength) {
             solutions.add(placement.substring(0, 32));
@@ -686,7 +694,7 @@ public class TwistGame {
         //List<String> solutions = readCSV(path);
 
 //        // Test data, can be deleted
-//        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
+    //        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
 //        solutions.add("a1A6b3A4c1D0d6A3e7C2f1B2h8A1g4B7");
 //        solutions.add("a1A6b3A4c1D0d6A6e6C0f1B2h8B1g4B7");
 //        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
@@ -695,109 +703,78 @@ public class TwistGame {
 //        Boolean isInvalid;
         String pieceString;
         int row, column, orientation;
+        String[][] allSolutions = getSymmetricalSolutions(solutions);
         List<String> iPegString, jPegString, kPegString, lPegString, pegString;
         Map<String, String> pegPlacement = new HashMap<>();
         Set<String> toRemove = new HashSet<>();
-        List<String> toAdd;
+        Map<String, String> toAdd;
 
         int count = 1;
 
-        for (String solution : solutions) {
-            if (solution.equals("a1C2b3C0c2A0d4B0e6A0f6C2g1A0h8A1")){
-                System.out.println("first solution found");
-            }
-            if (solution.equals("a1C2b3C0c2A0d4B0e7B1f6A0g1A0h6D0")) {
-                System.out.println("second solution found");
-            }
-            toAdd = new ArrayList<>();
-            iPegString = new ArrayList<>();
-            jPegString = new ArrayList<>();
-            kPegString = new ArrayList<>();
-            lPegString = new ArrayList<>();
-            for (int i = 0; i < 8; i++) {
-                pieceString = solution.substring(4 * i, 4 * i + 4);
+        for (String[] solution : allSolutions) {
+            toAdd = new HashMap<>();
+            for (int i = 0; i < 32; i++) {
+                iPegString = new ArrayList<>();
+                jPegString = new ArrayList<>();
+                kPegString = new ArrayList<>();
+                lPegString = new ArrayList<>();
+                for (int j = 0; j < 8; j++) {
+                    pieceString = solution[i].substring(4 * j, 4 * j + 4);
 
-                Piece piece = new Piece(pieceString);//Piece.getPiece(pieceString.charAt(0));
-                column = pieceString.charAt(1);
-                row = pieceString.charAt(2);
-                orientation = Character.getNumericValue(pieceString.charAt(3));
+                    Piece piece = new Piece(pieceString);//Piece.getPiece(pieceString.charAt(0));
+                    column = pieceString.charAt(1);
+                    row = pieceString.charAt(2);
+                    orientation = Character.getNumericValue(pieceString.charAt(3));
 
-                //Create the new piece with specific orientation and get the relative coordinates of the piece
-                piece.setOrientation(orientation);
+                    //Create the new piece with specific orientation and get the relative coordinates of the piece
+                    piece.setOrientation(orientation);
 
-                int[][] xy = piece.getRelativeXY();
+                    int[][] xy = piece.getRelativeXY();
 
-                // Get the row and column of the pegs
-                for (int[] c : xy) {
-                    // If c[2] equals to 2, it is a hole, can put a peg in it
-                    if (c[2] == 2) {
-                        // The color will be the same as the piece
-                        switch (piece.getId()) {
-                            case 'a':
-                            case 'b': iPegString.add("i" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
-                            case 'c':
-                            case 'd': jPegString.add("j" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
-                            case 'e':
-                            case 'f': kPegString.add("k" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
-                            case 'g':
-                            case 'h': lPegString.add("l" + (char)(column + c[0]) + (char)(row + c[1]) + "0"); break;
+                    // Get the row and column of the pegs
+                    for (int[] c : xy) {
+                        // If c[2] equals to 2, it is a hole, can put a peg in it
+                        if (c[2] == 2) {
+                            // The color will be the same as the piece
+                            switch (piece.getId()) {
+                                case 'a':
+                                case 'b': iPegString.add("i" + (char) (column + c[0]) + (char) (row + c[1]) + "0"); break;
+                                case 'c':
+                                case 'd': jPegString.add("j" + (char) (column + c[0]) + (char) (row + c[1]) + "0"); break;
+                                case 'e':
+                                case 'f': kPegString.add("k" + (char) (column + c[0]) + (char) (row + c[1]) + "0"); break;
+                                case 'g':
+                                case 'h': lPegString.add("l" + (char) (column + c[0]) + (char) (row + c[1]) + "0"); break;
+                            }
                         }
                     }
                 }
-            }
-            pegString = getCombinations(iPegString, jPegString, kPegString, lPegString);
-            // For every combinations check whether it is existed in the pegPlacement list
-            for (String newPlacement : pegString) {
-//                isInvalid = false;
-                // Check whether it is on the blacklist
-//                for (String[] invalidPlacement : toRemove) {
-//                    if (newPlacement.equals(invalidPlacement[0])) {
-//                        isInvalid = true;
-//                        break;
-//                    }
-//                }
-
-                if (newPlacement.equals("i4D0j5C0j6C0k7B0k7C0l2C0")) {
-                    System.out.println("Hello");
+                pegString = getCombinations(iPegString, jPegString, kPegString, lPegString);
+                // For every combinations check whether it is existed in the pegPlacement list
+                for (String newPlacement : pegString) {
+                    // Check whether it is on the blacklist
+                    if (toAdd.containsKey(newPlacement)) {
+                        continue;
+                    }
+                    if (toRemove.contains(newPlacement)) {
+                        continue;
+                    }
+                    if (pegPlacement.containsKey(newPlacement)) {
+                        toRemove.add(newPlacement);
+                        continue;
+                    }
+                    toAdd.put(newPlacement, solution[i]);
                 }
-
-                if (toRemove.contains(newPlacement)) {
-//                    isInvalid = true;
-                    continue;
-                }
-
-//                if (isInvalid) {
-//                    continue;
-//                }
-
-//                for (String[] existedPlacement : pegPlacement) {
-//                    // Record the duplicate placements needed to be deleted
-//                    if (newPlacement.equals(existedPlacement[0])) {
-//                        toRemove.add(existedPlacement);
-//                        isInvalid = true;
-//                        break;
-//                    }
-//                }
-
-                if (pegPlacement.containsKey(newPlacement)) {
-                    toRemove.add(newPlacement);
-//                    isInvalid = true;
-                    continue;
-                }
-
-//                if (isInvalid) {
-//                    continue;
-//                }
-                toAdd.add(newPlacement);
             }
             // Remove
             for (String duplicate : toRemove) {
                 pegPlacement.remove(duplicate);
             }
             // Add
-            for (String s : toAdd) {
-                pegPlacement.put(s, solution);
+            for (Map.Entry<String, String> entry : toAdd.entrySet()) {
+                pegPlacement.put(entry.getKey(), entry.getValue());
             }
+
             System.out.println("No." + count++);
             System.out.println("pegPlacement : " + pegPlacement.size());
             System.out.println("Add : " + toAdd.size());
@@ -847,6 +824,52 @@ public class TwistGame {
         pw.close();
     }
 
+    public static String[][] getSymmetricalSolutions(List<String> solutions) {
+        String switchs, placement, originalPlacement;
+        int[] subString = new int[]{4, 8, 16, 20, 28};
+        String[][] symmetricalSolutions = new String[5992][32];
+
+        for (int i = 0; i < solutions.size(); i++) {
+            originalPlacement = solutions.get(i);
+            for (int j = 0; j < 32; j++) {
+                // a piece stay unflipped
+                placement = originalPlacement.substring(0, 4);
+                switchs = String.format("%5s", Integer.toString(j, 2));
+                for (int k = 0; k < 5; k++) {
+                    if (switchs.charAt(k) == '1') {
+                        placement += getSymmetricalPiece(originalPlacement.substring(subString[k], subString[k] + 4));
+                    } else {
+                        placement += originalPlacement.substring(subString[k], subString[k] + 4);
+                    }
+                }
+                placement = placement.substring(0, 12) + originalPlacement.substring(12, 16) + placement.substring(12, 20) + originalPlacement.substring(24, 28) + placement.substring(20, 24);
+                symmetricalSolutions[i][j] = placement;
+            }
+        }
+
+        return symmetricalSolutions;
+    }
+
+    public static String getSymmetricalPiece(String piece) {
+        if (piece.charAt(0) == 'b' || piece.charAt(0) == 'c' || piece.charAt(0) == 'h') {
+            return piece.substring(0, 3) + (char) (piece.charAt(3) + 2);
+        } else if (piece.charAt(0) == 'e') {
+            if ((piece.charAt(3) == '0')) {
+                return piece.substring(0, 3) + (piece.charAt(3) - '0' + 7);
+            } else {
+                return piece.substring(0, 3) + (piece.charAt(3) - '0' + 3);
+            }
+        } else if (piece.charAt(0) == 'f') {
+            if ((piece.charAt(3) == '0' || piece.charAt(3) == '1')) {
+                return piece.substring(0, 3) + (piece.charAt(3) - '0' + 6);
+            } else {
+                return piece.substring(0, 3) + (piece.charAt(3) - '0' + 2);
+            }
+        } else {
+            return piece;
+        }
+    }
+
     public static List<String> getCombinations(List<String> iPegString, List<String> jPegString , List<String> kPegString, List<String> lPegString) {
         String iPeg, jPeg, kPeg, lPeg;
         List<String> combinations = new ArrayList<>();
@@ -879,7 +902,15 @@ public class TwistGame {
                         } else {
                             lPeg = lPegList.get(l);
                         }
-                        combinations.add(iPeg + jPeg + kPeg + lPeg);
+                        if((iPeg + jPeg + kPeg + lPeg).length() == 12){
+                            combinations.add(iPeg + jPeg + kPeg + lPeg);
+                        }
+
+                        //combinations.add(iPeg + jPeg + kPeg + lPeg);
+
+
+
+
                     }
                 }
             }
