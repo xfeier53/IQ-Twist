@@ -52,7 +52,7 @@ public class Waldo {
         }
         return a;
     }
-    
+
     public static Image waldoFWD(int number) {
         String board = Board.getPieciesOnBoard();
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
