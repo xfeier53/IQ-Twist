@@ -66,6 +66,22 @@ public class Board extends Application {
         int width;
         int height;
     }
+    public static String getPieciesOnBoard () {
+        String board = "";
+        int x = 0;
+
+        while (x < boardState.length()){
+            if        (boardState.charAt(x) != 'i'
+                    && boardState.charAt(x) != 'j'
+                    && boardState.charAt(x) != 'k'
+                    && boardState.charAt(x) != 'l') {board = board+ boardState.charAt(x);
+                x+=4;}
+            else {x+=4;}
+
+        }
+
+        return board;
+    }
 
     public Image tetris(String pieceID, int width, int height) {
         String zed = pieceID;
