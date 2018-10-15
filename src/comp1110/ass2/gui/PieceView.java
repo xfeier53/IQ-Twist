@@ -15,6 +15,7 @@ public class PieceView extends ImageView {
 
     final double startX;
     final double startY;
+    final int startOrientation;
     final double originalHeight;
     final double originalWidth;
     final char id;
@@ -25,19 +26,27 @@ public class PieceView extends ImageView {
     private boolean isPressed = false;
     private double[] relativeMouseClick = new double[2];
 
-    PieceView(Image image, char id, double startX, double startY, double originalHeight, double originalWidth) {
+    PieceView(Image image, char id, double startX, double startY, double originalHeight, double originalWidth){
+        this(image,id,startX,startY,originalHeight,originalWidth,0);
+    }
+
+    PieceView(Image image, char id, double startX, double startY, double originalHeight, double originalWidth, int startOrientation) {
 
         this.id = id;
         this.startX = startX;
         this.startY = startY;
         this.originalHeight = originalHeight;
         this.originalWidth = originalWidth;
+        this.startOrientation = startOrientation;
 
         this.setX(startX);
         this.setY(startY);
         this.row = -1;
         this.column = -1;
         this.setImage(image);
+
+        System.out.println(startOrientation);
+        this.setOrientation(startOrientation);
 
         PieceView pieceView = this;
 
@@ -157,10 +166,10 @@ public class PieceView extends ImageView {
         //loop through columns and find snap target
         for (int i = 0; i <= 7; i++) {
             //distance to line
-            double xLine = (i * Board.SQUARE_SIZE - pieceView.getX() - correction);
+            double xLine = (i * Board.SQUARE_SIZE - pieceView.getX() - correction + Board.RIGHT_MARGIN);
             //If distance is less than the checkLength snap to that line
             if (xLine <= checkLength && xLine >= -checkLength) {
-                xSnap = i * Board.SQUARE_SIZE - correction;
+                xSnap = i * Board.SQUARE_SIZE - correction + Board.RIGHT_MARGIN;
                 pieceView.column = i + 1;
                 break;
             }
@@ -169,10 +178,10 @@ public class PieceView extends ImageView {
         //Same as above but for rows not columns
         for (int i = 0; i <= 3; i++) {
 
-            double yLine = (i * Board.SQUARE_SIZE - pieceView.getY() + correction);
+            double yLine = (i * Board.SQUARE_SIZE - pieceView.getY() + correction + Board.TOP_MARGIN);
 
             if (yLine <= checkLength && yLine >= -checkLength) {
-                ySnap = i * Board.SQUARE_SIZE + correction;
+                ySnap = i * Board.SQUARE_SIZE + correction + Board.TOP_MARGIN;
                 pieceView.row = i + 1;
                 break;
             }
@@ -185,6 +194,8 @@ public class PieceView extends ImageView {
     //reset the piece to where it's starting location and orientation(orientation is always 0 currently)
     void resetPiece() {
 
+        System.out.println("test");
+
         for (int i = 0; i < Board.boardState.length(); i = i + 4) {
             if (Board.boardState.charAt(i) == id) {
                 Board.boardState = Board.boardState.substring(0, i) + Board.boardState.substring(i + 4);
@@ -195,7 +206,7 @@ public class PieceView extends ImageView {
         this.setY(startY);
         this.row = -1;
         this.column = -1;
-        this.rotateAndFlip(0);
+        this.rotateAndFlip(startOrientation);
     }
 
 

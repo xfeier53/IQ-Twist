@@ -1,17 +1,20 @@
 package comp1110.ass2;
 
 public enum Peg {
-    PEGi (Colour.RED),
-    PEGj (Colour.BLUE),
-    PEGk (Colour.GREEN),
-    PEGl (Colour.YELLOW);
+    PEGi (Colour.RED,1),
+    PEGj (Colour.BLUE,2),
+    PEGk (Colour.GREEN,2),
+    PEGl (Colour.YELLOW,2);
 
     private final Colour colour;
+    final int numberOfPeg;
+    char id;
     int column;
     int row;
 
-    Peg(Colour colour) {
+    Peg(Colour colour, int numberOfPeg) {
         this.colour = colour;
+        this.numberOfPeg = numberOfPeg;
     }
 
     public static Peg getPegForPlacement(String placement){
@@ -41,6 +44,46 @@ public enum Peg {
         return peg;
     }
 
+    public static Peg getPegForColour(Colour colour){
+
+        switch (colour){
+            case YELLOW:
+                return PEGl;
+            case GREEN:
+                return PEGk;
+            case BLUE:
+                return PEGj;
+            case RED:
+                return PEGi;
+
+        }
+
+        return null;
+    }
+
+    public String getEncoding(){
+
+        String output = "";
+
+        switch (this){
+            case PEGi:
+                output += "i";
+                break;
+            case PEGj:
+                output += "j";
+                break;
+            case PEGk:
+                output += "k";
+                break;
+            case PEGl:
+                output += "l";
+        }
+
+        output += getColumn() + 1;
+        output += (char) getRow();
+        output += "0";
+        return output;
+    }
 
     public int getColumn() {
         return column;
