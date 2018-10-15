@@ -422,7 +422,7 @@ public class Board extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
@@ -658,7 +658,8 @@ public class Board extends Application {
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
-
+// UI -element score
+        // The rectangle is used because it can easily be manipulated from the timeline
         Rectangle time = new Rectangle();
         time.setX(0);
         time.setY(0);
@@ -666,16 +667,27 @@ public class Board extends Application {
         Text score = new Text();
         score.setX(30);
         score.setY(550);
+        score.setFont(Font.font("Tahoma",FontWeight.BOLD,20));
         root.getChildren().add(score);
 
+// Timeline is used to animate the score
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10.0D), (ae) -> {
+            score.setText("Time - "+(int) Math.round(time.getX()) + "."+(int) Math.round(time.getY()));
+            // if board is full set colour of score to green and will make pause the timer if all pieces are on board
+            if ("abcdefgh".equals( getPieciesOnBoard())) {
+                score.setFill(Color.GREEN);
+            }
+// this sets the counter to resemble a stopwatch
+            else{
+                time.setY(time.getY() + 1);
+                if (time.getY() == 100) {
+                    time.setX(time.getX() + 1);
+                    time.setY(0);
+                }
+            }
 
-        Timeline timeline = new Timeline(new KeyFrame[]{new KeyFrame(Duration.millis(100.0D), (ae) -> {
-            score.setText(""+ (int) Math.round(time.getX()/60)+""+ (int) Math.round(time.getY()%100)+"");
-            time.setX(time.getX()+1);
-            time.setY(time.getY()+1);
 
-
-        }, new KeyValue[0])});
+        }));
         timeline.setCycleCount(-1);
         timeline.play();
 
