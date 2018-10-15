@@ -583,7 +583,7 @@ public class Board extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
-
+//
     }
 
 }
