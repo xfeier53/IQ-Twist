@@ -279,11 +279,6 @@ public class TwistGame {
                 for (int k = 0; k < 8; k++) {
                     // This place has already been occupied
                     newPiece = ch + Integer.toString(i) + (char) ('A' + j) + Integer.toString(k);
-                    if (newPiece.equals("f1A6")) {
-                        System.out.println("there");
-                    }
-
-
                     if (!getPieceSituation(occupation, new Piece(newPiece))) {
                         continue;
                     }
@@ -664,14 +659,8 @@ public class TwistGame {
 
     // Get dictionary
     public static void getDictionary() {
-        // JAMES HERE !!!
-        // I need to CSV file into this solutions list
-        // And the end of the function needs to convert into csv file
-
         String path = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Solutions.csv";
-
         List<String> solutions = new ArrayList<>();
-
         try{
             solutions = readCSV(path);
         }
@@ -700,7 +689,6 @@ public class TwistGame {
 //        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
 //        solutions.add("a1A6b3A4c1D0e7B0d6C2g4B1f1B2h6A0");
 
-//        Boolean isInvalid;
         String pieceString;
         int row, column, orientation;
         String[][] allSolutions = getSymmetricalSolutions(solutions);
@@ -756,6 +744,7 @@ public class TwistGame {
                     if (toAdd.containsKey(newPlacement)) {
                         continue;
                     }
+
                     if (toRemove.contains(newPlacement)) {
                         continue;
                     }
@@ -781,7 +770,7 @@ public class TwistGame {
             System.out.println("Remove : " + toRemove.size());
         }
 
-
+        
 //        for (String[] s : pegPlacement) {
 //            System.out.println("placement : " + s[0] + "  solutions : " + s[1]);
 //        }
@@ -907,9 +896,6 @@ public class TwistGame {
                 }
             }
         }
-        if (combinations.contains("i4D0j5C0j6C0k7C0k7B0l2C0")){
-            System.out.println("combination found");
-        }
         return combinations;
     }
 
@@ -937,12 +923,6 @@ public class TwistGame {
         }
         return pegList;
     }
-
-
-    //SomethingforUI--select
-
-
-//classforanumber
 
 }
 
