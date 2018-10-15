@@ -3,6 +3,9 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.TwistGame;
 import comp1110.ass2.Waldo;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,6 +29,7 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -654,6 +658,26 @@ public class Board extends Application {
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
+
+        Rectangle time = new Rectangle();
+        time.setX(0);
+        time.setY(0);
+        root.getChildren().add(time);
+        Text score = new Text();
+        score.setX(30);
+        score.setY(550);
+        root.getChildren().add(score);
+
+
+        Timeline timeline = new Timeline(new KeyFrame[]{new KeyFrame(Duration.millis(100.0D), (ae) -> {
+            score.setText(""+ (int) Math.round(time.getX()/60)+""+ (int) Math.round(time.getY()%100)+"");
+            time.setX(time.getX()+1);
+            time.setY(time.getY()+1);
+
+
+        }, new KeyValue[0])});
+        timeline.setCycleCount(-1);
+        timeline.play();
 
 
         primaryStage.setScene(scene);
