@@ -212,7 +212,7 @@ public class Board extends Application {
         //place the piece
         hintView.setX(hintView.getX() + (SQUARE_SIZE * column));
         hintView.setY(hintView.getY() + (SQUARE_SIZE * row));
-
+//
         //parses the orientation into an int
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
 
