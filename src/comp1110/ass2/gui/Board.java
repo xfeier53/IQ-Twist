@@ -67,22 +67,7 @@ public class Board extends Application {
         int width;
         int height;
     }
-    public static String getPieciesOnBoard () {
-        String board = "";
-        int x = 0;
 
-        while (x < boardState.length()){
-            if        (boardState.charAt(x) != 'i'
-                    && boardState.charAt(x) != 'j'
-                    && boardState.charAt(x) != 'k'
-                    && boardState.charAt(x) != 'l') {board = board+ boardState.charAt(x);
-                x+=4;}
-            else {x+=4;}
-
-        }
-
-        return board;
-    }
 
     public Image tetris(String pieceID, int width, int height) {
         String zed = pieceID;
@@ -239,7 +224,7 @@ public class Board extends Application {
         //parses the orientation into an int
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
 
-        rotateAndFlip(pieceView,orientation);
+       // rotateAndFlip(pieceView,orientation);
 
         root.getChildren().add(hintView);
 
@@ -566,35 +551,45 @@ public class Board extends Application {
         root.getChildren().add(informationToPlayer);
 
 // UI - Difficulty Selecter
+        // rectangle is used later
+        Rectangle time = new Rectangle();
+        time.setX(0);
+        time.setY(0);
         Random rng = new Random();
         Rectangle easy = new Rectangle(590,310,35,20);
         easy.setFill(Color.GREEN);
         Rectangle medium = new Rectangle(670,310,35,20);
         medium.setFill(Color.ORANGE);
-        Rectangle hard = new Rectangle(750,310,35,20);
+        Rectangle hard = new Rectangle(750, 310, 35, 20);
         hard.setFill(Color.RED);
 
         easy.setOnMousePressed(event -> {
             pegs.getChildren().clear();
             pieces.getChildren().clear();
+            time.setX(0);
+            time.setY(0);
         });
-        easy.setOnMouseReleased(event   ->makePegPlacement( difficulty("Easy",rng.nextInt(3))));
-        medium.setOnMouseReleased(event->makePegPlacement( difficulty("Medium",rng.nextInt(3))));
+        easy.setOnMouseReleased(event -> makePegPlacement(difficulty("Easy", rng.nextInt(3))));
+        medium.setOnMouseReleased(event -> makePegPlacement(difficulty("Medium", rng.nextInt(3))));
         medium.setOnMousePressed(event -> {
             pegs.getChildren().clear();
             pieces.getChildren().clear();
+            time.setX(0);
+            time.setY(0);
         });
-        hard.setOnMouseReleased(event   ->makePegPlacement( difficulty("Hard",rng.nextInt(3))));
-        hard.setOnMousePressed(event -> { pegs.getChildren().clear();
-        pieces.getChildren().clear();});
+        hard.setOnMouseReleased(event -> makePegPlacement(difficulty("Hard", rng.nextInt(3))));
+        hard.setOnMousePressed(event -> {
+            pegs.getChildren().clear();
+            pieces.getChildren().clear();
+            time.setX(0);
+            time.setY(0);
+        });
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
 // UI -element score
         // The rectangle is used because it can easily be manipulated from the timeline
-        Rectangle time = new Rectangle();
-        time.setX(0);
-        time.setY(0);
+
         root.getChildren().add(time);
         Text score = new Text();
         score.setX(30);
@@ -623,9 +618,10 @@ public class Board extends Application {
         timeline.setCycleCount(-1);
         timeline.play();
 
+
         primaryStage.setScene(scene);
         primaryStage.show();
-//
+
     }
 
 }
