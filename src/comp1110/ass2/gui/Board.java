@@ -2,6 +2,8 @@ package comp1110.ass2.gui;
 
 
 import comp1110.ass2.Waldo;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -587,7 +590,38 @@ public class Board extends Application {
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
+// UI -element score
+        // The rectangle is used because it can easily be manipulated from the timeline
+        Rectangle time = new Rectangle();
+        time.setX(0);
+        time.setY(0);
+        root.getChildren().add(time);
+        Text score = new Text();
+        score.setX(30);
+        score.setY(550);
+        score.setFont(Font.font("Tahoma",FontWeight.BOLD,20));
+        root.getChildren().add(score);
 
+// Timeline is used to animate the score
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10.0D), (ae) -> {
+            score.setText("Time - "+(int) Math.round(time.getX()) + "."+(int) Math.round(time.getY()));
+            // if board is full set colour of score to green and will make pause the timer if all pieces are on board
+            if ("abcdefgh".equals( getPieciesOnBoard())) {
+                score.setFill(Color.GREEN);
+            }
+// this sets the counter to resemble a stopwatch
+            else{
+                time.setY(time.getY() + 1);
+                if (time.getY() == 100) {
+                    time.setX(time.getX() + 1);
+                    time.setY(0);
+                }
+            }
+
+
+        }));
+        timeline.setCycleCount(-1);
+        timeline.play();
 
         primaryStage.setScene(scene);
         primaryStage.show();
