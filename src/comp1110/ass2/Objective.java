@@ -66,11 +66,26 @@ public class Objective {
     }
 
 
+    public static Objective getObjectiveForDifficulty(int difficulty){
+
+        Random rand = new Random();
+
+        int objNum = rand.nextInt(OBJECTIVES.size());
+
+        Objective objective = OBJECTIVES.get(objNum);
+
+        objective.addRandomPegsToObjective(3 - difficulty);
+
+        return objective;
+    }
+
     //Adds pegs to an objective randomly
     //New pegs will be placed such that the given solutionPlacement remains valid
     //New pegs will not be placed on already existing pegs
     //will not make changes if the number of pegs asked for exceeds the legal amount for the game 7
-    public void addRandomPegsToObjective(Objective objective,int pegCount){
+    public void addRandomPegsToObjective(int pegCount){
+
+        Objective objective = this;
 
         //get the number of pegs already in the objective
         int currentPegs =  objective.pegPlacement.length() / 4;
@@ -259,7 +274,7 @@ public class Objective {
     //Read objectives into OBJECTIVES array
     public static void readObjectives(){
 
-        URL url = Objective.class.getResource("ProblemSet.csv");
+        URL url = Objective.class.getResource("Placement.csv");
 
         File file = new File(url.getPath());
 
@@ -291,6 +306,13 @@ public class Objective {
 
         idLoop : for(int i = 0; i < placement.length(); i = i + 4){
 
+
+            if(placement.charAt(i) == ' '){
+                splitIndex = i;
+                break idLoop;
+            }
+
+            /*
             switch (placement.charAt(i)){
                 case 'i':
                 case 'j':
@@ -299,11 +321,16 @@ public class Objective {
                     splitIndex = i;
                     break idLoop;
             }
+            */
 
         }
-        solutionPlacement = placement.substring(0,splitIndex);
+        solutionPlacement = placement.substring(splitIndex + 1);
 
-        pegPlacement = placement.substring(splitIndex);
+
+
+        pegPlacement = placement.substring(0,splitIndex);
+
+
 
     }
 

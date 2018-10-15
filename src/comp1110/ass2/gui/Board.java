@@ -1,8 +1,6 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.Objective;
-import comp1110.ass2.TwistGame;
-import comp1110.ass2.Waldo;
+import comp1110.ass2.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -139,6 +137,16 @@ public class Board extends Application {
 
     // FIXME Task 11: Generate interesting starting placements
 
+    //resets the pieces back to original states
+    void resetPieces(){
+        for(Node node : pieces.getChildren()){
+
+            PieceView pieceView = (PieceView) node;
+
+            pieceView.resetPiece();
+
+        }
+    }
     //Places Pegs at beginning of the game James
     void makePegPlacement(String placement) {
 
@@ -147,14 +155,19 @@ public class Board extends Application {
 
         pegs.getChildren().clear();
 
+        resetPieces();
+
         //loop through pegs and place them
         for (int i = 0; i < placement.length(); i = i + 4) {
 
             //get the 4 character substring at i
             String pegPlacement = placement.substring(i, i + 4);
 
+
+
             //get peg id from placement string and get corresponding image and set to imageView in pegs group
             char pegId = pegPlacement.charAt(0);
+
             //Adjest peg to SQUARD_SIZE
             Image pegImage = new Image("comp1110/ass2/gui/assets/" + pegId + ".png", (double) SQUARE_SIZE, (double) SQUARE_SIZE, false, false);
             ImageView pegView = new ImageView(pegImage);
@@ -209,8 +222,6 @@ public class Board extends Application {
 
 
     }
-
-
 
     @Deprecated
     void findSnapTo(ImageView pieceView) {
@@ -326,6 +337,8 @@ public class Board extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        Objective.readObjectives();
+
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
@@ -344,11 +357,7 @@ public class Board extends Application {
 
                 if(event.getCode() == KeyCode.SPACE){
 
-                    Objective objective = new Objective(0,"a7B1b2C4c1B2d4C4e1C3f4A0g6A1h1A0j3B0j5C0");
-
-                    objective.addRandomPegsToObjective(objective,5);
-
-                    System.out.println(objective.getPegPlacement());
+                    Objective objective =  Objective.getObjectiveForDifficulty(2);
 
                     makePegPlacement(objective.getPegPlacement());
 
