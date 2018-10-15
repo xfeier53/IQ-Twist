@@ -299,6 +299,9 @@ public class Objective {
     }
 
     //Create an objective with difficulty as int and standard placement String
+    //placement of form i1A0j3D0 a1C0...
+    //ie the pegPlacement followed by a space followed by the piecePlacement
+    //int the difficulty of the objective
     public Objective(int difficulty,String placement){
         this.difficulty = difficulty;
 
@@ -326,12 +329,7 @@ public class Objective {
         }
         solutionPlacement = placement.substring(splitIndex + 1);
 
-
-
         pegPlacement = placement.substring(0,splitIndex);
-
-
-
     }
 
     public static Objective getObjective(){
