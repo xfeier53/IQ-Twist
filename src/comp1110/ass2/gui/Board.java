@@ -1,25 +1,31 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
+import comp1110.ass2.Waldo;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
@@ -68,22 +74,7 @@ public class Board extends Application {
         int width;
         int height;
     }
-    public static String getPieciesOnBoard () {
-        String board = "";
-        int x = 0;
 
-        while (x < boardState.length()){
-            if        (boardState.charAt(x) != 'i'
-                    && boardState.charAt(x) != 'j'
-                    && boardState.charAt(x) != 'k'
-                    && boardState.charAt(x) != 'l') {board = board+ boardState.charAt(x);
-                x+=4;}
-            else {x+=4;}
-
-        }
-
-        return board;
-    }
 
     public Image tetris(String pieceID, int width, int height) {
         String zed = pieceID;
@@ -131,6 +122,23 @@ public class Board extends Application {
         }
         return "";
     }
+    public static String getPieciesOnBoard () {
+        String board = "";
+        int x = 0;
+
+        while (x < boardState.length()){
+            if        (boardState.charAt(x) != 'i'
+                    && boardState.charAt(x) != 'j'
+                    && boardState.charAt(x) != 'k'
+                    && boardState.charAt(x) != 'l') {board = board+ boardState.charAt(x);
+            x+=4;}
+            else {x+=4;}
+
+        }
+
+        return board;
+    }
+
 
 
     // FIXME Task 7: Implement a basic playable Twist Game in JavaFX that only allows pieces to be placed in valid places
@@ -184,6 +192,8 @@ public class Board extends Application {
             pegView.setX(SQUARE_SIZE * column + RIGHT_MARGIN);
             pegView.setY(SQUARE_SIZE * row + TOP_MARGIN);
         }
+
+
     }
 
     void makeHintPiecePlacement(String piecePlacement){
@@ -336,14 +346,11 @@ public class Board extends Application {
 
             pieces.getChildren().add(pieceView);
 
-
         }
     }
 
     @Override
-    public void start(Stage primaryStage) {
-
-        Objective.readObjectives();
+    public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
@@ -379,10 +386,8 @@ public class Board extends Application {
                     }
                 }
 
-                if (selectedPiece != null) {
+                if (selectedPiece != null){
 
-                    //true if current orientation is even
-                    boolean isEven = selectedPiece.getOrientation() % 2 == 0;
 
                     //int to take value 0 if unflipped ie orientation less than 4, and 4 if flipped
                     int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
@@ -390,20 +395,14 @@ public class Board extends Application {
                     //take the remainder after dividing by four newOrientation -> 0,1,2,3
                     int newOrientation = selectedPiece.getOrientation() % 4;
 
-                    //depending on the code either rotate or flip the piece
-                    switch (event.getCode()) {
+                    switch (event.getCode()){
                         case UP:
-                            //add 2 to newOrientation if it is even this causes the piece to always flip horizontally
-                            newOrientation = (isEven) ? newOrientation : (newOrientation + 2) % 4;
-                            //change the isFlipped to be the opposite of what it was
                             isFlipped = (isFlipped == 0) ? 4 : 0;
                             break;
                         case DOWN:
-                            newOrientation = (isEven) ? newOrientation : (newOrientation + 2) % 4;
                             isFlipped = (isFlipped == 0) ? 4 : 0;
                             break;
                         case RIGHT:
-                            //increase the newOrientation by 1
                             newOrientation = (newOrientation + 1) % 4;
                             break;
                         case LEFT:
@@ -498,39 +497,87 @@ public class Board extends Application {
         pieces.toFront();
         // I am deeply ashamed of this following code .. never look into what [Waldo class] actually does.
         // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
-        fwd.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage()) + 1)));
-        back.setOnMouseClicked(event -> sillyString.setImage(Waldo.waldo(Waldo.ImageAnal(sillyString.getImage()) - 1)));
+        fwd.setOnMouseClicked(event -> {sillyString.setImage(Waldo.waldoFWD(Waldo.ImageAnal(sillyString.getImage())));
+        sillyString.setOpacity(100);});
+        back.setOnMouseClicked(event -> {sillyString.setImage(Waldo.waldoBCK(Waldo.ImageAnal(sillyString.getImage())));
+        sillyString.setOpacity(100);});
         // end shame
         root.getChildren().add(sillyString);
         // click on sillyString
-        sillyString.setOnMousePressed(event -> {
-            pieces.getChildren().add(new PieceView( // currently @root because it brings to front
+        sillyString.setOnMousePressed(event -> { if (sillyString.getOpacity() != 0.0) {
+            pieces.getChildren().add(new PieceView( // currently @root because it brings to frontmak
                     Waldo.changeDimension(sillyString.getImage()), // Piece Image
                     Waldo.ImageAnal_String(sillyString.getImage()),  // PieceId
-                    600,  // Initial X
-                    170, // Initial y
+                    630,  // Initial X
+                    110, // Initial y
                     2,
                     3));
-            // pieces.getChildren().get(pieces.getChildren().size()-1).setLayoutX(event.getSceneX()); -- this refers to most recent placed piece
+            // automate a second mouse click
+            try {
+                Robot waldoBot = new Robot();
+                waldoBot.mouseRelease(InputEvent.BUTTON1_MASK);
+            } catch (AWTException e) {
+                e.printStackTrace();
+            }
+            System.out.println(getPieciesOnBoard());
+            sillyString.setOpacity(0);
+        }
+
         });
-        sillyString.setOnMouseDragged(event -> {
-                    ((ImageView) pieces.getChildren().get(pieces.getChildren().size() - 1)).setX(event.getSceneX());
-                    ((ImageView) pieces.getChildren().get(pieces.getChildren().size() - 1)).setY(event.getSceneY());
-                }
+      //  sillyString.setOnMouseDragged(event -> {  try {
+      //      Robot waldoBot2 = new Robot();
+      //      waldoBot2.mouseMove((int) Math.round(event.getSceneY()),(int) Math.round(event.getSceneY()));
+      //  }
+      //  catch (AWTException e)
+       // {
+      //      e.printStackTrace();
+      //  }});
 
 
-        );
-        sillyString.setOnMouseReleased(event -> {
-            findSnapTo((ImageView) pieces.getChildren().get(pieces.getChildren().size() - 1));
+        // UI - Instructions
+        Button informationToPlayer = new Button();
+        informationToPlayer.setText("Instructions");
+        informationToPlayer.setLayoutY(300);
+        informationToPlayer.setLayoutX(20);
+        informationToPlayer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Label instruct = new Label("Rules\n" +
+                        "\n" +
+                        "The game is a puzzle; the objective is to place all eight colored\n" +
+                        "playing pieces onto a board comprising 32 locations (the grid) on which\n" +
+                        "up to seven colored pegs may be arranged.  The player must place the\n" +
+                        "pieces such that they fit together correctly on the board, without\n" +
+                        "overlaps or gaps. Also, each of the pegs must be surrounded by a piece\n" +
+                        "of the same colour, meaning the piece must have a hole in the\n" +
+                        "necessary place. In the photo above, a blue peg at upper right is\n" +
+                        "surrounded by a blue piece, with the peg fitting exactly into a hole\n" +
+                        "in the blue piece.  The player will need to place the green and red\n" +
+                        "pieces so that they fit neatly on the green and red pegs, and to\n" +
+                        "complete the game will need to ensure that all pieces are placed with\n" +
+                        "no overlaps and no gaps.");
+                StackPane instructPane = new StackPane();
+                instructPane.getChildren().add(instruct);
+                Scene instructScene = new Scene(instructPane,400,250);
+                Stage instructWindow = new Stage();
+                instructWindow.setTitle("Instructions");
+                instructWindow.setScene(instructScene);
+                instructWindow.show();
 
+            }
         });
 
+        root.getChildren().add(informationToPlayer);
 
 // UI - Difficulty Selecter
+        // rectangle is used later
+        Rectangle time = new Rectangle();
+        time.setX(0);
+        time.setY(0);
         Random rng = new Random();
-        Rectangle easy = new Rectangle(590, 310, 35, 20);
+        Rectangle easy = new Rectangle(590,310,35,20);
         easy.setFill(Color.GREEN);
-        Rectangle medium = new Rectangle(670, 310, 35, 20);
+        Rectangle medium = new Rectangle(670,310,35,20);
         medium.setFill(Color.ORANGE);
         Rectangle hard = new Rectangle(750, 310, 35, 20);
         hard.setFill(Color.RED);
@@ -538,26 +585,30 @@ public class Board extends Application {
         easy.setOnMousePressed(event -> {
             pegs.getChildren().clear();
             pieces.getChildren().clear();
+            time.setX(0);
+            time.setY(0);
         });
         easy.setOnMouseReleased(event -> makePegPlacement(difficulty("Easy", rng.nextInt(3))));
         medium.setOnMouseReleased(event -> makePegPlacement(difficulty("Medium", rng.nextInt(3))));
         medium.setOnMousePressed(event -> {
             pegs.getChildren().clear();
             pieces.getChildren().clear();
+            time.setX(0);
+            time.setY(0);
         });
         hard.setOnMouseReleased(event -> makePegPlacement(difficulty("Hard", rng.nextInt(3))));
         hard.setOnMousePressed(event -> {
             pegs.getChildren().clear();
             pieces.getChildren().clear();
+            time.setX(0);
+            time.setY(0);
         });
         root.getChildren().add(easy);
         root.getChildren().add(medium);
         root.getChildren().add(hard);
 // UI -element score
         // The rectangle is used because it can easily be manipulated from the timeline
-        Rectangle time = new Rectangle();
-        time.setX(0);
-        time.setY(0);
+
         root.getChildren().add(time);
         Text score = new Text();
         score.setX(30);
