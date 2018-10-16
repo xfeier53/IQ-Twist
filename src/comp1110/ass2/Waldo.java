@@ -13,6 +13,7 @@ import java.awt.event.InputEvent;
 
 public class Waldo {
     // this method lets me determine which shape is which by the size of its width
+    // legacy waldo is legacy
     public static Image waldo(int number) {
         String board = Board.getPieciesOnBoard();
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
