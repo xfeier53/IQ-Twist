@@ -196,6 +196,8 @@ public class PieceView extends ImageView {
     void resetPiece() {
 
 
+
+        /*
         for (int i = 0; i < Board.boardState.length(); i = i + 4) {
             if (Board.boardState.charAt(i) == id) {
                 Board.boardState = Board.boardState.substring(0, i) + Board.boardState.substring(i + 4);
@@ -207,9 +209,9 @@ public class PieceView extends ImageView {
         this.row = -1;
         this.column = -1;
         this.rotateAndFlip(startOrientation);
+           */
 
-
-        //Board.pieces.getChildren().remove(this);
+        Board.pieces.getChildren().remove(this);
 
     }
 

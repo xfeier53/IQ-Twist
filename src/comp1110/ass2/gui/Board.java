@@ -311,7 +311,7 @@ public class Board extends Application {
             boardLine.setStartY(TOP_MARGIN);
             boardLine.setStartX(i * SQUARE_SIZE + RIGHT_MARGIN);
             boardLine.setEndY(4 * SQUARE_SIZE + TOP_MARGIN);
-        boardLine.setEndX(i * SQUARE_SIZE + RIGHT_MARGIN);
+            boardLine.setEndX(i * SQUARE_SIZE + RIGHT_MARGIN);
             lines.getChildren().add(boardLine);
         }
 
@@ -393,6 +393,8 @@ public class Board extends Application {
                 if (selectedPiece != null){
 
 
+                    boolean isEven = selectedPiece.getOrientation() % 2 == 0 ? true : false;
+
                     //int to take value 0 if unflipped ie orientation less than 4, and 4 if flipped
                     int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
 
@@ -401,9 +403,11 @@ public class Board extends Application {
 
                     switch (event.getCode()){
                         case UP:
-                            isFlipped = (isFlipped == 0) ? 4 : 0;
+                            newOrientation = (newOrientation + (isEven ? 0 : 2)) % 4;
+                            isFlipped = ((isFlipped == 0) ? 4 : 0);
                             break;
                         case DOWN:
+                            newOrientation = (newOrientation + (isEven ? 0 : 2)) % 4;
                             isFlipped = (isFlipped == 0) ? 4 : 0;
                             break;
                         case RIGHT:
