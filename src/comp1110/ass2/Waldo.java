@@ -10,6 +10,7 @@ import java.awt.event.InputEvent;
 
 // What is waldo?
 // Waldo is a place for Lachlan McVicar's (U6406312) code that may or may not work and may or may not be included.
+// Naming Scheme : https://en.oxforddictionaries.com/definition/waldo
 
 public class Waldo {
     // this method lets me determine which shape is which by the size of its width
@@ -263,6 +264,7 @@ public class Waldo {
 
 // The intent here was to automate a second mouse click however it did not work as intended
 //https://stackoverflow.com/questions/13785747/robot-class-unhandled-exception-type-awtexception
+    // this is unused as it actually manipluates the computer mouse and does not manipulate the game itself.
     public static void main(String[] args) {
         try {
             Robot waldoBot = new Robot();
