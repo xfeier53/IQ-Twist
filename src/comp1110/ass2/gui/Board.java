@@ -55,9 +55,11 @@ public class Board extends Application {
 
     public static String boardState = "i6B0j2B0j1C0k3C0l4B0l5C0";
 
+    private static Objective currentObjective;
+
     private final Group root = new Group();
     //Contains all the PieceViews
-    private final Group pieces = new Group();
+    public static Group pieces = new Group();
     //Group for the lines that mark the board
     private final Group lines = new Group();
 
@@ -198,8 +200,6 @@ public class Board extends Application {
 
     void makeHintPiecePlacement(String piecePlacement){
 
-        System.out.println(piecePlacement);
-
         int index = 0;
         char pieceId = piecePlacement.charAt(0);
 
@@ -226,6 +226,8 @@ public class Board extends Application {
         //place the piece
         hintView.setX(hintView.getX() + (SQUARE_SIZE * column));
         hintView.setY(hintView.getY() + (SQUARE_SIZE * row));
+
+        hintView.setOpacity(0.5);
 
         //parses the orientation into an int
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
@@ -355,12 +357,14 @@ public class Board extends Application {
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
+        Objective.readObjectives();
+
         root.getChildren().add(lines);
         root.getChildren().add(pegs);
         root.getChildren().add(pieces);
 
         makeLines();
-        makePieces();
+        //makePieces();
 
         makePegPlacement(boardState);
 
@@ -368,18 +372,18 @@ public class Board extends Application {
             @Override
             public void handle(KeyEvent event) {
 
-                if(event.getCode() == KeyCode.SPACE){
+                if(event.getCode() == KeyCode.N){
 
-                    Objective objective =  Objective.getObjectiveForDifficulty(3);
+                    currentObjective =  Objective.getObjectiveForDifficulty(1);
 
-                    makePegPlacement(objective.getPegPlacement());
+                    makePegPlacement(currentObjective.getPegPlacement());
 
                 }
                 if(isHintShown == false && event.getCode() == KeyCode.SLASH){
 
                     isHintShown = true;
 
-                    String[] hintPlacement =  TwistGame.getHint(boardState);
+                    String[] hintPlacement =  TwistGame.getHint(boardState,currentObjective);
 
                     if(hintPlacement != null && hintPlacement.length > 0){
                         makeHintPiecePlacement(hintPlacement[0]);

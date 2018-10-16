@@ -602,8 +602,8 @@ public class TwistGame {
 
 
     // Get hint, return null means no solution, String[] are hints for different solutions
-    public static String[] getHint(String placement) {
-        String[] solutions = getSolutions(placement);
+    public static String[] getHint(String placement, Objective objective) {
+        String[] solutions = {objective.getSolutionPlacement()};
         int[] placedPieces = new int[8];
         List<String> hint = new ArrayList<>();
 
