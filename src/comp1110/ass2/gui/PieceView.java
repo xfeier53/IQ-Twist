@@ -9,6 +9,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
 import comp1110.ass2.gui.Board;
 import comp1110.ass2.TwistGame;
+import javafx.scene.Group;
 
 
 public class PieceView extends ImageView {
@@ -194,7 +195,6 @@ public class PieceView extends ImageView {
     //reset the piece to where it's starting location and orientation(orientation is always 0 currently)
     void resetPiece() {
 
-        System.out.println("test");
 
         for (int i = 0; i < Board.boardState.length(); i = i + 4) {
             if (Board.boardState.charAt(i) == id) {
@@ -207,6 +207,10 @@ public class PieceView extends ImageView {
         this.row = -1;
         this.column = -1;
         this.rotateAndFlip(startOrientation);
+
+
+        //Board.pieces.getChildren().remove(this);
+
     }
 
 

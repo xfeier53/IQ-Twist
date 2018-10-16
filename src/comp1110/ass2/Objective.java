@@ -28,15 +28,6 @@ public class Objective {
 
     int difficulty;
 
-    public static void main(String[] args) {
-
-
-       // Objective objective1 = new Objective(0,"a7A7b6A7c1A3d2A6e2C3f3C4g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
-        //Objective objective2 = new Objective(1,"h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
-        //Objective objective3 = new Objective(1,"g4A7h6D0i6B0j2B0j1C0k3C0l4B0l5C0");
-
-        ArrayList<String> sol = readSolutions();
-    }
 
 
     public static ArrayList<String> readSolutions(){
@@ -297,6 +288,9 @@ public class Objective {
         }
         //catch (FileNotFoundException e){
     }
+
+
+
 
     //Create an objective with difficulty as int and standard placement String
     //placement of form i1A0j3D0 a1C0...
