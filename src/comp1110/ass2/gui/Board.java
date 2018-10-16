@@ -1,8 +1,9 @@
 package comp1110.ass2.gui;
 
-
+import comp1110.ass2.*;
 import comp1110.ass2.Waldo;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -32,9 +33,15 @@ import javafx.util.Duration;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.net.URL;
+import comp1110.ass2.Objective;
+
 import java.util.Random;
 
 public class Board extends Application {
+
+    public static final int RIGHT_MARGIN = 0;
+    public static final int TOP_MARGIN = 0;
+
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
     public static final int SQUARE_SIZE = 70;
@@ -42,7 +49,7 @@ public class Board extends Application {
     private boolean isHintShown = false;
 
     public static final char[] PIECE_IDS = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-    public static final double[][] INTIAL_STARTS = {{0, 4}, {0, 5}, {5, 4}, {6, 5}, {3, 4}, {5, 5}, {9, 5}, {9, 8}};
+    public static final double[][] INTIAL_STARTS = {{0,4,0}, {0, 5,0}, {5, 4,0}, {6, 5,0}, {3, 4,0}, {5, 5,0}, {9, 5,0}, {9, 8,0}};
     public static final int[][] INTIAL_DIMENSIONS = {{2, 3}, {2, 3}, {1, 4}, {2, 3}, {2, 2}, {2, 3}, {3, 3}, {1, 3}, {3, 3}, {1, 3}};
 
 
@@ -182,9 +189,8 @@ public class Board extends Application {
             int column = Character.getNumericValue(pegPlacement.charAt(1)) - 1;
             int row = (pegPlacement.charAt(2)) - 'A';
 
-            pegView.setX(SQUARE_SIZE * column);
-            pegView.setY(SQUARE_SIZE * row);
-
+            pegView.setX(SQUARE_SIZE * column + RIGHT_MARGIN);
+            pegView.setY(SQUARE_SIZE * row + TOP_MARGIN);
         }
 
 
@@ -224,7 +230,7 @@ public class Board extends Application {
         //parses the orientation into an int
         int orientation = Character.getNumericValue(piecePlacement.charAt(3));
 
-       // rotateAndFlip(pieceView,orientation);
+        rotateAndFlip(hintView,orientation);
 
         root.getChildren().add(hintView);
 
@@ -293,29 +299,28 @@ public class Board extends Application {
     }
 
 
-
     //Adds Lines to board to mark where pieces are played James
     private void makeLines() {
 
         //loop through all columns and add a new line
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 0; i <= 8; i++) {
 
             Line boardLine = new Line();
-            boardLine.setStartY(0);
-            boardLine.setStartX(i * SQUARE_SIZE);
-            boardLine.setEndY(4 * SQUARE_SIZE);
-            boardLine.setEndX(i * SQUARE_SIZE);
+            boardLine.setStartY(TOP_MARGIN);
+            boardLine.setStartX(i * SQUARE_SIZE + RIGHT_MARGIN);
+            boardLine.setEndY(4 * SQUARE_SIZE + TOP_MARGIN);
+        boardLine.setEndX(i * SQUARE_SIZE + RIGHT_MARGIN);
             lines.getChildren().add(boardLine);
         }
 
         //loop through all rows and add a new line
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 0; i <= 4; i++) {
 
             Line boardLine = new Line();
-            boardLine.setStartY(i * SQUARE_SIZE);
-            boardLine.setStartX(0);
-            boardLine.setEndY(i * SQUARE_SIZE);
-            boardLine.setEndX(8 * SQUARE_SIZE);
+            boardLine.setStartY(i * SQUARE_SIZE + TOP_MARGIN);
+            boardLine.setStartX(RIGHT_MARGIN);
+            boardLine.setEndY(i * SQUARE_SIZE + TOP_MARGIN);
+            boardLine.setEndX(8 * SQUARE_SIZE + RIGHT_MARGIN);
             lines.getChildren().add(boardLine);
         }
     }
@@ -323,10 +328,6 @@ public class Board extends Application {
     //Puts pieces in starting positions at beginning of the game James
     private void makePieces() {
 
-        //Presets for the pieces, id, intial starts and intial dimensions
-        char[] pieceIds = {'a','b','c','d','e','f','g','h'};
-        double[][] intialStarts = {{0,4},{0,5},{5,4},{6,5},{3,4},{5,5},{9,5},{9,8}};
-        int[][] intialDimensions = {{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3},{1,3}};
 
         //loop through pieces and place them in the locations using the PieceView class
         for (int i = 0; i < INTIAL_STARTS.length; i++) {
@@ -337,10 +338,11 @@ public class Board extends Application {
             double startY = INTIAL_STARTS[i][1] * SQUARE_SIZE;
             double height = INTIAL_DIMENSIONS[i][0] * SQUARE_SIZE;
             double width = INTIAL_DIMENSIONS[i][1] * SQUARE_SIZE;
+            int orientation = (int) INTIAL_STARTS[i][2];
 
             Image pieceImg = new Image("comp1110/ass2/gui/assets/" + pieceId + ".png", width, height, false, false);
 
-            PieceView pieceView = new PieceView(pieceImg, pieceId, startX, startY, height, width);
+            PieceView pieceView = new PieceView(pieceImg, pieceId, startX + RIGHT_MARGIN, startY + TOP_MARGIN, height, width,orientation);
 
             pieces.getChildren().add(pieceView);
 
@@ -366,6 +368,23 @@ public class Board extends Application {
             @Override
             public void handle(KeyEvent event) {
 
+                if(event.getCode() == KeyCode.SPACE){
+
+                    Objective objective =  Objective.getObjectiveForDifficulty(3);
+
+                    makePegPlacement(objective.getPegPlacement());
+
+                }
+                if(isHintShown == false && event.getCode() == KeyCode.SLASH){
+
+                    isHintShown = true;
+
+                    String[] hintPlacement =  TwistGame.getHint(boardState);
+
+                    if(hintPlacement != null && hintPlacement.length > 0){
+                        makeHintPiecePlacement(hintPlacement[0]);
+                    }
+                }
 
                 if (selectedPiece != null){
 
