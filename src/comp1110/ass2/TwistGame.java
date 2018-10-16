@@ -398,23 +398,6 @@ public class TwistGame {
         return true;
     }
 
-    public static void main(String[] args) {
-
-
-        //a6A0b6B0c1A3d2A6e2C3f3C2g4A7h6D0, a6B4b6A4c1A3d2A6e2C3f3C2g4A1h6D0, a7A1b6A1c1A3d2A6e2C3f3C2g4A1h6D0, a7A7b6A5c1A3d2A6e2C3f3C2g4A7h6D0]
-        //
-        //	at org.junit.Assert.fail(Assert.java:88)
-        //	at org.junit.Assert.assertTrue(Assert.java:41)
-        String test = ("");
-
-        String[] sol = getSolutions(test);
-
-        for(String s:sol){
-            System.out.println(s);
-        }
-
-    }
-
     //function to print out a situation James
     public static void printSituation(int[][] situation) {
 
@@ -655,16 +638,23 @@ public class TwistGame {
 //        }
 //    }
 
+    // Get all the solutions by using this function
+    public static void getFullSolutions(String path) {
+        String[] solutions = getSolutions("");
+        try {
+            writeSolution(path, solutions);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
 
     // Get dictionary
-    public static void getDictionary() {
-        String path = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Solutions.csv";
+    public static void getDictionary(String solutionsPath, String placementsPath) {
         List<String> solutions = new ArrayList<>();
-        try{
-            solutions = readCSV(path);
-        }
-        catch (IOException e){
+        try {
+            solutions = readCSV(solutionsPath);
+        } catch (IOException e) {
             System.out.println(e);
         }
 
@@ -683,7 +673,7 @@ public class TwistGame {
         //List<String> solutions = readCSV(path);
 
 //        // Test data, can be deleted
-    //        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
+//        solutions.add("a1A6b3A1d7B7e1B1f5C2c1D0g4A3h6A0");
 //        solutions.add("a1A6b3A4c1D0d6A3e7C2f1B2h8A1g4B7");
 //        solutions.add("a1A6b3A4c1D0d6A6e6C0f1B2h8B1g4B7");
 //        solutions.add("a1A6b3A4c1D0d7A1e4C0f1B2g5A1h6D0");
@@ -776,12 +766,9 @@ public class TwistGame {
 //        }
         System.out.println(pegPlacement.size());
 
-        String resultPath = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Placement.csv";
-
-        try{
-            writeCSV(resultPath, pegPlacement);
-        }
-        catch (IOException e){
+        try {
+            writePlacement(placementsPath, pegPlacement);
+        } catch (IOException e) {
             System.out.println(e);
         }
 
@@ -801,7 +788,18 @@ public class TwistGame {
         return list;
     }
 
-    public static void writeCSV(String path, Map<String, String> placement) throws IOException {
+    public static void writeSolution(String path, String[] solutions) throws IOException {
+        PrintWriter pw = new PrintWriter(new File(path));
+        StringBuilder sb = new StringBuilder();
+        for (String solution : solutions) {
+            sb.append(solution);
+            sb.append('\n');
+        }
+        pw.write(sb.toString());
+        pw.close();
+    }
+
+    public static void writePlacement(String path, Map<String, String> placement) throws IOException {
         PrintWriter pw = new PrintWriter(new File(path));
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry: placement.entrySet()) {
@@ -813,6 +811,7 @@ public class TwistGame {
         pw.close();
     }
 
+    // Get the symmetrical solutions
     public static String[][] getSymmetricalSolutions(List<String> solutions) {
         String switchs, placement, originalPlacement;
         int[] subString = new int[]{4, 8, 16, 20, 28};
@@ -859,6 +858,7 @@ public class TwistGame {
         }
     }
 
+    // Get combinations of the pegs
     public static List<String> getCombinations(List<String> iPegString, List<String> jPegString , List<String> kPegString, List<String> lPegString) {
         String iPeg, jPeg, kPeg, lPeg;
         List<String> combinations = new ArrayList<>();
@@ -932,6 +932,54 @@ public class TwistGame {
         return pegList;
     }
 
+    // Since the dictionary we got is all possible placement and solutions
+    // We can further optimize it by getting the minimal subset of the placement
+    // So that we could add any pegs on that placement to form a new placement with unique solution(they are the same)
+    // In this way we can reduce the size of the dictionary
+    // Otherwise, we will have 1.5GB csv file of placement-solution data
+
+    public static void optimizeDictionary(String path) {
+
+    }
+
+    // Read 1 million data at one time
+    public static Map<String, String> readDictionary(String path, int readTimes) throws IOException {
+        int skip = 1000000 * readTimes;
+        int count = 1000000;
+        Map<String, String> dictionary = new HashMap<>();
+        FileReader fr = new FileReader(path);
+        BufferedReader br = new BufferedReader(fr);
+        String line;
+
+        // Skip lines
+        for (int i = 0; i < skip; i++) {
+            br.readLine();
+        }
+        // Read until count reaches 1 million
+        while((line = br.readLine()) != null && count > 0) {
+            String[] s = line.split(" ");
+            dictionary.put(s[0], s[1]);
+            count--;
+        }
+        br.close();
+
+        return dictionary;
+    }
+
+    public static String[] getSubset() {
+        return null;
+    }
+
+    // If the placements and solutions file are missing
+    // Run the main function of TwistGame
+    public static void main(String[] args) {
+        String solutionsPath = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Solutions.csv";
+        String placementsPath = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Placement.csv";
+
+        getFullSolutions(solutionsPath);
+        getDictionary(solutionsPath, placementsPath);
+        optimizeDictionary(placementsPath);
+    }
 }
 
 
