@@ -576,8 +576,8 @@ public class Board extends Application {
 // UI - Difficulty Selecter
         // rectangle is used later
         Rectangle time = new Rectangle();
-        time.setX(0);
         time.setY(0);
+        time.setX(0);
         Random rng = new Random();
         Rectangle easy = new Rectangle(590,310,35,20);
         easy.setFill(Color.GREEN);
