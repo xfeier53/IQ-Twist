@@ -11,6 +11,13 @@ import java.awt.event.InputEvent;
 // What is waldo?
 // Waldo is a place for Lachlan McVicar's (U6406312) code that may or may not work and may or may not be included.
 // Naming Scheme : https://en.oxforddictionaries.com/definition/waldo
+/*
+   waldo
+        NOUN
+        A remote-controlled device for handling or manipulating objects.
+        Origin
+1940s: named after Waldo F. Jones, a fictional inventor described by Robert Heinlein in a science fiction story.
+        */
 
 public class Waldo {
     // this method lets me determine which shape is which by the size of its width

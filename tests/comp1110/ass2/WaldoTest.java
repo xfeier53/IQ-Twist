@@ -29,6 +29,7 @@ public class WaldoTest {
 
     @Rule
     private void testFWD(Image input, Image expected) {
+        //tests waldoFWD's ability to return the next image e.g. input of image a returns image b
         Image out = Waldo.waldoFWD(Waldo.ImageAnal(input));
         assertTrue("input was (" + input + ") with an expected result of " + expected + " but got " + out, out == expected);
 
@@ -36,6 +37,7 @@ public class WaldoTest {
 
     @Rule
     private void testBCK(Image input, Image expected) {
+        // tests waldoBCK's ability to return the previous image e.g. input of image b returns image a 
         Image out = Waldo.waldoBCK(Waldo.ImageAnal(input));
         assertTrue("input was (" + input + ") with an expected result of " + expected + " but got " + out, out == expected);
     }
