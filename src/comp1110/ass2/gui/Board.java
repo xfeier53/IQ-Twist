@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -64,6 +65,7 @@ public class Board extends Application {
     private final Group lines = new Group();
 
     private final Group pegs = new Group();
+    private final Group newBox = new Group();
 
     private ImageView hintView;
 
@@ -71,11 +73,6 @@ public class Board extends Application {
 
     double xy[] = {75, 25};
 
-    public class Tetris {
-        String pieceID;
-        int width;
-        int height;
-    }
 
 
     public Image tetris(String pieceID, int width, int height) {
@@ -538,9 +535,9 @@ public class Board extends Application {
                         "pieces so that they fit neatly on the green and red pegs, and to\n" +
                         "complete the game will need to ensure that all pieces are placed with\n" +
                         "no overlaps and no gaps.");
-                StackPane instructPane = new StackPane();
+                GridPane instructPane = new GridPane();
                 instructPane.getChildren().add(instruct);
-                Scene instructScene = new Scene(instructPane,900,900);
+                Scene instructScene = new Scene(instructPane,800,800);
                 Stage instructWindow = new Stage();
                 //UI Elements- More Text
                 Text flipL = new Text("Rotate Left ← ");
@@ -553,9 +550,9 @@ public class Board extends Application {
                 Image ArrowKeys = new Image("comp1110/ass2/gui/assets/arrowKeys.png", 200, 200, true, false);
                 ImageView keyLayout = new ImageView();
                 keyLayout.setImage(ArrowKeys);
-                keyLayout.setX(570);
-                keyLayout.setY(450);
-                root.getChildren().add(keyLayout);
+                keyLayout.setX(200);
+                keyLayout.setY(600);
+                instructPane.getChildren().add(keyLayout);
 // ui Elements FlipR
                 Text flipR = new Text("  → Rotate Right ");
                 flipR.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -598,15 +595,27 @@ public class Board extends Application {
             time.setX(0);
             time.setY(0);
         });
-        easy.setOnMouseReleased(event -> makePegPlacement(difficulty("Easy", rng.nextInt(3))));
-        medium.setOnMouseReleased(event -> makePegPlacement(difficulty("Medium", rng.nextInt(3))));
+        easy.setOnMouseReleased(event -> {
+            Objective obj=  (Objective.getObjectiveForDifficulty(7));
+            currentObjective=obj;
+            makePegPlacement(obj.getPegPlacement());
+        });
+        medium.setOnMouseReleased(event -> {
+            Objective obj=  (Objective.getObjectiveForDifficulty(5));
+            currentObjective=obj;
+            makePegPlacement(obj.getPegPlacement());
+        });
         medium.setOnMousePressed(event -> {
             pegs.getChildren().clear();
             pieces.getChildren().clear();
             time.setX(0);
             time.setY(0);
         });
-        hard.setOnMouseReleased(event -> makePegPlacement(difficulty("Hard", rng.nextInt(3))));
+        hard.setOnMouseReleased(event -> {
+               Objective obj=  (Objective.getObjectiveForDifficulty(3));
+               currentObjective=obj;
+               makePegPlacement(obj.getPegPlacement());
+        });
         hard.setOnMousePressed(event -> {
             pegs.getChildren().clear();
             pieces.getChildren().clear();
