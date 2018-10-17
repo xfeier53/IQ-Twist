@@ -65,6 +65,10 @@ public class Board extends Application {
 
     private final Group pegs = new Group();
 
+    private Group instructions = new Group();
+
+    private Text hintText = new Text();
+
     private ImageView hintView;
 
     public static PieceView selectedPiece;
@@ -359,9 +363,15 @@ public class Board extends Application {
 
         Objective.readObjectives();
 
+        instructions.getChildren().add(hintText);
+
+        hintText.setX(0);
+        hintText.setY(0);
+
         root.getChildren().add(lines);
         root.getChildren().add(pegs);
         root.getChildren().add(pieces);
+        root.getChildren().add(instructions);
 
         makeLines();
         //makePieces();
@@ -387,6 +397,11 @@ public class Board extends Application {
 
                     if(hintPlacement != null && hintPlacement.length > 0){
                         makeHintPiecePlacement(hintPlacement[0]);
+                    }
+                    else{
+
+                        hintText.setText("Hint not found");
+
                     }
                 }
 
