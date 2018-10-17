@@ -628,7 +628,7 @@ public class Board extends Application {
 
 // Timeline is used to animate the score
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10.0D), (ae) -> {
-            score.setText("Time - "+(int) Math.round(time.getX()) + "."+(int) Math.round(time.getY()));
+            score.setText("Time : "+(int) Math.round(time.getX()) + "."+(int) Math.round(time.getY()));
             // if board is full set colour of score to green and will make pause the timer if all pieces are on board
             if ("abcdefgh".equals( getPieciesOnBoard())) {
                 score.setFill(Color.GREEN);
