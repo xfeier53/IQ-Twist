@@ -36,8 +36,15 @@ public class getBoardSituationTest {
         test("a4C4b2C4c1B2d7B1e1C6f6A0g4A5h1A0", expected);
     }
 
+
     @Test
-    public void testFive(){
+    public void testTwoPieces(){
+        List<Integer> expected = Arrays.asList(0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0);
+        test("a1B5c5A2", expected);
+    }
+
+    @Test
+    public void testFivePieces(){
         List<Integer> expected = Arrays.asList(1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1);
         test("a1B5c5A2d7B7f1A6g3A7", expected);
     }
