@@ -398,20 +398,6 @@ public class TwistGame {
         return true;
     }
 
-    //function to print out a situation James
-    public static void printSituation(int[][] situation) {
-
-        for (int i = 0; i < situation[0].length; i++) {
-            for (int j = 0; j < situation.length; j++) {
-
-                if (situation[j][i] == 1) {
-                    System.out.print("o");
-                } else System.out.print("*");
-            }
-            System.out.println();
-        }
-    }
-
     public static String[] findInsertPosition(String placement, char ch) {
 
         String[] splitedString = new String[2];
