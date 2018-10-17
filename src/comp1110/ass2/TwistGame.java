@@ -927,37 +927,7 @@ public class TwistGame {
     // In this way we can reduce the size of the dictionary
     // Otherwise, we will have 1.5GB csv file of placement-solution data
 
-    public static void optimizeDictionary(String path) {
-
-    }
-
-    // Read 1 million data at one time
-    public static Map<String, String> readDictionary(String path, int readTimes) throws IOException {
-        int skip = 1000000 * readTimes;
-        int count = 1000000;
-        Map<String, String> dictionary = new HashMap<>();
-        FileReader fr = new FileReader(path);
-        BufferedReader br = new BufferedReader(fr);
-        String line;
-
-        // Skip lines
-        for (int i = 0; i < skip; i++) {
-            br.readLine();
-        }
-        // Read until count reaches 1 million
-        while((line = br.readLine()) != null && count > 0) {
-            String[] s = line.split(" ");
-            dictionary.put(s[0], s[1]);
-            count--;
-        }
-        br.close();
-
-        return dictionary;
-    }
-
-    public static String[] getSubset() {
-        return null;
-    }
+    // Tried to do, but it is tricky, finally we decided to get three pegs placement as the "minimal subset"
 
     // If the placements and solutions file are missing
     // Run the main function of TwistGame
@@ -967,7 +937,6 @@ public class TwistGame {
 
         getFullSolutions(solutionsPath);
         getDictionary(solutionsPath, placementsPath);
-        optimizeDictionary(placementsPath);
     }
 }
 
