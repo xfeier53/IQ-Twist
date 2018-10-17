@@ -22,6 +22,7 @@ import java.awt.event.InputEvent;
 public class Waldo {
     // this method lets me determine which shape is which by the size of its width
     // legacy waldo is legacy
+    @Deprecated
     public static Image waldo(int number) {
         String board = Board.getPieciesOnBoard();
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
@@ -210,6 +211,7 @@ public class Waldo {
 
     //{{2,3},{2,3},{1,4},{2,3},{2,2},{2,3},{3,3},{1,3},{3,3},{1,3}};
     // unused but should return proper dimensions
+    @Deprecated
     public static int ImageAnal_X(char letter) {
         if (letter == 'a') {
             return 2;
@@ -272,6 +274,7 @@ public class Waldo {
 // The intent here was to automate a second mouse click however it did not work as intended
 //https://stackoverflow.com/questions/13785747/robot-class-unhandled-exception-type-awtexception
     // this is unused as it actually manipluates the computer mouse and does not manipulate the game itself.
+    @Deprecated
     public static void main(String[] args) {
         try {
             Robot waldoBot = new Robot();

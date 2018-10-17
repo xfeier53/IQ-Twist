@@ -17,7 +17,7 @@ public class WaldoTest {
     @BeforeClass
     public static void StartJFX() throws InterruptedException {
         // Run javafx so that these tests work
-        System.out.print("JAVAFX start ");
+        System.out.print("JAVAFX initialized.... Finding waldo .... ");
         Thread FX = new Thread("JavaFX ") {
             public void run() {
                 Application.launch(Board.class);
@@ -26,7 +26,7 @@ public class WaldoTest {
         // make sure the JavaFX will stop running itself
         FX.setDaemon(true);
         FX.start();
-        System.out.print("Waldo found and killed");
+        System.out.print("Waldo found and killed\n");
         // time to set up and proscess
         Thread.sleep(1000);
     }
@@ -59,6 +59,7 @@ public class WaldoTest {
 
     @Test
     public void returnSelf()   {
+        // Default waldo -- this is depreciated now
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
         Image b = new Image("comp1110/ass2/gui/assets/b.png", 97, 97, true, false);
         Image c = new Image("comp1110/ass2/gui/assets/c.png", 98, 98, true, false);
@@ -71,6 +72,7 @@ public class WaldoTest {
 
     @Test
     public void returnFWD() {
+        // tests the Forward implementation of waldo - Waldo selects the next item
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
         Image b = new Image("comp1110/ass2/gui/assets/b.png", 97, 97, true, false);
         Image d = new Image("comp1110/ass2/gui/assets/d.png", 99, 99, true, false);
@@ -88,6 +90,7 @@ public class WaldoTest {
 
     @Test
     public void returnBCK() {
+        // tests the Back implementation of Waldo- Waldo selects the previous item
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
         Image b = new Image("comp1110/ass2/gui/assets/b.png", 97, 97, true, false);
         Image c = new Image("comp1110/ass2/gui/assets/c.png", 98, 98, true, false);
@@ -105,7 +108,8 @@ public class WaldoTest {
     @Test
     public void returnWithBoardState() {
         // hosted on new thread because boardstate needs to be new
-        new Thread("boy") {
+        // Tests Waldos ability to react to boardstates
+        new Thread("BoardStateThreadOne") {
             public void returnWithBoardState() {
                 Board.boardState = "b0B0c0b0e0b0";
                 Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
@@ -119,10 +123,6 @@ public class WaldoTest {
                 test(a, d, "FWD");
                 test(f,c,"BCK");
             }
-
-            ;
-
-
         };
     }
 }

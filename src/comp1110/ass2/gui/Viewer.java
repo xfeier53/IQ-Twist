@@ -313,44 +313,7 @@ public class Viewer extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        //UIelements--box1
-        Rectangle tutorialBox = new Rectangle(490, 10, 250, 300);
-        tutorialBox.setFill(Color.ANTIQUEWHITE);
-        root.getChildren().add(tutorialBox);
-//UIelements--text1
-        javafx.scene.text.Text tut = new javafx.scene.text.Text("TutorialBox");
-        tut.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
-        tut.setFill(Color.BLACK);
-        tut.setX(520);
-        tut.setY(50);
-        root.getChildren().add(tut);
-        //UIelements--text2
-        javafx.scene.text.Text diff = new javafx.scene.text.Text("Easy    Medium    Hard");
-        diff.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        diff.setFill(Color.BLACK);
-        diff.setX(520);
-        diff.setY(300);
-        root.getChildren().add(diff);
-//UIelements--forwardarrow
-        Polygon fwd = new Polygon(670, 120, 670, 150, 700, 135);
-        fwd.setFill(Color.RED);
-        root.getChildren().add(fwd);
 
-// UI - Difficulty Selecter
-        Random rng = new Random();
-        Rectangle easy = new Rectangle(520, 310, 35, 20);
-        easy.setFill(Color.GREEN);
-        Rectangle medium = new Rectangle(600, 310, 35, 20);
-        medium.setFill(Color.ORANGE);
-        Rectangle hard = new Rectangle(680, 310, 35, 20);
-        hard.setFill(Color.RED);
-
-        easy.setOnMouseClicked(event -> makePlacement(difficulty("Easy", rng.nextInt(2))));
-        medium.setOnMouseClicked(event -> makePlacement(difficulty("Medium", rng.nextInt(2))));
-        hard.setOnMouseClicked(event -> makePlacement(difficulty("Hard", rng.nextInt(2))));
-        root.getChildren().add(easy);
-        root.getChildren().add(medium);
-        root.getChildren().add(hard);
 
 
         primaryStage.setScene(scene);
