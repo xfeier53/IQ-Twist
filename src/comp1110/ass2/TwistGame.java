@@ -710,7 +710,10 @@ public class TwistGame {
                     int[][] xy = piece.getRelativeXY();
 
                     // Get the row and column of the pegs
-                    for (int[] c : xy) {
+                    for (int k = 0;k < piece.getLength();k++) {
+
+                        int[] c = piece.getRelativeCoordinate(k);
+
                         // If c[2] equals to 2, it is a hole, can put a peg in it
                         if (c[2] == 2) {
                             // The color will be the same as the piece
