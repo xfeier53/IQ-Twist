@@ -1,3 +1,7 @@
+/*
+Written by James(u6079329) and Lachlan
+*/
+
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
@@ -41,6 +45,7 @@ import comp1110.ass2.Objective;
 
 import java.util.Random;
 
+//Authors: u6079329
 public class Board extends Application {
 
     public static final int RIGHT_MARGIN = 10;
@@ -164,7 +169,7 @@ public class Board extends Application {
     //Places Pegs at beginning of the game James
     void makePegPlacement(String placement) {
 
-        //Intialise the gameState, should only be done at beginning of the game
+        //Initialise the gameState, should only be done at beginning of the game
         boardState = placement;
 
         pegs.getChildren().clear();

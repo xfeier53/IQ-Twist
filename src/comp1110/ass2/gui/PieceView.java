@@ -1,3 +1,8 @@
+/*
+Author James (u6079329)
+*/
+
+
 package comp1110.ass2.gui;
 
 import comp1110.ass2.Objective;
@@ -45,11 +50,9 @@ public class PieceView extends ImageView {
         this.column = -1;
         this.setImage(image);
 
-        System.out.println(startOrientation);
         this.setOrientation(startOrientation);
 
         PieceView pieceView = this;
-        
 
         //Find point of mouse click relative to the top left of pieceView
         pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
