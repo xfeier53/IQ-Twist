@@ -525,7 +525,7 @@ public class Board extends Application {
 
         //UI text 3
         Text whatisDifficulty = new Text("Select difficulty to start:");
-        whatisDifficulty.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        whatisDifficulty.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
         whatisDifficulty.setX(600);
         whatisDifficulty.setY(270);
         root.getChildren().add(whatisDifficulty);
