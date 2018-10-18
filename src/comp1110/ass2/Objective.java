@@ -288,7 +288,6 @@ public class Objective {
 
         }
         //catch (FileNotFoundException e){
-        System.out.println(OBJECTIVES.size());
     }
 
 
