@@ -45,7 +45,7 @@ import comp1110.ass2.Objective;
 
 import java.util.Random;
 
-//Authors: u6079329
+//Authors: u6079329, u6496312
 public class Board extends Application {
 
     public static final int RIGHT_MARGIN = 10;
@@ -89,7 +89,7 @@ public class Board extends Application {
 
 
 
-// made obsolete by waldo
+// made obsolete by waldo -u6406312
 @Deprecated
     public Image tetris(String pieceID, int width, int height) {
         String zed = pieceID;
@@ -449,7 +449,7 @@ public class Board extends Application {
         Objective.readObjectives();
 
 
-
+// victory is lachlan
         victory.setX(20);
         victory.setY(450);
         victory.setFill(Color.GREEN);
@@ -501,7 +501,7 @@ public class Board extends Application {
                 }
             }
         });
-
+// from here on out it lachlans stuff - u6406312
         //UIelements--box1
         Rectangle tutorialBox = new Rectangle(580, 10, 250, 325);
         tutorialBox.setFill(Color.ANTIQUEWHITE);
@@ -766,6 +766,7 @@ public class Board extends Application {
         timeline.play();
         // minor quality of life change to set resizable == no
         primaryStage.setResizable(false);
+        // end lachlan's stuff -u6406312
         primaryStage.setScene(scene);
         primaryStage.show();
 
