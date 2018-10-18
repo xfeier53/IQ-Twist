@@ -567,33 +567,54 @@ public class TwistGame {
 
     // Get hint, return null means no solution, String[] are hints for different solutions
     public static String[] getHint(String placement, Objective objective) {
-        String[] solutions = {objective.getSolutionPlacement()};
+        String solution = objective.getSolutionPlacement();
         int[] placedPieces = new int[8];
         List<String> hint = new ArrayList<>();
 
-        // Means there is no any solutions from this placement
-        if (solutions.length == 0) {
-            return null;
-        } else {
-            // Record the placed pieces
-            for (int i = 0; i < placement.length() / 4; i++) {
-                if (placement.charAt(4 * i) >= 'h') {
+        int index = 0;
+
+        for(int i = 0;i < solution.length();i = i + 4){
+
+            //System.out.println(solution.substring(i,i + 4));
+            hint.add(solution.substring(i,i + 4));
+        }
+
+        System.out.println(placement);
+
+        loop : for(int i = 0;i < placement.length();i = i + 4){
+
+            String piece = placement.substring(i,i+4);
+
+            switch (piece.charAt(0)){
+                case 'i':
+                case 'j':
+                case 'k':
+                case 'l':
+                    break loop;
+            }
+
+            //System.out.println("test");
+
+            boolean found = false;
+
+            for(int j = index;j < solution.length();j = j + 4){
+
+                if((placement.substring(i,i+4) == solution.substring(j, j + 4))){
+                    index = j;
+                    found = true;
+                    hint.remove(solution.substring(j,j + 4));
                     break;
                 }
-                placedPieces[placement.charAt(4 * i) - 'a'] = 1;
+
             }
-            // Return back hint for every different solutions
-            for (String s : solutions) {
-                for (int i = 0; i < s.length() / 4; i++) {
-                    if (placedPieces[i] != 1) {
-                        hint.add(s.substring(4 * i, 4 * i + 4));
-                        break;
-                    }
-                }
+            if(found == false){
+                return null;
             }
+
         }
 
         return hint.toArray(new String[0]);
+
     }
 
 //    // If there is only one solution
