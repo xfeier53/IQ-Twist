@@ -42,8 +42,8 @@ import java.util.Random;
 
 public class Board extends Application {
 
-    public static final int RIGHT_MARGIN = 0;
-    public static final int TOP_MARGIN = 0;
+    public static final int RIGHT_MARGIN = 10;
+    public static final int TOP_MARGIN = 10;
 
     private static final int BOARD_WIDTH = 933;
     private static final int BOARD_HEIGHT = 700;
@@ -439,9 +439,11 @@ public class Board extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Image backdrop = new Image("https://image.freepik.com/free-photo/leaves-and-petals-on-wooden-tabletop_23-2147694457.jpg");
+        Image backdrop = new Image("comp1110/ass2/gui/assets/leaves-and-petals-on-wooden-tabletop_23-2147694457.jpg");
         ImageView background = new ImageView(backdrop);
         Rectangle gameBoard = new Rectangle(70*8, 70*4);
+        gameBoard.setY(TOP_MARGIN);
+        gameBoard.setX(RIGHT_MARGIN);
         gameBoard.setFill(Color.NAVAJOWHITE);
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
@@ -692,7 +694,7 @@ public class Board extends Application {
             time.setY(0);
         });
         hard.setOnMouseReleased(event -> {
-               Objective obj=  (Objective.getObjectiveForDifficulty(-1));
+               Objective obj=  (Objective.getObjectiveForDifficulty(2));
                currentObjective=obj;
                makePegPlacement(obj.getPegPlacement());
         });
@@ -738,6 +740,7 @@ public class Board extends Application {
                 victory.setX(20);
                 victory.setY(450);
                 if (score.getY()%2==0) {victory.setFill(Color.GREEN);}
+
                 else {victory.setFill(Color.RED);}
             }
 // this sets the counter to resemble a stopwatch
