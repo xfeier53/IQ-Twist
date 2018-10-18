@@ -265,9 +265,10 @@ public class Objective {
     //Read objectives into OBJECTIVES array
     public static void readObjectives(){
 
-        URL url = Objective.class.getResource("Placement.csv");
+        String path = (System.getProperty("user.dir")) + "/src/comp1110/ass2/Placement.csv";
 
-        File file = new File(url.getPath());
+
+        File file = new File(path);
 
         try{
 
@@ -287,6 +288,7 @@ public class Objective {
 
         }
         //catch (FileNotFoundException e){
+        System.out.println(OBJECTIVES.size());
     }
 
 

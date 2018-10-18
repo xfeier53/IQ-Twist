@@ -569,11 +569,21 @@ public class TwistGame {
     public static String getHint(String placement, Objective objective) {
         String solution = objective.getSolutionPlacement();
         Set<String> correctPiecesSet = new HashSet<>();
+        String[] symmetricalPieces;
+        List<String> temp = new ArrayList<>();
         int[] placedPiece = new int[8];
         String hint = null;
 
         for (int i = 0; i < 8; i++){
             correctPiecesSet.add(solution.substring(4 * i, 4 * i + 4));
+            symmetricalPieces = getSymmetricalPieces(solution.substring(4 * i, 4 * i + 4));
+            for (String s : symmetricalPieces) {
+                temp.add(s);
+            }
+        }
+
+        for (String s : temp) {
+            correctPiecesSet.add(s);
         }
 
         for (int i = 0; i < placement.length() / 4; i++) {
@@ -890,6 +900,26 @@ public class TwistGame {
             }
         } else {
             return piece;
+        }
+    }
+
+    public static String[] getSymmetricalPieces(String piece) {
+        if (piece.charAt(0) == 'b' || piece.charAt(0) == 'c' || piece.charAt(0) == 'h') {
+            return new String[] {piece.substring(0, 3) + (char) (piece.charAt(3) + 2), piece.substring(0, 3) + (char) (piece.charAt(3) + 6)};
+        } else if (piece.charAt(0) == 'e') {
+            if ((piece.charAt(3) == '0')) {
+                return new String[] {piece.substring(0, 3) + (piece.charAt(3) - '0' + 7)};
+            } else {
+                return new String[] {piece.substring(0, 3) + (piece.charAt(3) - '0' + 3)};
+            }
+        } else if (piece.charAt(0) == 'f') {
+            if ((piece.charAt(3) == '0' || piece.charAt(3) == '1')) {
+                return new String[] {piece.substring(0, 3) + (piece.charAt(3) - '0' + 6)};
+            } else {
+                return new String[] {piece.substring(0, 3) + (piece.charAt(3) - '0' + 2)};
+            }
+        } else {
+            return new String[] {piece};
         }
     }
 
