@@ -11,7 +11,7 @@ import org.junit.rules.Timeout;
 import comp1110.ass2.gui.Board;
 
 import static org.junit.Assert.assertTrue;
-
+// Ownership - Lachlan McVicar - u6406312
 public class WaldoTest {
     // Combining JUnit tests and JavaFX requires extra steps as it must initialize the javaFX environment
     @BeforeClass
