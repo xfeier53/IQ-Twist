@@ -386,7 +386,7 @@ public class TwistGame {
 
             //check whether the coordinates are in the correct range
             if (newPiece.getColumn() + c[0] < 0 || newPiece.getColumn() + c[0] > 7 || newPiece.getRow() + c[1] < 0 || newPiece.getRow() + c[1] > 3) {
-                continue;
+                return false;
             }
             //check if the coordinate in situation is already occupied
             if (situation[newPiece.getColumn() + c[0]][newPiece.getRow() + c[1]] == 1) {
@@ -566,54 +566,79 @@ public class TwistGame {
 
 
     // Get hint, return null means no solution, String[] are hints for different solutions
-    public static String[] getHint(String placement, Objective objective) {
+    public static String getHint(String placement, Objective objective) {
         String solution = objective.getSolutionPlacement();
-        int[] placedPieces = new int[8];
-        List<String> hint = new ArrayList<>();
+        Set<String> correctPiecesSet = new HashSet<>();
+        int[] placedPiece = new int[8];
+        String hint = null;
 
-        int index = 0;
-
-        for(int i = 0;i < solution.length();i = i + 4){
-
-            //System.out.println(solution.substring(i,i + 4));
-            hint.add(solution.substring(i,i + 4));
+        for (int i = 0; i < 8; i++){
+            correctPiecesSet.add(solution.substring(4 * i, 4 * i + 4));
         }
 
-        System.out.println(placement);
-
-        loop : for(int i = 0;i < placement.length();i = i + 4){
-
-            String piece = placement.substring(i,i+4);
-
-            switch (piece.charAt(0)){
-                case 'i':
-                case 'j':
-                case 'k':
-                case 'l':
-                    break loop;
+        for (int i = 0; i < placement.length() / 4; i++) {
+            String piece = placement.substring(4 * i, 4 * i + 4);
+            if (piece.charAt(0) > 'h') {
+                break;
             }
-
-            //System.out.println("test");
-
-            boolean found = false;
-
-            for(int j = index;j < solution.length();j = j + 4){
-
-                if((placement.substring(i,i+4) == solution.substring(j, j + 4))){
-                    index = j;
-                    found = true;
-                    hint.remove(solution.substring(j,j + 4));
-                    break;
-                }
-
-            }
-            if(found == false){
+            if (!correctPiecesSet.contains(piece)) {
                 return null;
             }
-
+            placedPiece[piece.charAt(0) - 'a'] = 1;
         }
 
-        return hint.toArray(new String[0]);
+        for (int i = 0; i < 8; i++) {
+            if (placedPiece[i] == 0) {
+                hint = solution.substring(4 * i, 4 * i + 4);
+            }
+        }
+
+        return hint;
+//
+//
+//        int index = 0;
+//
+//        for(int i = 0;i < solution.length();i = i + 4){
+//
+//            //System.out.println(solution.substring(i,i + 4));
+//            hint.add(solution.substring(i,i + 4));
+//        }
+//
+//        System.out.println(placement);
+//
+//        loop : for(int i = 0;i < placement.length();i = i + 4){
+//
+//            String piece = placement.substring(i,i+4);
+//
+//            switch (piece.charAt(0)){
+//                case 'i':
+//                case 'j':
+//                case 'k':
+//                case 'l':
+//                    break loop;
+//            }
+//
+//            //System.out.println("test");
+//
+//            boolean found = false;
+//
+//            for(int j = index;j < solution.length();j = j + 4){
+//
+//                if((placement.substring(i,i+4) == solution.substring(j, j + 4))){
+//                    index = j;
+//                    found = true;
+//                    hint.remove(solution.substring(j,j + 4));
+//                    break;
+//                }
+//
+//            }
+//            if(found == false){
+//                return null;
+//            }
+//
+//        }
+//
+//        return hint.toArray(new String[0]);
 
     }
 
