@@ -588,18 +588,17 @@ public class Board extends Application {
             @Override
             public void handle(ActionEvent event) {
                 Label instruct = new Label (
-                        "The game is a puzzle; the objective is to place all eight colored\n" +
-                        "playing pieces onto a board comprising 32 locations (the grid) on which\n" +
-                        "up to seven colored pegs may be arranged.  The player must click and \n" +
-                        "drag the pieces such that they fit together correctly on the board, without\n" +
-                        "overlaps or gaps. Also, each of the pegs must be surrounded by a piece\n" +
-                        "of the same colour, meaning the piece must have a hole in the\n" +
-                        "necessary place. In the photo above, a blue peg on the bottom left is\n" +
-                        "surrounded by a blue piece, with the peg fitting exactly into a hole\n" +
-                        "in the blue piece.  The player will need to place the green, yellow and red\n" +
-                        "pieces so that they fit neatly on the green and red pegs, and to\n" +
-                        "complete the game will need to ensure that all pieces are placed with\n" +
-                        "no overlaps and no gaps.");
+                        "The game is a puzzle; the objective is to place all eight colored playing pieces\n" +
+                        "onto a board comprising 32 locations (the grid) on which up to seven colored pegs may \n" +
+                        "be arranged.  The player must click and drag the pieces such that they fit together\n" +
+                        "correctly on the board, without overlaps or gaps. Also, each of the pegs must be surrounded\n" +
+                        "by a piece of the same colour, meaning the piece must have a hole in the necessary place.\n" +
+                        "In the photo above, a blue peg on the bottom left is surrounded by a blue piece, with the\n" +
+                        "peg fitting exactly into a hole in the blue piece.  The player will need to place the green,\n" +
+                        "yellow and red pieces so that they fit neatly on the green and red pegs, and to complete the\n" +
+                        "game will need to ensure that all pieces are placed with no overlaps and no gaps.\n\n" +
+                        "Click the piece once to get it pop out, drag it and place it\n" +
+                        "Double click to delete the Piece\n");
                 Group instructPane = new Group();
                 instruct.setLayoutX(50);
                 instruct.setLayoutY(20);
