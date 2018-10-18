@@ -522,6 +522,14 @@ public class Board extends Application {
         diff.setX(600);
         diff.setY(300);
         root.getChildren().add(diff);
+
+        //UI text 3
+        Text whatisDifficulty = new Text("Select difficulty to start:");
+        whatisDifficulty.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        whatisDifficulty.setX(600);
+        whatisDifficulty.setY(270);
+        root.getChildren().add(whatisDifficulty);
+
 //UIelements--forwardarrow
         Polygon fwd = new Polygon(750+15, 120, 750+15, 150, 800+15, 135);
         fwd.setFill(Color.RED);
@@ -698,7 +706,7 @@ public class Board extends Application {
             time.setWidth(1);
         });
         hard.setOnMouseReleased(event -> {
-               Objective obj=  (Objective.getObjectiveForDifficulty(7));
+               Objective obj=  (Objective.getObjectiveForDifficulty(0));
                currentObjective=obj;
                makePegPlacement(obj.getPegPlacement());
         });
