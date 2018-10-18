@@ -9,10 +9,14 @@ of our project implements the following features:
  - Generates basic starting piece placements (Task 8)
  - Implements hints (Task 10)
  - Implements interesting starting placements (Task 11)
- - in Depth Tutorial
+ - In depth Tutorial
  - Luxury relaxing aesthetics
  - Fantastic victory message
  - Advanced Piece selection interface
  - Working Timer
+ - Full size dictionary (26 millions distinct placements)
+   (If needed, contact me and I can send it, 1.5GB csv file is too big to put in the package)
+ - Fast response in getting hint
+ - Interesting implement for the piece
 
 additional features...
