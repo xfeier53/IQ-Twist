@@ -698,7 +698,7 @@ public class Board extends Application {
             time.setWidth(1);
         });
         hard.setOnMouseReleased(event -> {
-               Objective obj=  (Objective.getObjectiveForDifficulty(0));
+               Objective obj=  (Objective.getObjectiveForDifficulty(7));
                currentObjective=obj;
                makePegPlacement(obj.getPegPlacement());
         });
@@ -738,7 +738,7 @@ public class Board extends Application {
             }
             // if board is full set colour of score to green and will make pause the timer if all pieces are on board
             if ("abcdefgh".equals( getPieciesOnBoard())) {
-                //score.setFill(Color.GREEN);
+                score.setFill(Color.GREEN);
                 //victory.setX(20);
                 //victory.setY(450);
                 //victory.setText("YOU WIN!");
