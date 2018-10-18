@@ -756,8 +756,7 @@ public class TwistGame {
                     //Create the new piece with specific orientation and get the relative coordinates of the piece
                     piece.setOrientation(orientation);
 
-                    int[][] xy = piece.getRelativeXY();
-
+                    
                     // Get the row and column of the pegs
                     for (int k = 0;k < piece.getLength();k++) {
 
