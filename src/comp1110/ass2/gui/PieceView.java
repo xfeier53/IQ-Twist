@@ -1,6 +1,9 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Objective;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ScrollEvent;
@@ -46,6 +49,7 @@ public class PieceView extends ImageView {
         this.setOrientation(startOrientation);
 
         PieceView pieceView = this;
+        
 
         //Find point of mouse click relative to the top left of pieceView
         pieceView.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -86,6 +90,12 @@ public class PieceView extends ImageView {
 
                     pieceView.setX(testCoordinates[0]);
                     pieceView.setY(testCoordinates[1]);
+                }
+
+                if(Board.currentObjective != null && Board.boardState.length() == 8 * 4 + Board.currentObjective.getPegPlacement().length()){
+
+                    Board.victory.setText("YOU WIN");
+
                 }
 
             }
