@@ -673,6 +673,7 @@ public class Board extends Application {
             pieces.getChildren().clear();
             time.setX(0);
             time.setY(0);
+            time.setWidth(1);
         });
         easy.setOnMouseReleased(event -> {
             Objective obj=  (Objective.getObjectiveForDifficulty(3));
@@ -689,6 +690,7 @@ public class Board extends Application {
             pieces.getChildren().clear();
             time.setX(0);
             time.setY(0);
+            time.setWidth(1);
         });
         hard.setOnMouseReleased(event -> {
                Objective obj=  (Objective.getObjectiveForDifficulty(0));
@@ -700,6 +702,7 @@ public class Board extends Application {
             pieces.getChildren().clear();
             time.setX(0);
             time.setY(0);
+            time.setWidth(1);
         });
         root.getChildren().add(easy);
         root.getChildren().add(medium);
@@ -711,6 +714,7 @@ public class Board extends Application {
         Text score = new Text();
         score.setX(610);
         score.setY(550);
+        score.setText("Score  0:00");
         score.setFont(Font.font("Tahoma",FontWeight.BOLD,20));
         root.getChildren().add(score);
         // Victory
@@ -738,7 +742,7 @@ public class Board extends Application {
                 else {victory.setFill(Color.RED);}
             }
 // this sets the counter to resemble a stopwatch
-            else {
+            if (time.getWidth()==1 && !"abcdefgh".equals( getPieciesOnBoard())) {
                 score.setText("Score  " + (int) Math.round(time.getX()) + ":" + (int) Math.round(time.getY()));
                 time.setY(time.getY() + 1);
             }
