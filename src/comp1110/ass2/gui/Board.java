@@ -8,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -375,6 +376,7 @@ public class Board extends Application {
 
         if (selectedPiece != null){
 
+
             boolean isEven = selectedPiece.getOrientation() % 2 == 0 ? true : false;
 
             //int to take value 0 if unflipped ie orientation less than 4, and 4 if flipped
@@ -486,7 +488,7 @@ public class Board extends Application {
         });
 
         //UIelements--box1
-        Rectangle tutorialBox = new Rectangle(580, 10, 250, 300);
+        Rectangle tutorialBox = new Rectangle(580, 10, 250, 325);
         tutorialBox.setFill(Color.ANTIQUEWHITE);
         tutorialBox.toBack();
         root.getChildren().add(tutorialBox);
@@ -506,11 +508,11 @@ public class Board extends Application {
         diff.setY(300);
         root.getChildren().add(diff);
 //UIelements--forwardarrow
-        Polygon fwd = new Polygon(750, 120, 750, 150, 800, 135);
+        Polygon fwd = new Polygon(750+15, 120, 750+15, 150, 800+15, 135);
         fwd.setFill(Color.RED);
         root.getChildren().add(fwd);
         //UIelements--forwardarrow
-        Polygon back = new Polygon(630, 120, 630, 150, 580, 135);
+        Polygon back = new Polygon(630+10, 120, 630+10, 150, 580+10, 135);
         back.setFill(Color.RED);
         root.getChildren().add(back);
 
@@ -521,8 +523,7 @@ public class Board extends Application {
         sillyString.setY(150);
         sillyString.toFront();
         pieces.toFront();
-        // I am deeply ashamed of this following code .. never look into what [Waldo class] actually does.
-        // I will regard this work as PLACEHOLDER as imageAnal can be phased out.
+        // Image selector
         fwd.setOnMouseClicked(event -> {sillyString.setImage(Waldo.waldoFWD(Waldo.ImageAnal(sillyString.getImage())));
         sillyString.setOpacity(100);});
         back.setOnMouseClicked(event -> {sillyString.setImage(Waldo.waldoBCK(Waldo.ImageAnal(sillyString.getImage())));
@@ -538,16 +539,11 @@ public class Board extends Application {
                     110, // Initial y
                     2,
                     3));
-            // automate a second mouse click
-            try {
-                Robot waldoBot = new Robot();
-                waldoBot.mouseRelease(InputEvent.BUTTON1_MASK);
-            } catch (AWTException e) {
-                e.printStackTrace();
-            }
             System.out.println(getPieciesOnBoard());
             sillyString.setOpacity(0);
         }
+        sillyString.setOnMouseEntered(event1 -> scene.setCursor(Cursor.HAND));
+        sillyString.setOnMouseExited(event1 -> scene.setCursor(Cursor.DEFAULT));
 
         });
       /*  sillyString.setOnMouseDragged(event -> {  try {
@@ -655,11 +651,11 @@ public class Board extends Application {
         time.setY(0);
         time.setX(0);
         Random rng = new Random();
-        Rectangle easy = new Rectangle(590,310,35,20);
+        Rectangle easy = new Rectangle(590+10,310,35,20);
         easy.setFill(Color.GREEN);
-        Rectangle medium = new Rectangle(670,310,35,20);
+        Rectangle medium = new Rectangle(670+10,310,35,20);
         medium.setFill(Color.ORANGE);
-        Rectangle hard = new Rectangle(750, 310, 35, 20);
+        Rectangle hard = new Rectangle(750+10, 310, 35, 20);
         hard.setFill(Color.RED);
 
         easy.setOnMousePressed(event -> {
@@ -735,11 +731,10 @@ public class Board extends Application {
                 else {victory.setFill(Color.RED);}
             }
 // this sets the counter to resemble a stopwatch
-            else{
-                score.setText("Score  "+(int) Math.round(time.getX()) +":"+ (int) Math.round(time.getY()));
+            else {
+                score.setText("Score  " + (int) Math.round(time.getX()) + ":" + (int) Math.round(time.getY()));
                 time.setY(time.getY() + 1);
             }
-
 
         }));
         timeline.setCycleCount(-1);
