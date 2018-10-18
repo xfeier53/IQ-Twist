@@ -719,7 +719,7 @@ public class Board extends Application {
         Text score = new Text();
         score.setX(610);
         score.setY(550);
-        score.setText("Score  0:00");
+        score.setText("Time  0:00");
         score.setFont(Font.font("Tahoma",FontWeight.BOLD,20));
         root.getChildren().add(score);
         // Victory
@@ -748,7 +748,7 @@ public class Board extends Application {
             }
 // this sets the counter to resemble a stopwatch
             if (time.getWidth()==1 && !"abcdefgh".equals( getPieciesOnBoard())) {
-                score.setText("Score  " + (int) Math.round(time.getX()) + ":" + (int) Math.round(time.getY()));
+                score.setText("Time  " + (int) Math.round(time.getX()) + ":" + (int) Math.round(time.getY()));
                 time.setY(time.getY() + 1);
             }
 
