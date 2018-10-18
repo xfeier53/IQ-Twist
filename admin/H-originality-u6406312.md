@@ -18,5 +18,7 @@ Waldobot uses this code to fix an exception:
     this code is sourced from here:
     https://stackoverflow.com/questions/13785747/robot-class-unhandled-exception-type-awtexception
 
+    All images are sourced externally belong to their respective oweners
+
 Signed: Lachlan McVicar u6406312
 

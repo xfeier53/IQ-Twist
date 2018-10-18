@@ -18,6 +18,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -78,8 +80,9 @@ public class Board extends Application {
     double xy[] = {75, 25};
 
 
-@Deprecated
+
 // made obsolete by waldo
+@Deprecated
     public Image tetris(String pieceID, int width, int height) {
         String zed = pieceID;
         Image retur = new Image("comp1110/ass2/gui/assets/" + pieceID + ".png", width, height, false, false);
@@ -88,7 +91,8 @@ public class Board extends Application {
     //("comp1110/ass2/gui/assets/"+pieceId+".png",width,height,false,false)
     private double[] relativeMouseClick = new double[2];
 
-    // this this is difficulty tests - u6406312
+    // this this is difficulty  TASK 8
+    @Deprecated
     public static String difficulty(String Difficulty, int insertRandom) {
         String output;
         if (Difficulty == "Easy") {
@@ -126,6 +130,7 @@ public class Board extends Application {
         }
         return "";
     }
+
     public static String getPieciesOnBoard () {
         String board = "";
         int x = 0;
@@ -434,7 +439,10 @@ public class Board extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        Image backdrop = new Image("https://image.freepik.com/free-photo/leaves-and-petals-on-wooden-tabletop_23-2147694457.jpg");
+        ImageView background = new ImageView(backdrop);
+        Rectangle gameBoard = new Rectangle(70*8, 70*4);
+        gameBoard.setFill(Color.NAVAJOWHITE);
         primaryStage.setTitle("TwistGame Viewer");
         Scene scene = new Scene(root, BOARD_WIDTH, BOARD_HEIGHT);
 
@@ -446,7 +454,8 @@ public class Board extends Application {
         hintText.setY(350);
         hintText.setFill(Color.RED);
         hintText.setFont(Font.font("Tahoma", FontWeight.BOLD ,20));
-
+        root.getChildren().addAll(background);
+        root.getChildren().add(gameBoard);
         root.getChildren().add(lines);
         root.getChildren().add(pegs);
         root.getChildren().add(pieces);
@@ -489,12 +498,13 @@ public class Board extends Application {
         tutorialBox.toBack();
         root.getChildren().add(tutorialBox);
         //UIelements--text1
-        javafx.scene.text.Text tut = new javafx.scene.text.Text("TutorialBox");
+        javafx.scene.text.Text tut = new javafx.scene.text.Text("Select Piece");
         tut.setFont(Font.font("Tahoma", FontWeight.NORMAL, 30));
         tut.setFill(Color.BLACK);
-        tut.setX(650);
+        tut.setX(630);
         tut.setY(50);
         root.getChildren().add(tut);
+
         //UIelements--text2
         javafx.scene.text.Text diff = new javafx.scene.text.Text("Easy    Medium    Hard");
         diff.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -547,16 +557,14 @@ public class Board extends Application {
         }
 
         });
-      //  sillyString.setOnMouseDragged(event -> {  try {
-      //      Robot waldoBot2 = new Robot();
-      //      waldoBot2.mouseMove((int) Math.round(event.getSceneY()),(int) Math.round(event.getSceneY()));
-      //  }
-      //  catch (AWTException e)
-       // {
-      //      e.printStackTrace();
-      //  }});
-
-
+      /*  sillyString.setOnMouseDragged(event -> {  try {
+            Robot waldoBot2 = new Robot();
+            waldoBot2.mouseMove((int) Math.round(event.getSceneY()),(int) Math.round(event.getSceneY()));
+        }
+        catch (AWTException e)
+        {
+            e.printStackTrace();
+        }}); */
         // UI - Instructions
         Button informationToPlayer = new Button();
         informationToPlayer.setText("Instructions");
@@ -566,7 +574,7 @@ public class Board extends Application {
             // The following relates to the new window that pops up from pressing the button
             @Override
             public void handle(ActionEvent event) {
-                Label instruct = new Label(
+                Label instruct = new Label (
                         "The game is a puzzle; the objective is to place all eight colored\n" +
                         "playing pieces onto a board comprising 32 locations (the grid) on which\n" +
                         "up to seven colored pegs may be arranged.  The player must click and \n" +
@@ -684,7 +692,7 @@ public class Board extends Application {
             time.setY(0);
         });
         hard.setOnMouseReleased(event -> {
-               Objective obj=  (Objective.getObjectiveForDifficulty(3));
+               Objective obj=  (Objective.getObjectiveForDifficulty(-1));
                currentObjective=obj;
                makePegPlacement(obj.getPegPlacement());
         });
@@ -702,45 +710,48 @@ public class Board extends Application {
 
         root.getChildren().add(time);
         Text score = new Text();
-        score.setX(30);
+        score.setX(610);
         score.setY(550);
         score.setFont(Font.font("Tahoma",FontWeight.BOLD,20));
         root.getChildren().add(score);
         // Victory
         Text victory = new Text("YOU WIN!");
-        victory.setFont(Font.font("Tahoma",FontWeight.BOLD,200));
+        victory.setFont(Font.font("Tahoma",FontWeight.BOLD,180));
         victory.setX(-3300);
         victory.setY(-3300);
-        victory.setOpacity(0);
         root.getChildren().add(victory);
+
+
 
 
 // Timeline is used to animate the score
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10.0D), (ae) -> {
-            score.setText("Score  "+(int) Math.round(time.getX()) +":"+ (int) Math.round(time.getY()));
+            background.setFitWidth(primaryStage.getWidth());
+            background.setFitHeight(primaryStage.getHeight());
+            if (time.getY() == 100) {
+                time.setX(time.getX() + 1);
+                time.setY(0);
+            }
             // if board is full set colour of score to green and will make pause the timer if all pieces are on board
             if ("abcdefgh".equals( getPieciesOnBoard())) {
                 score.setFill(Color.GREEN);
-                victory.setX(300);
-                victory.setY(300);
+                victory.setX(20);
+                victory.setY(450);
                 if (score.getY()%2==0) {victory.setFill(Color.GREEN);}
-                else {victory.setFill(Color.TEAL);}
+                else {victory.setFill(Color.RED);}
             }
 // this sets the counter to resemble a stopwatch
             else{
+                score.setText("Score  "+(int) Math.round(time.getX()) +":"+ (int) Math.round(time.getY()));
                 time.setY(time.getY() + 1);
-                if (time.getY() == 100) {
-                    time.setX(time.getX() + 1);
-                    time.setY(0);
-                }
             }
 
 
         }));
         timeline.setCycleCount(-1);
         timeline.play();
-
-
+        // minor quality of life change to set resizable == no
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
 
