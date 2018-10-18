@@ -74,7 +74,8 @@ public class Board extends Application {
     double xy[] = {75, 25};
 
 
-
+@Deprecated
+// made obsolete by waldo
     public Image tetris(String pieceID, int width, int height) {
         String zed = pieceID;
         Image retur = new Image("comp1110/ass2/gui/assets/" + pieceID + ".png", width, height, false, false);
@@ -521,52 +522,79 @@ public class Board extends Application {
             // The following relates to the new window that pops up from pressing the button
             @Override
             public void handle(ActionEvent event) {
-                Label instruct = new Label("Rules\n" +
-                        "\n" +
+                Label instruct = new Label(
                         "The game is a puzzle; the objective is to place all eight colored\n" +
                         "playing pieces onto a board comprising 32 locations (the grid) on which\n" +
-                        "up to seven colored pegs may be arranged.  The player must place the\n" +
-                        "pieces such that they fit together correctly on the board, without\n" +
+                        "up to seven colored pegs may be arranged.  The player must click and \n" +
+                        "drag the pieces such that they fit together correctly on the board, without\n" +
                         "overlaps or gaps. Also, each of the pegs must be surrounded by a piece\n" +
                         "of the same colour, meaning the piece must have a hole in the\n" +
-                        "necessary place. In the photo above, a blue peg at upper right is\n" +
+                        "necessary place. In the photo above, a blue peg on the bottom left is\n" +
                         "surrounded by a blue piece, with the peg fitting exactly into a hole\n" +
-                        "in the blue piece.  The player will need to place the green and red\n" +
+                        "in the blue piece.  The player will need to place the green, yellow and red\n" +
                         "pieces so that they fit neatly on the green and red pegs, and to\n" +
                         "complete the game will need to ensure that all pieces are placed with\n" +
                         "no overlaps and no gaps.");
-                GridPane instructPane = new GridPane();
-                instructPane.getChildren().add(instruct);
-                Scene instructScene = new Scene(instructPane,800,800);
+                Group instructPane = new Group();
+                instruct.setLayoutX(50);
+                instruct.setLayoutY(20);
+                // Image for instructions : Sourced from online cause why not;
+                Image sourced = new Image("comp1110/ass2/gui/assets/Instructions.jpg");
+                ImageView source= new ImageView(sourced);
+                source.setX(50);
+                source.setY(145);
+                instructPane.getChildren().add(source);
+                Scene instructScene = new Scene(instructPane,700,650);
                 Stage instructWindow = new Stage();
                 //UI Elements- More Text
                 Text flipL = new Text("Rotate Left ← ");
                 flipL.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
                 flipL.setFill(Color.BLACK);
-                flipL.setX(440);
+                flipL.setX(110);
                 flipL.setY(550);
                 instructPane.getChildren().add(flipL);
                 // UI -Elements Controls
                 Image ArrowKeys = new Image("comp1110/ass2/gui/assets/arrowKeys.png", 200, 200, true, false);
                 ImageView keyLayout = new ImageView();
                 keyLayout.setImage(ArrowKeys);
-                keyLayout.setX(200);
-                keyLayout.setY(600);
+                keyLayout.setX(230);
+                keyLayout.setY(450);
                 instructPane.getChildren().add(keyLayout);
+                // UI elements CONTROL:
+                Text control = new Text("Controls:");
+                control.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+                control.setX(75);
+                control.setY(470);
+                instructPane.getChildren().add(control);
+                // UI ELEMENTS get hint
+                Text hintText = new Text(" ' '  - Get hint");
+                hintText.setY(500);
+                hintText.setX(500);
+                hintText.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+                instructPane.getChildren().add(hintText);
+                // HintKey
+                Image forwardSlash = new Image("comp1110/ass2/gui/assets/computer_key_Forward_Slash.png");
+                ImageView slash = new ImageView(forwardSlash);
+                slash.setFitHeight(50);
+                slash.setFitWidth(50);
+                slash.setY(460);
+                slash.setX(480);
+                instructPane.getChildren().add(slash);
 // ui Elements FlipR
                 Text flipR = new Text("  → Rotate Right ");
                 flipR.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
                 flipR.setFill(Color.BLACK);
-                flipR.setX(770);
+                flipR.setX(420);
                 flipR.setY(550);
                 instructPane.getChildren().add(flipR);
                 // UI elements Flip/\\/
                 Text flipUp = new Text("Flip ↑ ↓ ");
                 flipUp.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
                 flipUp.setFill(Color.BLACK);
-                flipUp.setX(640);
+                flipUp.setX(300);
                 flipUp.setY(600);
                 instructPane.getChildren().add(flipUp);
+                instructPane.getChildren().add(instruct);
                 instructWindow.setTitle("Instructions");
                 instructWindow.setScene(instructScene);
                 instructWindow.show();
@@ -634,13 +662,25 @@ public class Board extends Application {
         score.setY(550);
         score.setFont(Font.font("Tahoma",FontWeight.BOLD,20));
         root.getChildren().add(score);
+        // Victory
+        Text victory = new Text("YOU WIN!");
+        victory.setFont(Font.font("Tahoma",FontWeight.BOLD,200));
+        victory.setX(-3300);
+        victory.setY(-3300);
+        victory.setOpacity(0);
+        root.getChildren().add(victory);
+
 
 // Timeline is used to animate the score
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(10.0D), (ae) -> {
-            score.setText("Time : "+(int) Math.round(time.getX()) + "."+(int) Math.round(time.getY()));
+            score.setText("Score  "+(int) Math.round(time.getX()) +":"+ (int) Math.round(time.getY()));
             // if board is full set colour of score to green and will make pause the timer if all pieces are on board
             if ("abcdefgh".equals( getPieciesOnBoard())) {
                 score.setFill(Color.GREEN);
+                victory.setX(300);
+                victory.setY(300);
+                if (score.getY()%2==0) {victory.setFill(Color.GREEN);}
+                else {victory.setFill(Color.TEAL);}
             }
 // this sets the counter to resemble a stopwatch
             else{
