@@ -18,11 +18,11 @@ public class PieceSetOrientationTest {
 
         String prefix = "\nFailed test: " + testName + " at test number: " + testCount;
 
-        assertTrue(prefix + "\nCoodinates of length: " + piece.getRelativeXY().length + " Expected: " + testCoord.length ,testCoord.length == piece.getRelativeXY().length);
+        assertTrue(prefix + "\nCoodinates of length: " + piece.getLength() + " Expected: " + testCoord.length ,testCoord.length == piece.getLength());
 
         for(int i = 0;i < testCoord.length;i++){
 
-            int[] xy = piece.getRelativeXY()[i];
+            int[] xy = piece.getRelativeCoordinate(i);
             String message =  prefix + "\nFor Coordinate at index " + i + "\nHad: " + testCoord[i][0] + ", " + testCoord[i][1] + ", " + testCoord[i][2] + " Expected: " + xy[0] + ", " + xy[1] + ", " + xy[2];
             for(int j = 0;j < testCoord[i].length;j++){
                 assertTrue(message,testCoord[i][j] == xy[j]);

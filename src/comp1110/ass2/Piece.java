@@ -235,13 +235,9 @@ public class Piece {
         return newCoordinates;
     }
 
-    //should use getRelativeCoordinate now
-    @Deprecated
-    public int[][] getRelativeXY() {
-        return relativeXY;
-    }
 
 
+    //get relative coordinate
     public int[] getRelativeCoordinate(int index){
         //clone so as to protect the array
         return relativeXY[index].clone();
