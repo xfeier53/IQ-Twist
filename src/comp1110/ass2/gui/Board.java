@@ -56,7 +56,7 @@ public class Board extends Application {
     public static final int[][] INTIAL_DIMENSIONS = {{2, 3}, {2, 3}, {1, 4}, {2, 3}, {2, 2}, {2, 3}, {3, 3}, {1, 3}, {3, 3}, {1, 3}};
 
 
-    public static String boardState = "i6B0j2B0j1C0k3C0l4B0l5C0";
+    public static String boardState = "";
 
     private static Objective currentObjective;
 
@@ -147,16 +147,6 @@ public class Board extends Application {
 
         return board;
     }
-
-
-
-    // FIXME Task 7: Implement a basic playable Twist Game in JavaFX that only allows pieces to be placed in valid places
-
-    // FIXME Task 8: Implement starting placements
-
-    // FIXME Task 10: Implement hints
-
-    // FIXME Task 11: Generate interesting starting placements
 
     //resets the pieces back to original states
     void resetPieces(){
@@ -336,8 +326,7 @@ public class Board extends Application {
 
     //Puts pieces in starting positions at beginning of the game James
     private void makePieces() {
-
-
+        
         //loop through pieces and place them in the locations using the PieceView class
         for (int i = 0; i < INTIAL_STARTS.length; i++) {
 
@@ -434,6 +423,8 @@ public class Board extends Application {
             PieceView piece = (PieceView) node;
             piece.resetPiece();
         }
+
+
 
     }
 
@@ -676,12 +667,12 @@ public class Board extends Application {
             time.setY(0);
         });
         easy.setOnMouseReleased(event -> {
-            Objective obj=  (Objective.getObjectiveForDifficulty(7));
+            Objective obj=  (Objective.getObjectiveForDifficulty(3));
             currentObjective=obj;
             makePegPlacement(obj.getPegPlacement());
         });
         medium.setOnMouseReleased(event -> {
-            Objective obj=  (Objective.getObjectiveForDifficulty(5));
+            Objective obj=  (Objective.getObjectiveForDifficulty(1));
             currentObjective=obj;
             makePegPlacement(obj.getPegPlacement());
         });
@@ -692,7 +683,7 @@ public class Board extends Application {
             time.setY(0);
         });
         hard.setOnMouseReleased(event -> {
-               Objective obj=  (Objective.getObjectiveForDifficulty(-1));
+               Objective obj=  (Objective.getObjectiveForDifficulty(0));
                currentObjective=obj;
                makePegPlacement(obj.getPegPlacement());
         });
