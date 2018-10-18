@@ -386,7 +386,7 @@ public class TwistGame {
 
             //check whether the coordinates are in the correct range
             if (newPiece.getColumn() + c[0] < 0 || newPiece.getColumn() + c[0] > 7 || newPiece.getRow() + c[1] < 0 || newPiece.getRow() + c[1] > 3) {
-                continue;
+                return false;
             }
             //check if the coordinate in situation is already occupied
             if (situation[newPiece.getColumn() + c[0]][newPiece.getRow() + c[1]] == 1) {
