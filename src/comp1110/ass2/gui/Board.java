@@ -69,9 +69,11 @@ public class Board extends Application {
     private final Group pegs = new Group();
     private final Group newBox = new Group();
 
-    private Group instructions = new Group();
+    private Group messages = new Group();
 
     private Text hintText = new Text();
+
+    private Text victory = new Text();
 
     private ImageView hintView;
 
@@ -326,7 +328,7 @@ public class Board extends Application {
 
     //Puts pieces in starting positions at beginning of the game James
     private void makePieces() {
-        
+
         //loop through pieces and place them in the locations using the PieceView class
         for (int i = 0; i < INTIAL_STARTS.length; i++) {
 
@@ -348,13 +350,7 @@ public class Board extends Application {
     }
 
     private void keyPress(KeyEvent event){
-        if(event.getCode() == KeyCode.N){
 
-            Objective objective = Objective.getObjectiveForDifficulty(0);
-
-            startNewGame(objective);
-
-        }
         if(isHintShown == false && event.getCode() == KeyCode.SLASH){
 
 
@@ -412,9 +408,13 @@ public class Board extends Application {
     }
 
 
-    public void startNewGame(Objective objective){
+    public void startNewGame(int difficulty){
+
+        Objective objective = Objective.getObjectiveForDifficulty(difficulty);
 
         currentObjective = objective;
+
+        victory.setText("");
 
         boardState = objective.getPegPlacement();
         makePegPlacement(boardState);
@@ -439,7 +439,7 @@ public class Board extends Application {
 
         Objective.readObjectives();
 
-        instructions.getChildren().add(hintText);
+        messages.getChildren().add(hintText);
 
         hintText.setX(10);
         hintText.setY(350);
@@ -450,7 +450,7 @@ public class Board extends Application {
         root.getChildren().add(lines);
         root.getChildren().add(pegs);
         root.getChildren().add(pieces);
-        root.getChildren().add(instructions);
+        root.getChildren().add(messages);
 
         makeLines();
         //makePieces();
