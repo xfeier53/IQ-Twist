@@ -1,4 +1,9 @@
 We declare that the work we have submitted for Stage G of this assignment and all stages before it is entirely our own work, with the following documented exceptions:
 
+* The idea of using <...> to make the game run faster came from a discussion with <...> (noted in source code comments)
 
-Signed: James Frampton Reid (u6079329), Bob Smith (u3456789), and Sue Black (u0123456)
+* The code in class <...> is based on a solution we found when researching the problem (URL provided in source code comments)
+
+* ....
+
+Signed: Mary Jones (u2345678), Feier Xiao (u6609337), and Sue Black (u0123456)

@@ -25,10 +25,20 @@ Lachlan McVicar task 8;
 
 ## Week 7
 
+Feier Xiao task 10, 11;
+
 ## Week 8
 
-## Week 9
+Feier Xiao task 10;
+Lachlan McVicar fix UI;
 
-## Week 10
+## Week 9 - 10
+
+Feier Xiao task 11
+Feier Xiao task 6, 9 (optimization);
+James Frampton Reid task 6, 9 (optimization);
 
 ## Week 11
+
+Group fix all problems left
+

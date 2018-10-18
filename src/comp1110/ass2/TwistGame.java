@@ -491,11 +491,6 @@ public class TwistGame {
         String newPlacement;
         String[] splitedString;
 
-        //a7B7b5B0c5A0d1B5e3C2f1A6g3A7h5D0
-        if (placement.equals("a7B7i8B0j6A0k1A0l5C0l5D0")){
-            System.out.println("here");
-        }
-
         // If the length of the List is 32, that is the full solutions
         if (placement.length() == resultLength) {
             solutions.add(placement.substring(0, 32));

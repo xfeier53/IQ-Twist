@@ -32,7 +32,7 @@ public class SolutionsTest {
   private void single(int n) {
     for (int i = 0; i < GOOD_PLACEMENTS.length; i++) {
       TreeSet<String> expected = new TreeSet<>();
-      expected.add(GOOD_PLACEMENTS[i].substring(0,32));
+      expected.add(GOOD_PLACEMENTS[i].substring(0, 32));
       test(SINGLE[n][i], expected);
     }
   }
@@ -68,16 +68,4 @@ public class SolutionsTest {
     test(MULTI[1][0], expected);
   }
 
-
-  @Test
-  public void test5() {
-    String start = "i6B0j2B0j1C0k3C0l4B0l5C0";
-    test(start, new HashSet<>());
-  }
-
-  @Test
-  public void test6() {
-    String start = "h6D0i6B0j2B0j1C0k3C0l4B0l5C0";
-    test(start, new HashSet<>());
-  }
 }
