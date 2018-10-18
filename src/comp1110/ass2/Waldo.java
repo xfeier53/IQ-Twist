@@ -19,9 +19,9 @@ import java.awt.event.InputEvent;
 1940s: named after Waldo F. Jones, a fictional inventor described by Robert Heinlein in a science fiction story.
         */
 
-public class Waldo {
+public class Waldo extends Board{
     // this method lets me determine which shape is which by the size of its width
-    // legacy waldo is legacy
+    // base  waldo is legacy
     public static Image waldo(int number) {
         String board = Board.getPieciesOnBoard();
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
@@ -61,7 +61,7 @@ public class Waldo {
         }
         return a;
     }
-
+// gets the next image
     public static Image waldoFWD(int number) {
         String board = Board.getPieciesOnBoard();
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
@@ -108,7 +108,9 @@ public class Waldo {
         }
         System.out.println("unexpected result in WaldoFWD");
         return null;
-    }public static Image waldoBCK(int number) {
+    }
+    // gets the previous image
+    public static Image waldoBCK(int number) {
         String board = Board.getPieciesOnBoard();
         Image a = new Image("comp1110/ass2/gui/assets/a.png", 96, 96, true, false);
         Image b = new Image("comp1110/ass2/gui/assets/b.png", 97, 97, true, false);
@@ -241,6 +243,7 @@ public class Waldo {
     }
 
     // this based on the value of the string will return a properly sized piece
+
     public static Image changeDimension(Image image) {
         if (ImageAnal_String(image) == 'a') {
             return new Image("comp1110/ass2/gui/assets/a.png", 210, 290, true, false);
