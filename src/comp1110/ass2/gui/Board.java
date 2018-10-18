@@ -58,7 +58,7 @@ public class Board extends Application {
 
     public static String boardState = "";
 
-    private static Objective currentObjective;
+    public static Objective currentObjective;
 
     private final Group root = new Group();
     //Contains all the PieceViews
@@ -73,7 +73,7 @@ public class Board extends Application {
 
     private Text hintText = new Text();
 
-    private Text victory = new Text();
+    public static Text victory = new Text();
 
     private ImageView hintView;
 
@@ -223,8 +223,8 @@ public class Board extends Application {
         int row = (piecePlacement.charAt(2)) - 'A';
 
         //place the piece
-        hintView.setX(hintView.getX() + (SQUARE_SIZE * column));
-        hintView.setY(hintView.getY() + (SQUARE_SIZE * row));
+        hintView.setX(hintView.getX() + (SQUARE_SIZE * column) + RIGHT_MARGIN);
+        hintView.setY(hintView.getY() + (SQUARE_SIZE * row) + TOP_MARGIN);
 
         hintView.setOpacity(0.5);
 
@@ -441,7 +441,17 @@ public class Board extends Application {
 
         Objective.readObjectives();
 
+
+
+        victory.setX(20);
+        victory.setY(450);
+        victory.setFill(Color.GREEN);
+        victory.setFont(Font.font("Tahoma", FontWeight.BOLD ,100));
+
+        //victory.setText("VICTORY");
+
         messages.getChildren().add(hintText);
+        messages.getChildren().add(victory);
 
         hintText.setX(10);
         hintText.setY(350);
@@ -708,11 +718,7 @@ public class Board extends Application {
         score.setFont(Font.font("Tahoma",FontWeight.BOLD,20));
         root.getChildren().add(score);
         // Victory
-        Text victory = new Text("YOU WIN!");
-        victory.setFont(Font.font("Tahoma",FontWeight.BOLD,180));
-        victory.setX(-3300);
-        victory.setY(-3300);
-        root.getChildren().add(victory);
+
 
 
 
@@ -727,9 +733,10 @@ public class Board extends Application {
             }
             // if board is full set colour of score to green and will make pause the timer if all pieces are on board
             if ("abcdefgh".equals( getPieciesOnBoard())) {
-                score.setFill(Color.GREEN);
-                victory.setX(20);
-                victory.setY(450);
+                //score.setFill(Color.GREEN);
+                //victory.setX(20);
+                //victory.setY(450);
+                //victory.setText("YOU WIN!");
                 if (score.getY()%2==0) {victory.setFill(Color.GREEN);}
 
                 else {victory.setFill(Color.RED);}
