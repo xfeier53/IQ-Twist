@@ -1,15 +1,11 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.Piece;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.MouseEvent;
-import comp1110.ass2.gui.Board;
 import comp1110.ass2.TwistGame;
-import javafx.scene.Group;
 
 
 public class PieceView extends ImageView {
@@ -60,6 +56,8 @@ public class PieceView extends ImageView {
 
                 Board.selectedPiece = pieceView;
 
+                Board.boardState = pieceView.removePieceFromBoardState(Board.boardState);
+
                 relativeMouseClick[0] = event.getSceneX() - pieceView.getX();
                 relativeMouseClick[1] = event.getSceneY() - pieceView.getY();
             }
@@ -76,7 +74,7 @@ public class PieceView extends ImageView {
                 double[] testCoordinates = pieceView.findSnapTo();
                 isPressed = false;
 
-                String newBoard = getNewBoardState(Board.boardState);
+                String newBoard = addPieceToBoardState(Board.boardState);
 
                 //test coordinates reset the piece is valid or set piece if it is
                 if (testCoordinates[0] == -1000 || testCoordinates[1] == -1000 || !TwistGame.isPlacementStringValid(newBoard)) {
@@ -123,7 +121,29 @@ public class PieceView extends ImageView {
         });
     }
 
-    String getNewBoardState(String boardState) {
+    String removePieceFromBoardState(String boardState){
+
+        for (int i = 0; i < boardState.length(); i = i + 4) {
+
+            if (boardState.charAt(i) == id) {
+
+                String newBoard = boardState.substring(0, i) + boardState.substring(i + 4);
+
+                return (newBoard);
+
+            } else if (boardState.charAt(i) > id) {
+
+                return (boardState);
+
+
+            }
+        }
+
+        return "";
+
+    }
+
+    String addPieceToBoardState(String boardState) {
 
         for (int i = 0; i < boardState.length(); i = i + 4) {
 
@@ -142,7 +162,7 @@ public class PieceView extends ImageView {
             }
         }
 
-        return null;
+        return getPiecePlacementString();
     }
 
     //Finds point where the piece snaps to after being released from the drag

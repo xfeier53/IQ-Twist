@@ -353,6 +353,85 @@ public class Board extends Application {
         }
     }
 
+    private void keyPress(KeyEvent event){
+        if(event.getCode() == KeyCode.N){
+
+            Objective objective = Objective.getObjectiveForDifficulty(0);
+
+            startNewGame(objective);
+
+        }
+        if(isHintShown == false && event.getCode() == KeyCode.SLASH){
+
+
+            if(!(currentObjective == null)) {
+
+
+                String hintPlacement = TwistGame.getHint(boardState, currentObjective);
+
+
+                if (hintPlacement != null) {
+
+                    isHintShown = true;
+
+                    makeHintPiecePlacement(hintPlacement);
+                } else if(hintText.getText().length() == 0){
+
+                    hintText.setText("No hints found try removing some pieces!");
+
+                }
+            }
+        }
+
+        if (selectedPiece != null){
+
+            boolean isEven = selectedPiece.getOrientation() % 2 == 0 ? true : false;
+
+            //int to take value 0 if unflipped ie orientation less than 4, and 4 if flipped
+            int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
+
+            //take the remainder after dividing by four newOrientation -> 0,1,2,3
+            int newOrientation = selectedPiece.getOrientation() % 4;
+
+            switch (event.getCode()){
+                case UP:
+                    newOrientation = (newOrientation + (isEven ? 0 : 2)) % 4;
+                    isFlipped = ((isFlipped == 0) ? 4 : 0);
+                    break;
+                case DOWN:
+                    newOrientation = (newOrientation + (isEven ? 0 : 2)) % 4;
+                    isFlipped = (isFlipped == 0) ? 4 : 0;
+                    break;
+                case RIGHT:
+                    newOrientation = (newOrientation + 1) % 4;
+                    break;
+                case LEFT:
+                    //decrease the newOrientation by 1
+                    //Math.floorMod is used becasue the value could be negative
+                    newOrientation = Math.floorMod(newOrientation - 1, 4);
+                    break;
+
+            }
+            //add isFlipped to newOrientation and set it to the piece
+            selectedPiece.setOrientation(newOrientation + isFlipped);
+        }
+    }
+
+
+    public void startNewGame(Objective objective){
+
+        currentObjective = objective;
+
+        boardState = objective.getPegPlacement();
+        makePegPlacement(boardState);
+
+        for(Node node :  pieces.getChildren()){
+            PieceView piece = (PieceView) node;
+            piece.resetPiece();
+        }
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -382,64 +461,7 @@ public class Board extends Application {
             @Override
             public void handle(KeyEvent event) {
 
-                if(event.getCode() == KeyCode.N){
-
-                    currentObjective =  Objective.getObjectiveForDifficulty(1);
-
-                    makePegPlacement(currentObjective.getPegPlacement());
-
-                }
-                if(isHintShown == false && event.getCode() == KeyCode.SLASH){
-
-                    String hintPlacement =  TwistGame.getHint(boardState,currentObjective);
-
-                    System.out.println(hintPlacement == null);
-
-                    if(hintPlacement != null){
-
-                        isHintShown = true;
-
-                        makeHintPiecePlacement(hintPlacement);
-                    }
-                    else{
-
-                        hintText.setText("No hints found try removing some pieces!");
-
-                    }
-                }
-
-                if (selectedPiece != null){
-
-                    boolean isEven = selectedPiece.getOrientation() % 2 == 0 ? true : false;
-
-                    //int to take value 0 if unflipped ie orientation less than 4, and 4 if flipped
-                    int isFlipped = (selectedPiece.getOrientation() < 4) ? 0 : 4;
-
-                    //take the remainder after dividing by four newOrientation -> 0,1,2,3
-                    int newOrientation = selectedPiece.getOrientation() % 4;
-
-                    switch (event.getCode()){
-                        case UP:
-                            newOrientation = (newOrientation + (isEven ? 0 : 2)) % 4;
-                            isFlipped = ((isFlipped == 0) ? 4 : 0);
-                            break;
-                        case DOWN:
-                            newOrientation = (newOrientation + (isEven ? 0 : 2)) % 4;
-                            isFlipped = (isFlipped == 0) ? 4 : 0;
-                            break;
-                        case RIGHT:
-                            newOrientation = (newOrientation + 1) % 4;
-                            break;
-                        case LEFT:
-                            //decrease the newOrientation by 1
-                            //Math.floorMod is used becasue the value could be negative
-                            newOrientation = Math.floorMod(newOrientation - 1, 4);
-                            break;
-
-                    }
-                    //add isFlipped to newOrientation and set it to the piece
-                    selectedPiece.setOrientation(newOrientation + isFlipped);
-                }
+                keyPress(event);
             }
         });
 
@@ -457,11 +479,7 @@ public class Board extends Application {
                         isHintShown = false;
                         hintView.setImage(null);
                     }
-
-
-
                 }
-
             }
         });
 
