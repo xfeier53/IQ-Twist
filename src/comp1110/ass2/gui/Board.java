@@ -362,8 +362,10 @@ public class Board extends Application {
 
         instructions.getChildren().add(hintText);
 
-        hintText.setX(0);
-        hintText.setY(0);
+        hintText.setX(10);
+        hintText.setY(350);
+        hintText.setFill(Color.RED);
+        hintText.setFont(Font.font("Tahoma", FontWeight.BOLD ,20));
 
         root.getChildren().add(lines);
         root.getChildren().add(pegs);
@@ -388,22 +390,24 @@ public class Board extends Application {
                 }
                 if(isHintShown == false && event.getCode() == KeyCode.SLASH){
 
-                    isHintShown = true;
+                    String hintPlacement =  TwistGame.getHint(boardState,currentObjective);
 
-                    String[] hintPlacement =  TwistGame.getHint(boardState,currentObjective);
+                    System.out.println(hintPlacement == null);
 
-                    if(hintPlacement != null && hintPlacement.length > 0){
-                        makeHintPiecePlacement(hintPlacement[0]);
+                    if(hintPlacement != null){
+
+                        isHintShown = true;
+
+                        makeHintPiecePlacement(hintPlacement);
                     }
                     else{
 
-                        hintText.setText("Hint not found");
+                        hintText.setText("No hints found try removing some pieces!");
 
                     }
                 }
 
                 if (selectedPiece != null){
-
 
                     boolean isEven = selectedPiece.getOrientation() % 2 == 0 ? true : false;
 
@@ -445,8 +449,15 @@ public class Board extends Application {
 
                 if(event.getCode() == KeyCode.SLASH){
 
-                    isHintShown = false;
-                    hintView.setImage(null);
+                    hintText.setText("");
+
+                    if(isHintShown == true){
+
+                        isHintShown = false;
+                        hintView.setImage(null);
+                    }
+
+
 
                 }
 
