@@ -522,6 +522,14 @@ public class Board extends Application {
         diff.setX(600);
         diff.setY(300);
         root.getChildren().add(diff);
+
+        //UI text 3
+        Text whatisDifficulty = new Text("Select difficulty to start:");
+        whatisDifficulty.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        whatisDifficulty.setX(600);
+        whatisDifficulty.setY(270);
+        root.getChildren().add(whatisDifficulty);
+
 //UIelements--forwardarrow
         Polygon fwd = new Polygon(750+15, 120, 750+15, 150, 800+15, 135);
         fwd.setFill(Color.RED);
@@ -738,7 +746,7 @@ public class Board extends Application {
             }
             // if board is full set colour of score to green and will make pause the timer if all pieces are on board
             if ("abcdefgh".equals( getPieciesOnBoard())) {
-                //score.setFill(Color.GREEN);
+                score.setFill(Color.GREEN);
                 //victory.setX(20);
                 //victory.setY(450);
                 //victory.setText("YOU WIN!");
