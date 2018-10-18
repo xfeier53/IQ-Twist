@@ -1,7 +1,7 @@
 /*
-The Task 2 was written by Lachlan McVicar
-Task 2 3 5 6 9 10 11 was written by Feier Xiao
-Optimization for task 6 9 was done by James Frampton Reid (u6079329) and Feier Xiao
+Task 2 was written by Lachlan McVicar
+Task 2 3 5 6 9 10 11 was written by Feier Xiao (u6609337)
+Optimization for task 6 9 was done by James Frampton Reid (u6079329) and Feier Xiao (u6609337)
  */
 
 package comp1110.ass2;
