@@ -67,6 +67,10 @@ public class Board extends Application {
     private final Group pegs = new Group();
     private final Group newBox = new Group();
 
+    private Group instructions = new Group();
+
+    private Text hintText = new Text();
+
     private ImageView hintView;
 
     public static PieceView selectedPiece;
@@ -357,9 +361,17 @@ public class Board extends Application {
 
         Objective.readObjectives();
 
+        instructions.getChildren().add(hintText);
+
+        hintText.setX(10);
+        hintText.setY(350);
+        hintText.setFill(Color.RED);
+        hintText.setFont(Font.font("Tahoma", FontWeight.BOLD ,20));
+
         root.getChildren().add(lines);
         root.getChildren().add(pegs);
         root.getChildren().add(pieces);
+        root.getChildren().add(instructions);
 
         makeLines();
         //makePieces();
@@ -379,17 +391,24 @@ public class Board extends Application {
                 }
                 if(isHintShown == false && event.getCode() == KeyCode.SLASH){
 
-                    isHintShown = true;
+                    String hintPlacement =  TwistGame.getHint(boardState,currentObjective);
 
-                    String[] hintPlacement =  TwistGame.getHint(boardState,currentObjective);
+                    System.out.println(hintPlacement == null);
 
-                    if(hintPlacement != null && hintPlacement.length > 0){
-                        makeHintPiecePlacement(hintPlacement[0]);
+                    if(hintPlacement != null){
+
+                        isHintShown = true;
+
+                        makeHintPiecePlacement(hintPlacement);
+                    }
+                    else{
+
+                        hintText.setText("No hints found try removing some pieces!");
+
                     }
                 }
 
                 if (selectedPiece != null){
-
 
                     boolean isEven = selectedPiece.getOrientation() % 2 == 0 ? true : false;
 
@@ -431,8 +450,15 @@ public class Board extends Application {
 
                 if(event.getCode() == KeyCode.SLASH){
 
-                    isHintShown = false;
-                    hintView.setImage(null);
+                    hintText.setText("");
+
+                    if(isHintShown == true){
+
+                        isHintShown = false;
+                        hintView.setImage(null);
+                    }
+
+
 
                 }
 

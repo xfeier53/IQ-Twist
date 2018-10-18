@@ -65,7 +65,7 @@ public class Objective {
 
         Objective objective = OBJECTIVES.get(objNum);
 
-        objective.addRandomPegsToObjective(3 - difficulty);
+        objective.addRandomPegsToObjective(difficulty);
 
         return objective;
     }
