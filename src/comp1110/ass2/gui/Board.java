@@ -562,7 +562,6 @@ public class Board extends Application {
                     110, // Initial y
                     2,
                     3));
-            System.out.println(getPieciesOnBoard());
             sillyString.setOpacity(0);
         }
         // makes it to difficult to click :(

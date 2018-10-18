@@ -164,7 +164,6 @@ public class Waldo extends Board{
 
     public static int ImageAnal(Image image) {
         int a = (int) image.getWidth();
-        System.out.println(a);
         return a;
 
 
