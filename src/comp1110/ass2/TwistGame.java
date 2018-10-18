@@ -575,6 +575,7 @@ public class TwistGame {
         int[] placedPiece = new int[8];
         String hint = null;
 
+        // Get the solution and put the piece and their symmetrical piece in the HashSet
         for (int i = 0; i < 8; i++){
             correctPiecesSet.add(solution.substring(4 * i, 4 * i + 4));
             symmetricalPieces = getSymmetricalPieces(solution.substring(4 * i, 4 * i + 4));
@@ -587,6 +588,7 @@ public class TwistGame {
             correctPiecesSet.add(s);
         }
 
+        // Check whether the piece placed on the board is right
         for (int i = 0; i < placement.length() / 4; i++) {
             String piece = placement.substring(4 * i, 4 * i + 4);
             if (piece.charAt(0) > 'h') {
@@ -598,6 +600,7 @@ public class TwistGame {
             placedPiece[piece.charAt(0) - 'a'] = 1;
         }
 
+        // Give the first unplaced piece for hint
         for (int i = 0; i < 8; i++) {
             if (placedPiece[i] == 0) {
                 hint = solution.substring(4 * i, 4 * i + 4);
@@ -606,51 +609,6 @@ public class TwistGame {
         }
 
         return hint;
-//
-//
-//        int index = 0;
-//
-//        for(int i = 0;i < solution.length();i = i + 4){
-//
-//            //System.out.println(solution.substring(i,i + 4));
-//            hint.add(solution.substring(i,i + 4));
-//        }
-//
-//        System.out.println(placement);
-//
-//        loop : for(int i = 0;i < placement.length();i = i + 4){
-//
-//            String piece = placement.substring(i,i+4);
-//
-//            switch (piece.charAt(0)){
-//                case 'i':
-//                case 'j':
-//                case 'k':
-//                case 'l':
-//                    break loop;
-//            }
-//
-//            //System.out.println("test");
-//
-//            boolean found = false;
-//
-//            for(int j = index;j < solution.length();j = j + 4){
-//
-//                if((placement.substring(i,i+4) == solution.substring(j, j + 4))){
-//                    index = j;
-//                    found = true;
-//                    hint.remove(solution.substring(j,j + 4));
-//                    break;
-//                }
-//
-//            }
-//            if(found == false){
-//                return null;
-//            }
-//
-//        }
-//
-//        return hint.toArray(new String[0]);
 
     }
 
@@ -904,6 +862,7 @@ public class TwistGame {
         }
     }
 
+    // Need this to return strong symmetrical piece for getHint function
     public static String[] getSymmetricalPieces(String piece) {
         if (piece.charAt(0) == 'b' || piece.charAt(0) == 'c' || piece.charAt(0) == 'h') {
             return new String[] {piece.substring(0, 3) + (char) (piece.charAt(3) + 2), piece.substring(0, 3) + (char) (piece.charAt(3) + 6)};
@@ -960,12 +919,6 @@ public class TwistGame {
                         if((iPeg + jPeg + kPeg + lPeg).length() == 12){
                             combinations.add(iPeg + jPeg + kPeg + lPeg);
                         }
-
-                        //combinations.add(iPeg + jPeg + kPeg + lPeg);
-
-
-
-
                     }
                 }
             }
