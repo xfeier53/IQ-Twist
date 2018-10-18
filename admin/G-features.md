@@ -9,5 +9,10 @@ of our project implements the following features:
  - Generates basic starting piece placements (Task 8)
  - Implements hints (Task 10)
  - Implements interesting starting placements (Task 11)
+ - in Depth Tutorial
+ - Luxury relaxing aesthetics
+ - Fantastic victory message
+ - Advanced Piece selection interface
+ - Working Timer
 
 additional features...
