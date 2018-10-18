@@ -1,5 +1,5 @@
 /*
-Author James(u6079329)
+Author James Frampton Reid(u6079329)
 */
 
 
@@ -43,8 +43,6 @@ import java.util.Random;
  * class does not play a game, it just illustrates various piece
  * placements.
  */
-
-//Author u6079329
 
 public class Viewer extends Application {
 

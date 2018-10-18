@@ -1,5 +1,5 @@
 /*
-Author James (u6079329)
+Author James Frampton Reid (u6079329)
 */
 
 

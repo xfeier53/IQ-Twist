@@ -1,5 +1,5 @@
 /*
-Written by James(u6079329) and Lachlan
+Written by James Frampton Reid (u6079329) and Lachlan
 */
 
 package comp1110.ass2.gui;

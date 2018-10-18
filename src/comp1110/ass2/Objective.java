@@ -1,5 +1,5 @@
 /*
-Written by James Frampton Reid
+Written by James Frampton Reid (u6079329)
  */
 package comp1110.ass2;
 
