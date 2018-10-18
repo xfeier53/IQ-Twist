@@ -1,6 +1,11 @@
+/*
+Written by James Frampton Reid
+ */
 package comp1110.ass2;
 
-/* From the placement string all we have is the top and the left
+/*
+   Old way (New way to implement Piece was written by James Frampton Reid)
+   From the placement string all we have is the top and the left
    With the top and left we build an array to define every single unit of the pieces
    0 = is the part of piece
    1 = is NOT the part of piece

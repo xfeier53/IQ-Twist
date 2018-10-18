@@ -1,3 +1,6 @@
+/*
+Written by James Frampton Reid
+ */
 package comp1110.ass2;
 
 import java.io.*;

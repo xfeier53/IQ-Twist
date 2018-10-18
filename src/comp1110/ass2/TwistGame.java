@@ -1,3 +1,9 @@
+/*
+Task 2 was written by Lachlan McVicar
+Task 3 5 6 9 10 11 was written by Feier Xiao
+Optimization for task 6 9 was done by James Frampton Reid and Feier Xiao
+ */
+
 package comp1110.ass2;
 
 import java.io.*;
