@@ -565,8 +565,9 @@ public class Board extends Application {
             System.out.println(getPieciesOnBoard());
             sillyString.setOpacity(0);
         }
-        sillyString.setOnMouseEntered(event1 -> scene.setCursor(Cursor.HAND));
-        sillyString.setOnMouseExited(event1 -> scene.setCursor(Cursor.DEFAULT));
+        // makes it to difficult to click :(
+        //sillyString.setOnMouseEntered(event1 -> scene.setCursor(Cursor.HAND));
+        //sillyString.setOnMouseExited(event1 -> scene.setCursor(Cursor.DEFAULT));
 
         });
       /*  sillyString.setOnMouseDragged(event -> {  try {
