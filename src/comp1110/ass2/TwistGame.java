@@ -600,6 +600,7 @@ public class TwistGame {
         for (int i = 0; i < 8; i++) {
             if (placedPiece[i] == 0) {
                 hint = solution.substring(4 * i, 4 * i + 4);
+                break;
             }
         }
 
